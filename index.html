@@ -19,18 +19,21 @@
     <div class="row-fluid">
 
       <div class="span3 sidebar-wrapper">
-        <div class="well sidebar-nav">
+        <div class="sidebar-nav">
           <ul id="nav-list" class="nav nav-list"/>
         </div>
       </div>
 
       <div class="span9">
 
-        <div class="hero-unit">
+        <div class="row-fluid">
           <h1>Verify.js</h1>
           <p>A powerful, customizable asynchronous form validation library</p>
-          <p><a class="btn btn-primary btn-large" href="https://github.com/jpillora/verifyjs" target="_blank">Project on Github &raquo;</a></p>
         </div>
+
+        <a href="https://github.com/jpillora/verifyjs">
+          <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
+        </a>
 
         <div class="alert"><strong>Note</strong> This documentation is a work in progress !</div>
         <!-- 
@@ -40,10 +43,11 @@
 
           <div data-nav-anchor="Features">
             <ul>
+              <li>Unobtrusive</li>
               <li>Easily extendable</li>
-              <li>Configurable validators using</li>
-              <li>Fully customisable asynchronous validations</li>
-              <li>Grouped validations (validations across multiple elements)</li>
+              <li>Configurable validators using per-element parameters</li>
+              <li>Fully customisable asynchronous validation rules</li>
+              <li>Grouped validation rules</li>
             </ul>
           </div>
 
@@ -53,17 +57,17 @@
 
             With jQuery Prompt
             <ul>
-              <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.js">Development Version with jquery.prompt</a></li>
-              <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.min.js">Production Version with jquery.prompt</a></li>
+              <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.js">verify.prompt.js (Development Version with jquery.prompt)</a></li>
+              <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.min.js">verify.prompt.min.js (Production Version with jquery.prompt)</a></li>
             </ul>
 
             Without jQuery Prompt
             <ul>
-              <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.js">Development Version</a></li>
-              <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js">Production Version</a></li>
+              <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.js">verify.js (Development Version)</a></li>
+              <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js">verify.min.js (Production Version)</a></li>
             </ul>
 
-            <div class="alert"><strong>Note</strong> Without jQuery Prompt, you will need to implement a <a data-link>prompt handler option</a> in order to see visible changes.</div>
+            <div class="alert"><strong>Note</strong> Without jQuery Prompt, you will need to implement a <a data-link>Prompt Handler</a> in order to see visible changes.</div>
 
             <h5>GitHub Hosted</h5>
 
@@ -138,6 +142,7 @@
               <tbody>
                 <tr><td>currency</td><td>None</td><td>Ensures a monetary value has been entered</td></tr>
                 <tr><td>required</td><td>None</td><td>The value of the element cannot be blank</td></tr>
+                <tr><td colspan="3"><i>and many more yet to be documented...</i></td></tr>
               </tbody>
             </table>
           </div>
@@ -230,7 +235,7 @@
 
           <div class="demo" data-nav-anchor="Group Validations">
             <p>
-              Group validations are required when validation depends on two or more fields. Such as a date range or check the result of combining a set of fields.
+              Group validations are required when validation depends on two or more fields. Useful for checking the combined result of a set of fields, such as a date range.
             </p>
 
             <p>
@@ -338,7 +343,7 @@
               </thead>
               <tbody>
                 <tr><td>$.verify.<code>addRules</code>([...])</td><td>Add rules for field validations.</td><td>An array of Field <a data-link>Rule Object</a>s</td></tr>
-                <tr><td>$.verify.<code>addGroupRules</code>([...])</td><td>Add rules for field validations.</td><td>An array of Group <a data-link>Rule Object</a>s</td></tr>
+                <tr><td>$.verify.<code>addGroupRules</code>([...])</td><td>Add rules for group validations.</td><td>An array of Group <a data-link>Rule Object</a>s</td></tr>
               </tbody>
             </table>
           </div>
@@ -349,7 +354,8 @@
                 <tr><th>Method</th><th>Description</th><th>Parameters</th></tr>
               </thead>
               <tbody>
-                <tr><td>$("#text-input").<code>validate</code>(...)</td><td>Programmatically trigger validation on an element.</td><td>A callback function with signature: function(error){}</td></tr>
+                <tr><td>$("#my-form").<code>validate</code>(...)</td><td>Programmatically trigger validation on every element in the form.</td><td>A callback function with signature: function(error){}</td></tr>
+                <tr><td>$("#my-text-input").<code>validate</code>(...)</td><td>Programmatically trigger validation on a single element.</td><td>A callback function with signature: function(error){}</td></tr>
               </tbody>
             </table>
           </div>
@@ -358,7 +364,7 @@
 
         <div data-nav-heading="Options" class="row-fluid">
 
-          <div data-nav-anchor="Options" class="demo"> 
+          <div data-nav-anchor="How To Option" class="demo"> 
 
 
             <p>
@@ -407,13 +413,24 @@
               </tbody>
             </table>
           </div>
-
-          <div data-nav-anchor="Foo Bar" class="demo">
+<!-- 
+          <div data-nav-anchor="Foo !" class="demo">
             <div class="alert"><strong>Note</strong> Documentation In Progress !</div>
           </div>
-
+ -->
         </div><!-- Options -->
 
+        <div data-nav-heading="The Githubs" class="row-fluid">
+          <div data-nav-anchor="Contributing" class="demo">
+            <div class="alert"><strong>Note</strong> Documentation In Progress !</div>
+          </div>
+          <div data-nav-anchor="Change Log" class="demo">
+            <div class="alert"><strong>Note</strong> Documentation In Progress !</div>
+          </div>
+          <div data-nav-anchor="Credits" class="demo">
+            <div class="alert"><strong>Note</strong> Documentation In Progress !</div>
+          </div>
+        </div>
 
         <!-- 
         <div data-nav-heading="Test Heading" class="row-fluid">
