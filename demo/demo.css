@@ -9,6 +9,11 @@ body {
     padding-top: 20px;
   }
 }
+
+.sidebar-container {
+  position: fixed;
+}
+
 .test-container {
   display: none;
 }
