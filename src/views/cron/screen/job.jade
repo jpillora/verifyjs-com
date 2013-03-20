@@ -1,0 +1,56 @@
+//Selected Cron Job Screen 
+.selected-cron-job.item(ng-controller='CronJobController')
+  .clearfix
+    h4.pull-left.underlined Cron Job
+    span.pull-right
+      button.btn.btn-success.trigger(ng-click='trigger()') Trigger
+      a(href='#/cron-jobs')
+        button.btn.btn-primary.back Back
+  .table-wrapper.well.loading-bg
+    table.property-table
+      tr
+        td.name ID
+        td.value(ng-bind='job.cronJobId')
+      tr
+        td.name URL
+        td.value
+          a(target='_blank', ng-bind='job.url', ng-href='{{ job.url }}')
+      tr
+        td.name Headers
+        td.value(ng-bind-html-unsafe='job.headerList | headerify:true')
+      tr
+        td.name Timeout
+        td.value(ng-bind='job.timeout*1000 | duration')
+      tr
+        td.name Frequency
+        td.value(ng-bind='job.frequency')
+      tr
+        td.name Tags
+        td.value(ng-bind-html-unsafe='job.tagList | tagify')
+  h4 Executions
+  table.table.execution-table
+    thead
+      tr
+        th ID
+        th Scheduled
+        th Started
+        th Finished
+        th Duration
+        th HTTP Code
+    tbody(ng-repeat='exec in executions')
+      tr.pointer(ng-click='select(exec)', ng-class='exec.httpCode == 200 && "success" || "error"')
+        td(ng-bind='exec.cronExecutionId')
+        td(ng-bind='exec.scheduled | date')
+        td(ng-bind='exec.started | date')
+        td(ng-bind='exec.finished | date')
+        td(ng-bind='exec.finished - exec.started | duration')
+        td
+          span(ng-bind='exec.httpCode')
+          i(ng-class='exec.httpCode == 200 && "icon-ok" || "icon-remove"')
+    tfoot
+      tr.loaded-display(ng-show='executions.length == 0')
+        td.center(colspan='6')
+          h4 No Executions Yet
+      tr.loading-display
+        td.center(colspan='6')
+          h4 Loading...

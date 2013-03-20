@@ -1,0 +1,48 @@
+//Add Job Modal 
+#cronModal.modal.hide.fade(ng-controller='CronModalController')
+  .modal-header
+    button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+    h3
+      span(ng-bind='cronJobId && "Edit" || "New"')
+      span&nbsp;Cron Job
+    form#editForm.form-horizontal
+      .control-group
+        label.control-label(for='cronAddUrl') URL
+        .controls
+          //- URL
+          input#cronAddUrl.url(type='text', data-validate='required,url', 
+                               placeholder='http://www.google.com/',
+                               ng-model='url')
+          span.help-inline
+      
+      //- HEADER LIST
+      .arrayInput(label='Headers',
+                  placeholder='X-My-Header: 42',
+                  validate='header',
+                  model-name='headerList')
+
+      .control-group
+        label.control-label(for='cronAddFrequency') Frequency
+        .controls
+          //- FREQUENCY
+          input#cronAddFrequency.frequency(type='text', data-validate='required',
+                                           placeholder='every 5 minutes', 
+                                           ng-model='frequency')
+          span.help-inline
+      .control-group
+        label.control-label(for='cronAddTimeout') Timeout (seconds)
+        .controls
+          //- TIMEOUT
+          input#cronAddTimeout(type='text', data-validate='required,number',
+                               placeholder='60', ng-model='timeout')
+          span.help-inline
+
+      //- TAGS
+      .arrayInput(label='Tags',
+                  placeholder='my-tag',
+                  validate='tag',
+                  model-name='tagList')
+
+  .modal-footer
+    a.btn.btn-primary(ng-click='commitJob()')
+      span(ng-bind='isNew() && "Create" || "Update"')

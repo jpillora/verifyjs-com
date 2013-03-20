@@ -1,0 +1,17 @@
+<div class="control-group">
+  <label class="control-label">{{ label }}</label>
+  <div class="controls">
+    <div ng-repeat="item in list">
+      <div class="array-input-item">
+        <input class="existing-item" type="text" placeholder="{{ placeholder }}" 
+            ng-model="item.val" data-index="{{ item.index }}" data-validate="required,{{ validate }}">
+        <a class="btn btn-small btn-icon" ng-click="removeItem(item)">
+          <i class="icon-minus-sign"></i>
+        </a>
+        <span class="help-inline"></span>
+      </div>
+    </div>
+    <a class="btn btn-small btn-icon" style="padding-left: 5px;"
+      ng-click="addItem()"> Add <i class="icon-plus-sign"></i></a>
+  </div>
+</div>

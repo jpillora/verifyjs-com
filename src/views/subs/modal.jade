@@ -1,0 +1,27 @@
+//Add Job Modal 
+#subsModal.modal.hide.fade(ng-controller='SubcriberModalController')
+  .modal-header
+    button.close(type='button', data-dismiss='modal', aria-hidden='true') ×
+    h3
+      span(ng-bind='isNew() && "New" || "Edit"')
+      span&nbsp;Subscriber
+    form.form-horizontal
+      //- EMAIL
+      .control-group
+        label.control-label(for='subsEmail') Email
+        .controls
+          //- URL
+          input#subsEmail(type='text', data-validate='required,email', 
+                               placeholder='john@example.com',
+                               ng-model='email')
+          span.help-inline
+      
+      //- TAGS
+      .arrayInput(label='Tags',
+                  placeholder='my-tag',
+                  validate='tag',
+                  model-name='tagList')
+
+  .modal-footer
+    a.btn.btn-primary(ng-click='commitSub()')
+      span(ng-bind='isNew() && "Create" || "Update"')

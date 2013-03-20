@@ -1,0 +1,31 @@
+//Subscriber Section 
+section.subscribers(ng-controller="SubscribersController")
+
+
+  .clearfix
+    h4.pull-left.underlined Subscribers
+    span.pull-right
+      a.btn.btn-primary(ng-click='addSub', href='#/subscribers/add') Add Subscriber
+
+  table.table.cron-table.table-condensed
+    //Headings 
+    thead
+      tr
+        th Email
+        th Tags
+        th Actions
+    //Rows 
+    tbody(ng-repeat='sub in subs')
+      tr
+        td(ng-bind='sub.email')
+        td(ng-bind-html-unsafe='sub.tagList | tagify')
+        td
+          a.btn.btn-small.btn-icon(ng-click='edit(sub)')
+            i.icon-edit
+          a.btn.btn-small.btn-icon(ng-click='remove(sub)')
+            i.icon-remove(alt='Some texts')
+    //Footer 
+    tfoot
+      tr(ng-show='subs.length == 0')
+        td.center(colspan='3')
+          h4 Nothing to see here...

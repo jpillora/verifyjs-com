@@ -1,0 +1,20 @@
+doctype 5
+html(lang="en", ng-app="cron-engine", ng-controller="EngineController")
+  head
+    title Cron Engine
+    include generated/styles.html
+
+  body.no-loading
+    include header
+    include cron/modal
+    include cron/section
+    include subs/modal
+    include subs/section
+    include footer
+    
+    // Scripts
+    script var App = {};
+    include generated/scripts.html
+
+    // Templates
+    include generated/templates.html
