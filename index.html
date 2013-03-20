@@ -2,9 +2,9 @@
 <html>
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <meta name="description" content="Free Web tutorials">
-  <meta name="keywords" content="HTML,CSS,XML,JavaScript">
-  <meta name="author" content="Ståle Refsnes">  
+  <meta name="description" content="A powerful, customizable asynchronous form validation library">
+  <meta name="keywords" content="jquery simple easy to use customizable asynchronous form validation library">
+  <meta name="author" content="Jaime Pillora">  
   <title>Verify.js</title>
   <link rel="stylesheet" type="text/css" href="demo/demo.css">
 </head>
@@ -12,10 +12,7 @@
   <div class="loading-cover" style="z-index: 2000;  position: fixed;  height: 100%;  width: 100%;  top: 0px; left: 0px;  z-index: 2000;  color: #1B1B1B;  text-align: center;  padding-top: 40px;  font-size: 40px;  background: url('http://framework.jpillora.com/img/loading64black.gif') no-repeat scroll 50% 100px white; font-family: Helvetica;">Loading...</div>
 
   <script src="demo/lib/jquery.min.js"></script>
-  <script src="https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.min.js"></script>
-   <!-- Notices
-    <div class="alert"><strong>!</strong></div>
-    -->
+  <script src="demo/lib/verify.prompt.min.js"></script>
 
   <div class="container-fluid">
 
@@ -31,10 +28,11 @@
 
         <div class="hero-unit">
           <h1>Verify.js</h1>
-          <p>A jQuery plugin to provide fully customisable asynchronous client-side validations.</p>
-          <p><a> </a></p>
+          <p>A powerful, customizable asynchronous form validation library</p>
           <p><a class="btn btn-primary btn-large" href="https://github.com/jpillora/verify" target="_blank">Project on Github &raquo;</a></p>
         </div>
+
+        <div class="alert"><strong>Note</strong> This documentation is a work in progress !</div>
         <!-- 
         <div class="alert alert-error"><strong>hello!</strong></div>
         -->
@@ -330,7 +328,7 @@
                 <tr><td>$<code>("form")</code>.verify({...})</td><td>Enable and/or override the options of a selected form</td><td>An <a data-link>Options</a> Object</td></tr>
               </tbody>
             </table>
-            <div class="alert alert-info"><strong>Note</strong> $<code>("form")</code>.verify() gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.</div>
+            <div class="alert alert-info"><strong>Note</strong> <code>$("form").verify()</code> gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.</div>
           </div>
           
           <div data-nav-anchor="Custom Validation Rules" class="demo">
@@ -360,7 +358,23 @@
 
         <div data-nav-heading="Options" class="row-fluid">
 
-          <div data-nav-anchor="List of Options" class="demo">          
+          <div data-nav-anchor="Options" class="demo"> 
+
+
+            <p>
+              There are two levels of options:
+              <ul>
+                <li>Global Options</li>
+                <li>Form Specific Options</li>
+              </ul>
+              The form specific options prototypically inherit from the global options. Since they aren't copied, any chances to the globals will automatically propogate through to each validation form on the page.
+            </p>
+
+            <p>
+              These options can be changed using the <a data-link>Setup</a> API above.
+            </p>
+            <br/>
+
             <table class="table table-striped table-bordered api-table highlight-col3-table">
               <thead>
                 <tr><th>Name</th><th>Description</th><th>Default</th></tr>
@@ -394,7 +408,7 @@
             </table>
           </div>
 
-          <div data-nav-anchor="Overriding Options" class="demo">
+          <div data-nav-anchor="Foo Bar" class="demo">
             <div class="alert"><strong>Note</strong> Documentation In Progress !</div>
           </div>
 
