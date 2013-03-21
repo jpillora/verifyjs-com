@@ -2,17 +2,21 @@
 <html>
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <meta name="description" content="A powerful, customizable asynchronous form validation library">
+  <meta name="description" content="A powerful, customizable, asynchronous form validation library">
   <meta name="keywords" content="jquery simple easy to use customizable asynchronous form validation library">
   <meta name="author" content="Jaime Pillora">  
-  <title>Verify.js</title>
-  <link rel="stylesheet" type="text/css" href="demo/demo.css">
+  <title>Verify.js - A powerful, customizable, asynchronous form validation library</title>
+  <link rel="stylesheet" type="text/css" href="css/demo.css">
 </head>
 <body id="app">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+  <script src="demo/lib/verify.prompt.min.js"></script>
+
+  <!-- absolutes -->
+
+
   <div class="loading-cover" style="z-index: 2000;  position: fixed;  height: 100%;  width: 100%;  top: 0px; left: 0px;  z-index: 2000;  color: #1B1B1B;  text-align: center;  padding-top: 40px;  font-size: 40px;  background: url('http://framework.jpillora.com/img/loading64black.gif') no-repeat scroll 50% 100px white; font-family: Helvetica;">Loading...</div>
 
-  <script src="demo/lib/jquery.min.js"></script>
-  <script src="demo/lib/verify.prompt.min.js"></script>
 
   <div class="container-fluid">
 
@@ -20,7 +24,39 @@
 
       <div class="span3 sidebar-wrapper">
         <div class="sidebar-nav">
-          <ul id="nav-list" class="nav nav-list"/>
+          <ul id="nav-list" class="nav nav-list"></ul>
+          <div class="share-buttons">
+            
+            <div>
+              <div class="g-plusone" data-size="medium"></div>
+              <script type="text/javascript">
+                (function() {
+                  var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                  po.src = 'https://apis.google.com/js/plusone.js';
+                  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+                })();
+              </script>
+            </div>
+            <div>
+                <div id="fb-root"></div>
+                <script>(function(d, s, id) {
+                  var js, fjs = d.getElementsByTagName(s)[0];
+                  if (d.getElementById(id)) return;
+                  js = d.createElement(s); js.id = id;
+                  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+                  fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+                </script>
+                <div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true">
+                </div>
+            </div>
+            <div>
+              <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://verifyjs.com" data-text="Verify.js - A powerful, customizable, asynchronous form validation library" data-hashtags="verifyjs">Tweet</a>
+              <script>
+                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+              </script>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -448,6 +484,7 @@
       <p>&copy; Jaime Pillora 2012</p>
     </footer>
 
+
   </div>
 
   <script type="text/javascript">
@@ -464,7 +501,7 @@
                     isLocal ? 'http://127.0.0.1:8888/framework/js/framework' :
                               'http://framework.jpillora.com/js/framework');
 
-      script.setAttribute('data-real-main', '../demo/demo');
+      script.setAttribute('data-real-main', '../js/demo');
       
       var s = document.getElementsByTagName('script')[0]; 
       s.parentNode.insertBefore(script, s);
