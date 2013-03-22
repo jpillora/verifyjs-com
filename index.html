@@ -8,7 +8,6 @@
     <title>Verify.js - A powerful, customizable, asynchronous form validation library</title>
     <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.css"/>
     <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"/>
-    <link rel="stylesheet" type="text/css" href="css/aller/stylesheet.css"/>
     <link rel="stylesheet" type="text/css" href="css/app.css"/>
   </head>
   <body id="app">
@@ -19,6 +18,7 @@
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js"></script>
     <script src="demo/lib/verify.prompt.min.js"></script>
+    <script src="js/viewport.js"></script>
     <script src="js/app.js"></script>
     <div class="container-fluid">
       <div class="row-fluid">
@@ -26,6 +26,15 @@
           <div class="sidebar-nav">
             <ul id="nav-list" class="nav nav-list"></ul>
             <div class="share-buttons">
+              <div>
+                <iframe src="http://ghbtns.com/github-btn.html?user=jpillora&amp;repo=verifyjs&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe>
+              </div>
+              <div><a href="https://twitter.com/share" data-url="http://verifyjs.com" data-text="Verify.js - A powerful, customizable, asynchronous form validation library" data-hashtags="verifyjs" class="twitter-share-button">Tweet</a>
+                <script>
+                  !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+                  
+                </script>
+              </div>
               <div>
                 <div id="fb-root"></div>
                 <script>
@@ -38,9 +47,6 @@
                   }(document, 'script', 'facebook-jssdk'));
                 </script>
                 <div data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" class="fb-like"></div>
-              </div>
-              <div><a href="https://twitter.com/share" data-url="http://verifyjs.com" data-text="Verify.js - A powerful, customizable, asynchronous form validation library" data-hashtags="verifyjs" class="twitter-share-button">Tweet</a>
-                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
               </div>
             </div>
           </div>
@@ -79,12 +85,12 @@
 &lt;!-- Verify.js (with jQuery Prompt included) --&gt;
 &lt;script src=&quot;//raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.min.js&quot;&gt;&lt;/script&gt;
 </pre>
-              <div class="alert alert-error"><strong>Be careful with this direct link! </strong>GitHub Pages don't support HTTPS and may have download limits.</div>
+              <div class="alert alert-error"><strong>Careful with this link </strong>GitHub Pages don't support HTTPS and may have download limits.</div>
             </div>
           </div>
           <div data-nav-heading="Basic Validation" class="row-fluid">
             <div data-nav-anchor="Hello World" class="demo">Given the following form
-              <pre class="prettyprint">\n&lt;form id=&quot;myForm&quot;&gt;
+              <pre class="prettyprint">&lt;form id=&quot;myForm&quot;&gt;
   &lt;input value=&quot;42&quot;&gt;
   &lt;input value=&quot;xx&quot;&gt;
   &lt;input class=&quot;submit&quot; type=&quot;submit&quot;/&gt;
@@ -98,7 +104,7 @@
                   <input type="submit" class="submit"/>
                 </form>
               </div>
-              <div class="alert alert-info"><strong>Note </strong>Verify.js will auto-initialise all forms that contain an element with<code>data-validate</code>attribute. Since we're just using defaults settings, no extra code is required.</div>
+              <div class="alert alert-info"><strong>Note </strong>Verify.js will auto-initialise all forms that contain an element with a <code>data-validate </code>attribute. Since we're just using defaults settings, no extra code is required.</div>
             </div>
             <div data-nav-anchor="Multiple Validation Rules" class="demo">You can also add multiple validation rules
               <pre data-html="data-html"></pre>Like so
@@ -108,7 +114,9 @@
                   <input type="submit" class="submit"/>
                 </form>
               </div>
-              <div class="alert alert-info"><strong>Note </strong>You can use any combination of validation rules. Each field will execute it's validation rules in sequence. See<a data-link="data-link">Execution Sequence</a>for more information.</div>
+              <div class="alert alert-info"><strong>Note </strong>You can use any combination of validation rules. Each field will execute it's
+                validation rules in sequence, even asynchronous rules ! See <a data-link="data-link">Execution Sequence </a>for more information.
+              </div>
             </div>
             <div data-nav-anchor="Included Validation Rules" class="demo">
               <table class="rules-table table table-striped table-bordered">

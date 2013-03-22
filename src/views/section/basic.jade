@@ -3,7 +3,7 @@
   .demo(data-nav-anchor='Hello World')
     | Given the following form
     pre.prettyprint.
-      \n<form id="myForm">
+      <form id="myForm">
         <input value="42">
         <input value="xx">
         <input class="submit" type="submit"/>
@@ -20,8 +20,8 @@
         input.submit(type='submit')
     .alert.alert-info
       strong Note 
-      | Verify.js will auto-initialise all forms that contain an element with
-      code data-validate
+      | Verify.js will auto-initialise all forms that contain an element with a 
+      code data-validate 
       | attribute. Since we're just using defaults settings, no extra code is required.
   .demo(data-nav-anchor='Multiple Validation Rules')
     | You can also add multiple validation rules
@@ -34,9 +34,11 @@
         input.submit(type='submit')
     .alert.alert-info
       strong Note 
-      | You can use any combination of validation rules. Each field will execute it's validation rules in sequence. See
-      a(data-link='data-link') Execution Sequence
+      | You can use any combination of validation rules. Each field will execute it's
+      | validation rules in sequence, even asynchronous rules ! See 
+      a(data-link='data-link') Execution Sequence 
       | for more information.
+  
   .demo(data-nav-anchor='Included Validation Rules')
     table.rules-table.table.table-striped.table-bordered
       thead

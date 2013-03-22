@@ -1,5 +1,15 @@
 
+#helpers
+encode = (value) ->
+  $("<div/>").text(value).html()
+prettify = (str) ->
+  prettyPrintOne encode(str)
+create = (type) ->
+  $ document.createElement(type)
+slugify = (title) ->
+  title.replace(/\s/g, "-").toLowerCase()
 
+#mini extensions
 $.fn.togglers = ->
   container = $(this)
   togglers = container.find("[data-toggle]")
@@ -32,6 +42,4 @@ $(document).ready ->
   setupLinks()
   $(".loading-cover").fadeOut "fast"
   window.prettyPrint()
-  $(document).
-    on("submit", "form", handleDemoFormSubmit).
-    on "click", "a[href^=#]", handleHashClick
+  $(document).on("submit", "form", handleDemoFormSubmit)
