@@ -1,17 +1,28 @@
 !!! strict
 html
+  
   head
     meta(http-equiv='Content-type', content='text/html; charset=utf-8')
     meta(name='description', content='A powerful, customizable, asynchronous form validation library')
     meta(name='keywords', content='jquery simple easy to use customizable asynchronous form validation library')
     meta(name='author', content='Jaime Pillora')
     title Verify.js - A powerful, customizable, asynchronous form validation library
+    link(rel='stylesheet', type='text/css', href='//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.css')
+    link(rel='stylesheet', type='text/css', href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css')
     link(rel='stylesheet', type='text/css', href='css/aller/stylesheet.css')
     link(rel='stylesheet', type='text/css', href='css/app.css')
+  
   body#app
-    
     include absolutes
 
+    // Scripts
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.1/lodash.min.js')
+    script(src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js')
+    script(src='demo/lib/verify.prompt.min.js')
+    script(src="js/app.js")
+    
     .container-fluid
       .row-fluid
         include nav
@@ -21,7 +32,3 @@ html
         p © Jaime Pillora 2012
 
     include vendor
-    // Scripts
-    script(src='//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js')
-    script(src='demo/lib/verify.prompt.min.js')
-    script(src="js/app.js")

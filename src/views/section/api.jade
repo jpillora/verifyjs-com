@@ -25,7 +25,7 @@
             a(data-link='data-link') Options
             | Object
     .alert.alert-info
-      strong Note
+      strong Note 
       code $("form").verify()
       | gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.
   .demo(data-nav-anchor='Custom Validation Rules')
@@ -70,12 +70,12 @@
             code validate
             | (...)
           td Programmatically trigger validation on every element in the form.
-          td A callback function with signature: function(error){}
+          td callback(success)
         tr
           td
             | $("#my-text-input").
             code validate
             | (...)
           td Programmatically trigger validation on a single element.
-          td A callback function with signature: function(error){}
+          td callback(success)
 //API 
