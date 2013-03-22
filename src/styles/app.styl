@@ -1,117 +1,48 @@
 body
-  padding: 10px
-  min-width: 600px
-  //reusables
-  .small-font
-    font-size: 0.75em
-  .center
-    text-align: center
-  .italics
-    font-style: italic
-  .underlined
-    text-decoration: underline
-  //loading modes
-  &.loading
-    cursor: wait
-    //loaders
-    .loaded-display
-      display:none;
-    .loading-bg
-      background-image: url('/loader.gif')
-      background-repeat: no-repeat;
-      background-position: 50%;
+  padding-top: 20px
 
-  &.no-loading
-    //pointer cursor
-    .pointer
-      cursor: pointer
-    //loaders
-    .loading-display
-      display:none;
+@media (max-width: 979px)
+  body#app
+    padding-top: 20px
 
-//header
-.navbar .login
-  float: right
-  height: 30px
+@media (min-width: 767px)
+  .sidebar-nav
+    position: fixed
+
+  body
+    min-width: 950px
+
+.test-container
+  display: none
+
+.share-buttons
+  padding: 15px
+
+h3,h5
+  text-decoration: underline
+
+.test-toggle
   margin-top: 5px
 
-.navbar .login .auth
-  margin-top: -10px
-  height: 30px
+#app pre, #app div[data-nav-anchor] div[data-html]
+  padding: 15px
+  margin: 10px
+  border: 1px solid rgba(0, 0, 0, 0.15)
+  border-radius: 3px
 
-//footer
-footer
-  background: white
-  position: fixed
-  bottom: 0
-  width: 900px
-  opacity: 0.8
+div[data-nav-anchor]
+  margin: 10px
+  margin-bottom: 50px
 
-footer hr
-  margin-top: 0
-  margin-bottom: 5px
+.alert
+  margin: 10px
 
-//all tables
-table
-  font-size: 1.1em
-  .ellipsis
-    text-overflow: ellipsis
-  .label
-    margin: 1px
+.alert strong
+  font-style: italic
 
-//icons
-.icon-remove
-  border-radius: 4px
-  height: 19px
-  width: 19px
+a[data-goto]
+  cursor: pointer
 
-.btn-icon
-  margin: 2px
-  padding: 2px
-
-.btn-icon i
-  width: 15px
-  height: 15px
-
-//cron subs windows
-section
-  display: none
-  overflow-x: hidden
-  overflow-y: auto
-  margin-top: -20px
-
-.item
-  padding: 20px
-
-//key value tables
-.property-table
-  .name
-    font-weight: bold
-    text-align: right
-    width: 100px
-  .value
-    text-align: left
-    padding-left: 10px
-
-//subscriber styles
-section.subscribers
-  padding: 20px
-
-//cron styles
-.cron-table
-  table-layout: fixed
-
-  td
-    overflow: hidden
-
-//cron exec
-.exec-output
-  min-height: 100px
-
-//array-input directive
-.array-input-item
-  margin-bottom: 5px
-
-.control-group.error input.no-error
-  border-color: #ccc
+.api-table td:nth-child(1)
+  font-family: Courier
 

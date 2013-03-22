@@ -1,0 +1,77 @@
+.row-fluid(data-nav-heading='Advanced Validation')
+  .demo(data-nav-anchor='Group Validation')
+    p
+      | Group validations are required when validation depends on two or more fields. Useful for checking the combined result of a set of fields, such as a date range.
+    p
+      | Group validations are defined in the same way as field (or single) validations, except you can provide two extra peices of optionally information:
+    p
+      b Group ID
+      | is generally required in most cases. It will provide an easy way to tag given elements in the context of validation. For example, the date range validation requires a start and an end date in order to execute validation.
+      br
+      b Group Scope
+      | is for cases when you have more than one instance of the same group validator. For example, if you were to have two date validators on one form, you would use group scope to allow the library differentiate between the two.
+    p
+      | Group validations are in the following format:
+      b
+        i name
+        | [
+        i .scope
+        | ][
+        i #id
+        | ][
+        i (args ...)
+        | ]
+    p
+      | Try it out here:
+      code data-validate="
+      input#parseStringInput(style='height: 14px;')
+      code "
+    pre#parseStringOutput.
+      \n                            
+    script(type='text/javascript')
+      $("#parseStringInput").keyup(function() {
+      var result = $.verify._hidden.ruleManager.parseString( $(this).val() );
+      if(result) $("#parseStringOutput").text(JSON.stringify(result,null, 2));
+      }).trigger('keyup');
+    p
+      | Dange range could be used like so:
+    pre(data-html='data-html').
+      
+    | Which will produce:
+    div(data-html='data-html')
+      form
+        input(value='3/1/2x13', data-validate='date,dateRange#start')
+        input(value='2/1/2013', data-validate='date,dateRange#end')
+        input.submit(type='submit')
+  .demo(data-nav-anchor='Group Validation Errors')
+    p
+      | By default the error prompt will NOT be displayed on each member of the group, instead, only the field that triggered validation will display the message.
+    p
+      | This can be overriden by instead returning a map of
+      code id
+      | s to
+      code string
+      | s, as shown here:
+      pre(data-script='data-script').
+        
+      script(data-script='data-script', type='text/javascript')
+        $.verify.addGroupRules({
+        myGroup: function(r) {
+        return { a: "An error for 'a'", c: "An error for 'c'"};
+        }
+        });
+      pre(data-html='data-html').
+        
+      | Which will produce:
+      div(data-html='data-html')
+        form
+          input(data-validate='myGroup#a')
+          input(data-validate='myGroup#b')
+          input(data-validate='myGroup#c')
+          input.submit(type='submit')
+      .alert.alert-info
+        strong Note
+        | If the group validation is asynchronous, use
+        code r.callback({ ... })
+        | .
+//Advanced 

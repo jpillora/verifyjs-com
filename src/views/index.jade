@@ -1,20 +1,27 @@
-doctype 5
-html(lang="en", ng-app="cron-engine", ng-controller="EngineController")
+!!! strict
+html
   head
-    title Cron Engine
-    include generated/styles.html
-
-  body.no-loading
-    include header
-    include cron/modal
-    include cron/section
-    include subs/modal
-    include subs/section
-    include footer
+    meta(http-equiv='Content-type', content='text/html; charset=utf-8')
+    meta(name='description', content='A powerful, customizable, asynchronous form validation library')
+    meta(name='keywords', content='jquery simple easy to use customizable asynchronous form validation library')
+    meta(name='author', content='Jaime Pillora')
+    title Verify.js - A powerful, customizable, asynchronous form validation library
+    link(rel='stylesheet', type='text/css', href='css/aller/stylesheet.css')
+    link(rel='stylesheet', type='text/css', href='css/app.css')
+  body#app
     
-    // Scripts
-    script var App = {};
-    include generated/scripts.html
+    include absolutes
 
-    // Templates
-    include generated/templates.html
+    .container-fluid
+      .row-fluid
+        include nav
+        include content
+      hr
+      footer
+        p © Jaime Pillora 2012
+
+    include vendor
+    // Scripts
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js')
+    script(src='demo/lib/verify.prompt.min.js')
+    script(src="js/app.js")

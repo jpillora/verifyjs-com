@@ -1,19 +1,11 @@
 {
   "name": "verifyjs-com",
   "version": "0.0.1",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
+    "optimist": "latest",
     "jade": "latest",
-    "lodash": "latest",
     "coffee-script": "latest",
-    "async": "latest",
-    "grunt": "latest",
-    "grunt-contrib-watch": "latest",
-    "grunt-contrib-jade": "latest",
-    "grunt-contrib-stylus": "latest",
-    "glob-manifest": "0.0.2"
-  },
-  "engines": {
-    "node": ">=0.8.x"
+    "colors": "~0.6.0-1",
+    "stylus": "~0.32.1"
   }
 }

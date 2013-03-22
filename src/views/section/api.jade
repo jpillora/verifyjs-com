@@ -1,0 +1,81 @@
+.row-fluid(data-nav-heading='API')
+  .demo(data-nav-anchor='Setup')
+    table.table.table-striped.table-bordered.api-table
+      thead
+        tr
+          th Method
+          th Description
+          th Parameters
+      tbody
+        tr
+          td $.verify({...})
+          td Override the global options object
+          td
+            | An
+            a(data-link='data-link') Options
+            | Object
+        tr
+          td
+            | $
+            code ("form")
+            | .verify({...})
+          td Enable and/or override the options of a selected form
+          td
+            | An
+            a(data-link='data-link') Options
+            | Object
+    .alert.alert-info
+      strong Note
+      code $("form").verify()
+      | gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.
+  .demo(data-nav-anchor='Custom Validation Rules')
+    table.table.table-striped.table-bordered.api-table
+      thead
+        tr
+          th Method
+          th Description
+          th Parameters
+      tbody
+        tr
+          td
+            | $.verify.
+            code addRules
+            | ([...])
+          td Add rules for field validations.
+          td
+            | An array of Field
+            a(data-link='data-link') Rule Object
+            | s
+        tr
+          td
+            | $.verify.
+            code addGroupRules
+            | ([...])
+          td Add rules for group validations.
+          td
+            | An array of Group
+            a(data-link='data-link') Rule Object
+            | s
+  .demo(data-nav-anchor='JQuery Helpers')
+    table.table.table-striped.table-bordered.api-table
+      thead
+        tr
+          th Method
+          th Description
+          th Parameters
+      tbody
+        tr
+          td
+            | $("#my-form").
+            code validate
+            | (...)
+          td Programmatically trigger validation on every element in the form.
+          td A callback function with signature: function(error){}
+        tr
+          td
+            | $("#my-text-input").
+            code validate
+            | (...)
+          td Programmatically trigger validation on a single element.
+          td A callback function with signature: function(error){}
+//API 

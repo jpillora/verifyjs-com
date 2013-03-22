@@ -1,0 +1,5 @@
+{
+  "coffee": "node_modules/coffee-script/bin/coffee -w -j ../js/test.js -c scripts",
+  "  jade": "node_modules/jade/bin/jade -P -w views/index.jade -O ../",
+  "stylus": "node_modules/stylus/bin/stylus styles/app.styl -w -o ../css/"
+}
