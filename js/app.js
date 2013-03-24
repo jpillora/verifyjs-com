@@ -77,7 +77,6 @@
     $window.on('hashchange', function() {
       var elem;
 
-      console.log("hash change");
       elem = get(location.hash.substr(1));
       if (elem.length === 0) {
         return alert("Sorry those docs are still in progress !");
@@ -97,15 +96,16 @@
       id = slugify($(this).text());
       $(this).attr('href', '#' + id);
       if (get(id).length === 0) {
-        return console.log("missing: ", id);
+        return console.warn("missing: ", id);
       }
     });
   };
 
   setupNav = function() {
-    var anchorTemplate, checkViewport, headerTemplate, navList, sections, setupNavAnchor, setupNavHeading;
+    var activeInView, anchorTemplate, anchors, check, headerTemplate, navList, sections, setupNavAnchor, setupNavHeading;
 
     sections = [];
+    anchors = [];
     setupNavHeading = function() {
       var container, first, heading, li, section, slug;
 
@@ -120,16 +120,15 @@
       li = headerTemplate({
         heading: heading
       });
-      navList.append(li);
-      container = create("div").addClass("nav-anchors");
+      container = create("div").addClass("nav-section");
+      container.append(li);
       $(this).find("[data-nav-anchor]").each(function() {
         return setupNavAnchor(container, $(this));
       });
       navList.append(container);
       return sections.push({
-        elem: section,
-        container: container,
-        shown: false
+        content: section,
+        nav: container
       });
     };
     setupNavAnchor = function(container, anchor) {
@@ -146,28 +145,24 @@
         title: title,
         slug: slug
       }));
-      return container.append(li);
-    };
-    headerTemplate = _.template("<li class=\"nav-header\"><%= heading %></li>");
-    anchorTemplate = _.template("<li><a href=\"#<%= slug %>\"><%= title %></a></li>");
-    navList = $("#nav-list");
-    $("[data-nav-heading]").each(setupNavHeading);
-    checkViewport = function() {
-      return;
-      return _.each(sections, function(section) {
-        var onScreen;
-
-        onScreen = section.elem.is(":in-viewport");
-        if (onScreen && !section.shown) {
-          section.shown = true;
-          return console.log("show", section.elem);
-        } else if (!onScreen && section.shown) {
-          section.shown = false;
-          return console.log("false", section.elem);
-        }
+      container.append(li);
+      return anchors.push({
+        content: anchor,
+        nav: li
       });
     };
-    return $document.scroll(_.throttle(checkViewport));
+    headerTemplate = _.template("<li class='nav-header'><%= heading %></li>");
+    anchorTemplate = _.template("<li class='nav-item'><a href='#<%= slug %>''><%= title %></a></li>");
+    navList = $("#nav-list");
+    $("[data-nav-heading]").each(setupNavHeading);
+    check = function() {
+      _.each(sections, activeInView);
+      return _.each(anchors, activeInView);
+    };
+    activeInView = function(obj) {
+      return obj.nav.toggleClass('active', obj.content.is(':in-viewport'));
+    };
+    return $document.scroll(_.throttle(check));
   };
 
   encode = function(value) {
@@ -216,7 +211,7 @@
   };
 
   handleDemoFormSubmit = function() {
-    $(this).append(successElem.show().stop().delay(2000).fadeOut());
+    $(this).append(successElem.hide().stop().slideDown().delay(2000).slideUp());
     return false;
   };
 
@@ -237,12 +232,14 @@
   });
 
   setupWindow = function() {
-    var resizeViewport, sidebar;
+    var gap, padding, resizeViewport, shares, sidebar;
 
     sidebar = $('.sidebar-nav');
+    padding = 20;
+    gap = 20;
+    shares = $('.share-buttons').height();
     resizeViewport = function() {
-      console.log("resize");
-      return sidebar.height($window.height());
+      return sidebar.height($window.height() - (padding + gap + shares));
     };
     $window.resize(_.debounce(resizeViewport));
     return resizeViewport();

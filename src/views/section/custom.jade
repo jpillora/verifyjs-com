@@ -30,28 +30,35 @@
       | See the
       a(data-link) Rule Object
       | Spec for more information.
+
+
+
+
   .demo(data-nav-anchor='Asynchronous Rules')
     p
-      | They key to asynchronous rules is just to use the
+      | They key to asynchronous rules is just to use the 
       a(data-link) Rule Object
-      | s
+      | 's 
       code callback
-      | method. So instead of
-      code return "Failed";
-      | and
-      code return true;
-      | , we'll now use
-      code r.callback("Failed");
-      | or
-      code r.callback(true);
-      | . By not
+      |  method. So instead of 
+      code return "Failed"
+      |  and 
+      code return true
+      |  , we'll now use 
+      code r.callback("Failed")
+      |  and 
+      code r.callback(true)
+      | . By not 
       code return
-      | ing (which will actually returns
+      | ing (which will actually returns 
       code undefined
-      | ), you're telling the library to wait for a callback. If no callback is fired, a timeout warning will be displayed in the console.
+      | ), you're telling the library to wait for a callback. 
+      | If no callback is fired, a timeout warning will be 
+      | displayed in the console.
+
     p The above is exemplied here:
-    pre(data-script='data-script').
-      
+    pre(data-script='data-script')
+    
     script(data-script='data-script', type='text/javascript')
       $.verify.addRules({
         myAjax: function(r) {
@@ -68,7 +75,8 @@
           }, 2000);
         }
       });
-    | Now, we can use it
+
+    p Now, we can use it
     pre(data-html='data-html').
       
     div(data-html='data-html')
@@ -77,7 +85,7 @@
         input.submit(type='submit')
     .alert.alert-info
       strong Note 
-      | Asynchronous rules execute in the same way as synchronous rules. See
+      | Asynchronous rules execute in the same sequence as synchronous rules. See
       a(data-link) Execution Sequence
       | for more information.
 //Custom 

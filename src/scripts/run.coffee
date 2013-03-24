@@ -29,12 +29,12 @@ $.fn.togglers = ->
 
 #intercept all form submissions
 handleDemoFormSubmit = ->
-  $(this).append successElem.show().stop().delay(2000).fadeOut()
+  $(this).append successElem.hide().stop().slideDown().delay(2000).slideUp()
   false
 
 successElem = $("<div class=\"alert alert-success\"><strong>" +
     "Validation successful ! </strong> If this was a real form, it would be submitting right now..." +
-     "</div>")
+    "</div>")
 
 $window = $(window)
 $document = $(document)

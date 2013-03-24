@@ -1,6 +1,7 @@
 setupNav = ->
 
   sections = []
+  anchors = []
 
   setupNavHeading = ->
 
@@ -12,14 +13,16 @@ setupNav = ->
     section.attr "nav-id", slug
 
     li = headerTemplate(heading: heading)
-    navList.append li
 
-    container = create("div").addClass("nav-anchors")
+    container = create("div").addClass("nav-section")
+    container.append li
+
     $(this).find("[data-nav-anchor]").each ->
       setupNavAnchor container, $(this)
+
     navList.append container
 
-    sections.push { elem: section, container, shown: false }
+    sections.push { content: section, nav: container }
 
   setupNavAnchor = (container, anchor) ->
     title = anchor.data("nav-anchor")
@@ -33,25 +36,21 @@ setupNav = ->
       slug: slug
     ))
     container.append li
+    anchors.push { content: anchor, nav: li }
 
-  headerTemplate = _.template("<li class=\"nav-header\"><%= heading %></li>")
-  anchorTemplate = _.template("<li><a href=\"#<%= slug %>\"><%= title %></a></li>")
+  headerTemplate = _.template("<li class='nav-header'><%= heading %></li>")
+  anchorTemplate = _.template("<li class='nav-item'><a href='#<%= slug %>''><%= title %></a></li>")
 
   navList = $("#nav-list")
 
   $("[data-nav-heading]").each setupNavHeading
 
-  checkViewport = ->
-    return
-    _.each sections, (section) ->
-      onScreen = section.elem.is(":in-viewport")
-      if onScreen and not section.shown
-        # section.container.slideDown()
-        section.shown = true
-        console.log("show", section.elem)
-      else if not onScreen and section.shown
-        # section.container.slideUp()
-        section.shown = false
-        console.log("false", section.elem)
+  check = ->
+    _.each sections, activeInView
+    _.each anchors, activeInView
 
-  $document.scroll _.throttle checkViewport
+  activeInView = (obj) ->
+    obj.nav.toggleClass 'active', obj.content.is ':in-viewport'
+
+
+  $document.scroll _.throttle check

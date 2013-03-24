@@ -1,5 +1,5 @@
 .row-fluid(data-nav-heading='API')
-  .demo(data-nav-anchor='Setup')
+  .demo(data-nav-anchor='Configure')
     table.table.table-striped.table-bordered.api-table
       thead
         tr
@@ -31,7 +31,7 @@
       |  gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.
   
 
-  .demo(data-nav-anchor='Adding Validation Rules')
+  .demo(data-nav-anchor='Adding Rules')
 
     table.table.table-striped.table-bordered.api-table
       thead
@@ -45,49 +45,98 @@
             | $.verify.
             code addRules
             | ({...})
-          td Add object of names to rule validation defintions.
+          td
+            | Add new 
+            b field
+            |  rules
+          td 
+            | A map (Object) of rule names to 
+            a(data-link) Definition Object
+            | s.
         tr
           td
             | $.verify.
             code addGroupRules
             | ({...})
-          td Add object of names to rule validation defintions.
+          td
+            | Add new 
+            b group
+            |  rules
+          td
+            | A map (Object) of rule names to 
+            a(data-link) Definition Object
+            | s.
+        tr
+          td
+            | $.verify.
+            code updateRules
+            | ({...})
+          td
+            | Update existing rules
+          td
+            | A map (Object) of rule names to 
+            a(data-link) Definition Object
+            | s. Only existing rules will be updated.
 
-    p Most validation rules will be in the Function form:
+    p
+      | The difference between field and group rules is largely outlined in the 
+      a(data-link) Group Validation
+      |  section above. There are also differences in the 
+      a(data-link) Rule Object
+      |  of each.
 
-    pre.prettyprint.
-      $.verify.addRules({
-        //r is a Rule Object with API below
-        myRule: function(r) {
-          return r.val() === "42" ? true : "Wasn't 42";
-        },
-        myOtherRule: function(r) {
-          ...
-        },
-        ...
-      });
+  .demo(data-nav-anchor='Definition Object')
 
-    p Though if a rule required variables, it could also be in Object form:
+    table.table.table-striped.table-bordered
+      thead
+        tr
+          th Property
+          th Type
+          th Description
+      tbody
+        tr
+          td fn
+          td Function
+          td The rule entry point (required)
+        tr
+          td extend
+          td String
+          td The name of the parent rule to extend
+        tr
+          td regex
+          td RegExp
+          td 
+            | A regular expression used to construct a 
+            code fn
+            |  property
+        tr
+          td
+            i
+              code anything
+          td Any
+          td 
+            | A variable that will be passed to the  
+            a(data-link) Rule Object
+
+    p If your rule only has the one 'fn' property:
     pre.prettyprint.
       $.verify.addRules({
         myRule: {
-          expected: "42",
-          message: "it failed",
           fn: function(r) {
-            return r.val() === r.expected ? true : r.message;
+            return r.val() === "42" ? true : "Wasn't 42";
           }
         }
       });
 
-    p Not very exciting on the face of it, though when it comes time to use multiple languages, you can just extend over the message:
+    p Then it can be shortened to:
     pre.prettyprint.
-      $.verify.updateRules({
-        myRule: {
-          message: "no tuvo éxito"
+      $.verify.addRules({
+        myRule: function(r) {
+          return r.val() === "42" ? true : "Wasn't 42";
         }
       });
 
-    p And the following shortcut is also accepted:
+    p Regular expression shortcut:
     pre.prettyprint.
       $.verify.addRules({
         myRule: {
@@ -98,9 +147,65 @@
     p
       | So if the rule has a 
       code regex
-      |  and 
+      |  and an optional  
       code message
-      |  properties, it will be transformed to it's corresponding Object form 
+      |  property, its fn property will automatically built.
+
+
+    p Use of variables:
+    pre.prettyprint.
+      $.verify.addRules({
+        myRule: {
+          expected: "42",
+          message: "Wasn't 42",
+          fn: function(r) {
+            return r.val() === r.expected ? true : r.message;
+          }
+        }
+      });
+
+
+    p The above example isn't very exciting, though when it comes time to use multiple languages, you can just update the message:
+    pre.prettyprint.
+      $.verify.updateRules({
+        myRule: {
+          message: "no tuvo éxito"
+        }
+      });
+
+    p Now, getting abit fancier, we can extend existing rules with the extend property 
+    pre.prettyprint.
+      $.verify.addRules({
+        myRule: {
+          message: "An error",
+
+          common: function(n) {
+            //a useful task...
+          },
+
+          fn: function(r) {
+            r.common(21);
+            return r.message;
+          }
+        },
+
+        //Alternative uses of 'common'
+        myOtherRule: {
+          extend: "myRule",
+
+          fn: function(r) {
+            r.common(42);
+            return r.message; //"An Error"
+          }
+        },
+
+        //Only modify the 'message'
+        myThirdRule: {
+          extend: "myRule",
+          message: "A super bad error"
+        }
+      });
+
 
 
   .demo(data-nav-anchor='Rule Object')
@@ -109,29 +214,44 @@
       | The Rule Object is the single parameter in all validation rules. It is known as 
       code r
       |  in the examples. 
-      
+    
 
-    table.table.table-striped.table-bordered.api-table
+    table.table.table-striped.table-bordered
       thead
         tr
+          th Type
           th Property
+          th Type
           th Description
           th Parameters
       tbody
         tr
-          td
-            | $("#my-form").
-            code validate
-            | (...)
-          td Programmatically trigger validation on every element in the form.
-          td callback(success)
+          td(rowspan=2) Field Only
+          td field
+          td JQuery Object
+          td A reference to element being validated
+          td None
         tr
-          td
-            | $("#my-text-input").
-            code validate
-            | (...)
-          td Programmatically trigger validation on a single element.
-          td callback(success)
+          td val()
+          td Function
+          td 
+            | An  alias to
+            code r.field.val()
+          td None (Getter) / Value (Setter)      
+
+        tr
+          td(rowspan=2) Group Only
+          td field
+          td JQuery Object
+          td A reference to element being validated
+          td None
+        tr
+          td val()
+          td Function
+          td 
+            | An  alias to
+            code r.field.val()
+          td None (Getter) / Value (Setter)
 
 
   .demo(data-nav-anchor='JQuery Helpers')

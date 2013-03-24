@@ -1,5 +1,5 @@
 
-.row-fluid(data-nav-heading='Basic Validation')
+.row-fluid(data-nav-heading='Basic')
   .demo(data-nav-anchor='Hello World')
     | Given the following form
     pre.prettyprint.
@@ -23,23 +23,8 @@
       | Verify.js will auto-initialise all forms that contain an element with a 
       code data-validate
       |  attribute. Since we're just using defaults settings, no extra code is required.
-  .demo(data-nav-anchor='Multiple Validation Rules')
-    | You can also add multiple validation rules
-    pre(data-html='data-html').
-      
-    | Like so
-    div(data-html='data-html')
-      form
-        input(name='num', value='', data-validate='required,number')
-        input.submit(type='submit')
-    .alert.alert-info
-      strong Note 
-      | You can use any combination of validation rules. Each field will execute it's 
-      | validation rules in sequence, even asynchronous rules ! See 
-      a(data-link) Execution Sequence
-      |  for more information.
-  
-  .demo(data-nav-anchor='Included Validation Rules')
+
+  .demo(data-nav-anchor='Included Rules')
     table.rules-table.table.table-striped.table-bordered
       thead
         tr
@@ -57,4 +42,21 @@
         tr
           td(colspan='3')
             i and many more yet to be documented...
+
+  .demo(data-nav-anchor='Multiple Rules')
+    | You can also add multiple validation rules
+    pre(data-html='data-html').
+      
+    | Like so
+    div(data-html='data-html')
+      form
+        input(name='num', value='', data-validate='required,number')
+        input.submit(type='submit')
+    .alert.alert-info
+      strong Note 
+      | You can use any combination of validation rules. Each field will execute it's 
+      | validation rules in sequence, even asynchronous rules ! See 
+      a(data-link) Execution Sequence
+      |  for more information.
+  
 //Basic 

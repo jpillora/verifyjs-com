@@ -13,14 +13,28 @@
   <body id="app">
     <!--inline styles, no css yet!-->
     <div style="z-index: 2000; position: fixed; height: 100%; width: 100%; top: 0px; left: 0px; color: #1B1B1B; text-align: center; padding-top: 40px; font-size: 40px; background: url('http://framework.jpillora.com/img/loading64black.gif') no-repeat scroll 50% 100px white; font-family: Helvetica;" class="loading-cover">Loading...</div>
+    <div class="share-buttons">
+      <div>
+        <iframe src="http://ghbtns.com/github-btn.html?user=jpillora&amp;type=follow" allowtransparency="true" frameborder="0" scrolling="0" width="130" height="20"></iframe>
+      </div>
+      <div>
+        <iframe src="http://ghbtns.com/github-btn.html?user=jpillora&amp;repo=verifyjs&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="130" height="20"></iframe>
+      </div>
+      <div><a href="https://twitter.com/share" data-url="http://verifyjs.com" data-text="Verify.js - A powerful, customizable, asynchronous form validation library" data-hashtags="verifyjs" class="twitter-share-button">Tweet</a>
+        <script>
+          !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+          
+        </script>
+      </div>
+    </div>
     <!-- Scripts-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.1/lodash.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js"></script>
-    <script src="../verifyjs/dist/verify.prompt.js"></script>
-    <script src="js/viewport.js"></script>
+    <script src="//raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.js"></script>
+    <script src="js/jquery.viewport.js"></script>
     <script src="js/app.js"></script>
     <div class="sidebar-nav pull-left yscroll">
       <ul id="nav-list" class="nav nav-list"></ul>
@@ -30,7 +44,7 @@
         <h1>Verify.js</h1>
         <p>A powerful, customizable asynchronous form validation library</p>
       </div><a href="https://github.com/jpillora/verifyjs"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"/></a>
-      <div class="alert"><strong>Note </strong>This documentation is a work in progress !</div>
+      <div class="alert"><strong>Note </strong>This documentation is a work in progress and this library is currently in development, therefore its API is subject to change.</div>
       <div data-nav-heading="Introduction" class="row-fluid">
         <div data-nav-anchor="Features">
           <ul>
@@ -62,7 +76,7 @@
           <div class="alert alert-error"><strong>Careful with this link </strong>GitHub Pages don't support HTTPS and may have download limits.</div>
         </div>
       </div>
-      <div data-nav-heading="Basic Validation" class="row-fluid">
+      <div data-nav-heading="Basic" class="row-fluid">
         <div data-nav-anchor="Hello World" class="demo">Given the following form
           <pre class="prettyprint">&lt;form id=&quot;myForm&quot;&gt;
   &lt;input value=&quot;42&quot;&gt;
@@ -80,19 +94,7 @@
           </div>
           <div class="alert alert-info"><strong>Note </strong>Verify.js will auto-initialise all forms that contain an element with a <code>data-validate</code> attribute. Since we're just using defaults settings, no extra code is required.</div>
         </div>
-        <div data-nav-anchor="Multiple Validation Rules" class="demo">You can also add multiple validation rules
-          <pre data-html="data-html"></pre>Like so
-          <div data-html="data-html">
-            <form>
-              <input name="num" value="" data-validate="required,number"/>
-              <input type="submit" class="submit"/>
-            </form>
-          </div>
-          <div class="alert alert-info"><strong>Note </strong>You can use any combination of validation rules. Each field will execute it's 
-            validation rules in sequence, even asynchronous rules ! See <a data-link="data-link">Execution Sequence</a> for more information.
-          </div>
-        </div>
-        <div data-nav-anchor="Included Validation Rules" class="demo">
+        <div data-nav-anchor="Included Rules" class="demo">
           <table class="rules-table table table-striped table-bordered">
             <thead>
               <tr>
@@ -115,6 +117,18 @@
               </tr>
             </thead>
           </table>
+        </div>
+        <div data-nav-anchor="Multiple Rules" class="demo">You can also add multiple validation rules
+          <pre data-html="data-html"></pre>Like so
+          <div data-html="data-html">
+            <form>
+              <input name="num" value="" data-validate="required,number"/>
+              <input type="submit" class="submit"/>
+            </form>
+          </div>
+          <div class="alert alert-info"><strong>Note </strong>You can use any combination of validation rules. Each field will execute it's 
+            validation rules in sequence, even asynchronous rules ! See <a data-link="data-link">Execution Sequence</a> for more information.
+          </div>
         </div>
       </div>
       <!--Basic -->
@@ -143,7 +157,10 @@
           <div class="alert"><strong>Note </strong>See the<a data-link="data-link">Rule Object</a>Spec for more information.</div>
         </div>
         <div data-nav-anchor="Asynchronous Rules" class="demo">
-          <p>They key to asynchronous rules is just to use the<a data-link="data-link">Rule Object</a>s<code>callback</code>method. So instead of<code>return "Failed";</code>and<code>return true;</code>, we'll now use<code>r.callback("Failed");</code>or<code>r.callback(true);</code>. By not<code>return</code>ing (which will actually returns<code>undefined</code>), you're telling the library to wait for a callback. If no callback is fired, a timeout warning will be displayed in the console.</p>
+          <p>They key to asynchronous rules is just to use the <a data-link="data-link">Rule Object</a>'s <code>callback</code> method. So instead of <code>return "Failed"</code> and <code>return true</code> , we'll now use <code>r.callback("Failed")</code> and <code>r.callback(true)</code>. By not <code>return</code>ing (which will actually returns <code>undefined</code>), you're telling the library to wait for a callback. 
+            If no callback is fired, a timeout warning will be 
+            displayed in the console.
+          </p>
           <p>The above is exemplied here:</p>
           <pre data-script="data-script"></pre>
           <script data-script="data-script" type="text/javascript">
@@ -162,7 +179,9 @@
                 }, 2000);
               }
             });
-          </script>Now, we can use it
+            
+          </script>
+          <p>Now, we can use it</p>
           <pre data-html="data-html"></pre>
           <div data-html="data-html">
             <form>
@@ -170,20 +189,33 @@
               <input type="submit" class="submit"/>
             </form>
           </div>
-          <div class="alert alert-info"><strong>Note </strong>Asynchronous rules execute in the same way as synchronous rules. See<a data-link="data-link">Execution Sequence</a>for more information.</div>
+          <div class="alert alert-info"><strong>Note </strong>Asynchronous rules execute in the same sequence as synchronous rules. See<a data-link="data-link">Execution Sequence</a>for more information.</div>
         </div>
       </div>
       <!--Custom -->
       <div data-nav-heading="Advanced Validation" class="row-fluid">
-        <div data-nav-anchor="Group Validation" class="demo">
+        <div data-nav-anchor="Execution Sequence" class="demo">
+          <p>In order to better understand what's actually happening when you submit the form, I've included this nice diagram:</p>
+          <p>INSERT DIAGRAM</p>
+        </div>
+        <div data-nav-anchor="Groups" class="demo">
           <p>Group validations are required when validation depends on two or more fields. Useful for checking the combined result of a set of fields, such as a date range.</p>
           <p>Group validations are defined in the same way as field (or single) validations, except you can provide two extra peices of optionally information:</p>
-          <p><b>Group ID</b>is generally required in most cases. It will provide an easy way to tag given elements in the context of validation. For example, the date range validation requires a start and an end date in order to execute validation.<br/><b>Group Scope</b>is for cases when you have more than one instance of the same group validator. For example, if you were to have two date validators on one form, you would use group scope to allow the library differentiate between the two.</p>
-          <p>Group validations are in the following format:<b><i>name</i>[<i>.scope</i>][<i>#id</i>][<i>(args ...)</i>]</b></p>
-          <p>Try it out here:<code>data-validate="</code>
+          <p><b>Group ID </b>is generally required in most cases. 
+            It will provide an easy way to tag given elements in the 
+            context of validation. For example, the date range rule 
+            requires a start and an end date in order to begin validation. 
+            Read about the  <a data-link="data-link">Require IDs</a> Option.<br/><b>Group Scope </b>is for reasonably rare cases when you are using the same
+            group validation rule more than once in a single form. 
+            For example, if you were to have two date validators on one 
+            form, you would use group scope to allow the library 
+            differentiate between the two.
+          </p>
+          <p>Group validations are in the following format: <b><i>name</i>[<i>.scope</i>][<i>#id</i>][<i>(args ...)</i>]</b></p>
+          <p>Try it out here: <code>data-validate="</code>
             <input id="parseStringInput" style="height: 14px;"/><code>"</code>
           </p>
-          <pre id="parseStringOutput">\n                            </pre>
+          <pre id="parseStringOutput">        </pre>
           <script type="text/javascript">
             $("#parseStringInput").keyup(function() {
             var result = $.verify._hidden.ruleManager.parseString( $(this).val() );
@@ -200,15 +232,15 @@
             </form>
           </div>
         </div>
-        <div data-nav-anchor="Group Validation Errors" class="demo">
+        <div data-nav-anchor="Group Errors" class="demo">
           <p>By default the error prompt will NOT be displayed on each member of the group, instead, only the field that triggered validation will display the message.</p>
-          <p>This can be overriden by instead returning a map of<code>id</code>s to<code>string</code>s, as shown here:
+          <p>This can be overriden by instead returning a map of <code>id</code>s to <code>string</code>s, as shown here:
             <pre data-script="data-script"></pre>
             <script data-script="data-script" type="text/javascript">
               $.verify.addGroupRules({
-              myGroup: function(r) {
-              return { a: "An error for 'a'", c: "An error for 'c'"};
-              }
+                myGroup: function(r) {
+                  return { a: "An error for 'a'", c: "An error for 'c'"};
+                }
               });
             </script>
             <pre data-html="data-html"></pre>Which will produce:
@@ -226,7 +258,7 @@
       </div>
       <!--Advanced -->
       <div data-nav-heading="API" class="row-fluid">
-        <div data-nav-anchor="Setup" class="demo">
+        <div data-nav-anchor="Configure" class="demo">
           <table class="table table-striped table-bordered api-table">
             <thead>
               <tr>
@@ -239,18 +271,18 @@
               <tr>
                 <td>$.verify({...})</td>
                 <td>Override the global options object</td>
-                <td>An<a data-link="data-link">Options</a>Object</td>
+                <td>An <a data-link="data-link">Options</a> Object</td>
               </tr>
               <tr>
                 <td>$<code>("form")</code>.verify({...})</td>
                 <td>Enable and/or override the options of a selected form</td>
-                <td>An<a data-link="data-link">Options</a>Object</td>
+                <td>An <a data-link="data-link">Options</a> Object</td>
               </tr>
             </tbody>
           </table>
-          <div class="alert alert-info"><strong>Note </strong><code>$("form").verify()</code>gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.</div>
+          <div class="alert alert-info"><strong>Note </strong><code>$("form").verify()</code> gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.</div>
         </div>
-        <div data-nav-anchor="Adding Validation Rules" class="demo">
+        <div data-nav-anchor="Adding Rules" class="demo">
           <table class="table table-striped table-bordered api-table">
             <thead>
               <tr>
@@ -262,75 +294,186 @@
             <tbody>
               <tr>
                 <td>$.verify.<code>addRules</code>({...})</td>
-                <td>Add rules for field validations.</td>
-                <td>An object of names to <a data-link="data-link">Rule Object</a>s</td>
+                <td>Add new <b>field</b> rules</td>
+                <td>
+                   
+                  A map (Object) of rule names to <a data-link="data-link">Definition Object</a>s.
+                </td>
               </tr>
               <tr>
                 <td>$.verify.<code>addGroupRules</code>({...})</td>
-                <td>Add rules for group validations.</td>
-                <td>An array of Group<a data-link="data-link">Rule Object</a>s</td>
+                <td>Add new <b>group</b> rules</td>
+                <td>A map (Object) of rule names to <a data-link="data-link">Definition Object</a>s.</td>
+              </tr>
+              <tr>
+                <td>$.verify.<code>updateRules</code>({...})</td>
+                <td>Update existing rules</td>
+                <td>A map (Object) of rule names to <a data-link="data-link">Definition Object</a>s. Only existing rules will be updated.</td>
               </tr>
             </tbody>
           </table>
-          <p>Most validation rules will be in the Function form:</p>
-          <pre class="prettyprint">$.verify.addRules({
-  //r is a Rule Object with API below
-  myRule: function(r) {
-    return r.val() === &quot;42&quot; ? true : &quot;Wasn't 42&quot;;
-  },
-  myOtherRule: function(r) {
-    ...
-  },
-  ...
-});
-</pre>
-          <p>Though if a rule required variables, it could also be in Object form:</p>
+          <p>The difference between field and group rules is largely outlined in the <a data-link="data-link">Group Validation</a> section above. There are also differences in the <a data-link="data-link">Rule Object</a> of each.</p>
+        </div>
+        <div data-nav-anchor="Definition Object" class="demo">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>fn</td>
+                <td>Function</td>
+                <td>The rule entry point (required)</td>
+              </tr>
+              <tr>
+                <td>extend</td>
+                <td>String</td>
+                <td>The name of the parent rule to extend</td>
+              </tr>
+              <tr>
+                <td>regex</td>
+                <td>RegExp</td>
+                <td>
+                   
+                  A regular expression used to construct a <code>fn</code> property
+                </td>
+              </tr>
+              <tr>
+                <td><i><code>anything</code></i></td>
+                <td>Any</td>
+                <td>
+                   
+                  A variable that will be passed to the  <a data-link="data-link">Rule Object</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>If your rule only has the one 'fn' property:</p>
           <pre class="prettyprint">$.verify.addRules({
   myRule: {
-    expected: &quot;42&quot;,
-    message: &quot;it failed&quot;,
     fn: function(r) {
-      return r.val() === r.expected ? true : r.message;
+      return r.val() === &quot;42&quot; ? true : &quot;Wasn't 42&quot;;
     }
   }
 });
 </pre>
-          <p>Not very exciting on the face of it, though when it comes time to use multiple languages, you can just extend over the message:</p>
-          <pre class="prettyprint">$.verify.updateRules({
-  myRule: {
-    message: &quot;no tuvo éxito&quot;
+          <p>Then it can be shortened to:</p>
+          <pre class="prettyprint">$.verify.addRules({
+  myRule: function(r) {
+    return r.val() === &quot;42&quot; ? true : &quot;Wasn't 42&quot;;
   }
 });
 </pre>
-          <p>And the following shortcut is also accepted:</p>
+          <p>Regular expression shortcut:</p>
           <pre class="prettyprint">$.verify.addRules({
   myRule: {
     regex: /^[ab]+$/i
     message: &quot;It contained something other than 'a's and 'b's&quot;
   }
 });</pre>
-          <p>So if the rule has a <code>regex</code> and <code>message</code> properties, it will be transformed to it's Function form </p>
+          <p>So if the rule has a <code>regex</code> and an optional  <code>message</code> property, its fn property will automatically built.</p>
+          <p>Use of variables:</p>
+          <pre class="prettyprint">$.verify.addRules({
+  myRule: {
+    expected: &quot;42&quot;,
+    message: &quot;Wasn't 42&quot;,
+    fn: function(r) {
+      return r.val() === r.expected ? true : r.message;
+    }
+  }
+});
+
+</pre>
+          <p>The above example isn't very exciting, though when it comes time to use multiple languages, you can just update the message:</p>
+          <pre class="prettyprint">$.verify.updateRules({
+  myRule: {
+    message: &quot;no tuvo éxito&quot;
+  }
+});
+</pre>
+          <p>Now, getting abit fancier, we can extend existing rules with the extend property </p>
+          <pre class="prettyprint">$.verify.addRules({
+  myRule: {
+    message: &quot;An error&quot;,
+    
+    common: function(n) {
+      //a useful task...
+    },
+    
+    fn: function(r) {
+      r.common(21);
+      return r.message;
+    }
+  },
+  
+  //Alternative uses of 'common'
+  myOtherRule: {
+    extend: &quot;myRule&quot;,
+    
+    fn: function(r) {
+      r.common(42);
+      return r.message; //&quot;An Error&quot;
+    }
+  },
+  
+  //Only modify the 'message'
+  myThirdRule: {
+    extend: &quot;myRule&quot;,
+    message: &quot;A super bad error&quot;
+  }
+});
+
+
+</pre>
         </div>
         <div data-nav-anchor="Rule Object" class="demo">
           <p>The Rule Object is the single parameter in all validation rules. It is known as <code>r</code> in the examples. </p>
-          <table class="table table-striped table-bordered api-table">
+          <table class="table table-striped table-bordered">
             <thead>
               <tr>
+                <th>Type</th>
                 <th>Property</th>
+                <th>Type</th>
                 <th>Description</th>
                 <th>Parameters</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>$("#my-form").<code>validate</code>(...)</td>
-                <td>Programmatically trigger validation on every element in the form.</td>
-                <td>callback(success)</td>
+                <td rowspan="2">Field Only</td>
+                <td>field</td>
+                <td>JQuery Object</td>
+                <td>A reference to element being validated</td>
+                <td>None</td>
               </tr>
               <tr>
-                <td>$("#my-text-input").<code>validate</code>(...)</td>
-                <td>Programmatically trigger validation on a single element.</td>
-                <td>callback(success)</td>
+                <td>val()</td>
+                <td>Function</td>
+                <td>
+                   
+                  An  alias to<code>r.field.val()</code>
+                </td>
+                <td>None (Getter) / Value (Setter)      </td>
+              </tr>
+              <tr>
+                <td rowspan="2">Group Only</td>
+                <td>field</td>
+                <td>JQuery Object</td>
+                <td>A reference to element being validated</td>
+                <td>None</td>
+              </tr>
+              <tr>
+                <td>val()</td>
+                <td>Function</td>
+                <td>
+                   
+                  An  alias to<code>r.field.val()</code>
+                </td>
+                <td>None (Getter) / Value (Setter)</td>
               </tr>
             </tbody>
           </table>
@@ -366,9 +509,9 @@
             <ul>
               <li>Global Options</li>
               <li>Form Specific Options</li>
-            </ul>The form specific options prototypically inherit from the global options. Since they aren't copied, any chances to the globals will automatically propogate through to each validation form on the page.
+            </ul>The form specific options prototypically inherit from the global options. Since they aren't copied, any changes to the globals will propogate through to each validation form on the page.
           </p>
-          <p>These options can be changed using the<a data-link="data-link">Setup</a>API above.</p><br/>
+          <p>These options can be changed using the <a data-link="data-link">Configure</a> API above.</p><br/>
           <table class="table table-striped table-bordered api-table highlight-col3-table">
             <thead>
               <tr>
@@ -424,22 +567,28 @@
                 <td>"error"</td>
               </tr>
               <tr>
-                <td>onValidationComplete</td>
-                <td>Post-validation/Pre-form-submit hook. If you return<code>true</code>, form will submit.</td>
+                <td>beforeSubmit</td>
+                <td>Pre-form-submit hook. If you return <code>true</code>, form will submit.</td>
                 <td>function(form, result) { return result; }</td>
               </tr>
               <tr>
                 <td>track</td>
-                <td>Method used for tracking user validation interactions. Read more here<a data-link="data-link">Validation Event Tracking</a></td>
+                <td>Method used for tracking user validation interactions. Read more here <a data-link="data-link">Validation Tracking</a></td>
                 <td>$.noop</td>
               </tr>
               <tr>
                 <td>prompt</td>
-                <td>Method used to display validation errors. Read more here<a data-link="data-link">Prompt Handler</a></td>
+                <td>Method used to display validation errors. Read more here <a data-link="data-link">Prompt Handler</a></td>
                 <td>function(element, text, opts) { $.prompt(element, text, opts); }</td>
               </tr>
             </tbody>
           </table>
+        </div>
+        <div data-nav-anchor="Validation Tracking" class="demo">
+          <div class="alert"><strong>Note </strong>Documentation In Progress !</div>
+        </div>
+        <div data-nav-anchor="Prompt Handler" class="demo">
+          <div class="alert"><strong>Note </strong>Documentation In Progress !</div>
         </div>
       </div>
       <!--Options -->

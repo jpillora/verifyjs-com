@@ -5,11 +5,11 @@
       ul
         li Global Options
         li Form Specific Options
-      | The form specific options prototypically inherit from the global options. Since they aren't copied, any chances to the globals will automatically propogate through to each validation form on the page.
+      | The form specific options prototypically inherit from the global options. Since they aren't copied, any changes to the globals will propogate through to each validation form on the page.
     p
-      | These options can be changed using the
-      a(data-link) Setup
-      | API above.
+      | These options can be changed using the 
+      a(data-link) Configure
+      |  API above.
     br
     table.table.table-striped.table-bordered.api-table.highlight-col3-table
       thead
@@ -55,23 +55,35 @@
           td The class name to be toggled on the "errorContainer"
           td "error"
         tr
-          td onValidationComplete
+          td beforeSubmit
           td
-            | Post-validation/Pre-form-submit hook. If you return
+            | Pre-form-submit hook. If you return 
             code true
             | , form will submit.
           td function(form, result) { return result; }
         tr
           td track
           td
-            | Method used for tracking user validation interactions. Read more here
-            a(data-link) Validation Event Tracking
+            | Method used for tracking user validation interactions. Read more here 
+            a(data-link) Validation Tracking
           td $.noop
         tr
           td prompt
           td
-            | Method used to display validation errors. Read more here
+            | Method used to display validation errors. Read more here 
             a(data-link) Prompt Handler
           td function(element, text, opts) { $.prompt(element, text, opts); }
      
+  .demo(data-nav-anchor='Validation Tracking')
+
+    .alert
+      strong Note 
+      | Documentation In Progress !
+
+  .demo(data-nav-anchor='Prompt Handler')
+
+    .alert
+      strong Note 
+      | Documentation In Progress !
+
 //Options 
