@@ -1,0 +1,40 @@
+.row-fluid(data-nav-heading='Introduction')
+  div(data-nav-anchor='Features')
+    ul
+      li Unobtrusive
+      li Easily extendable
+      li Configurable validations with parameters
+      li Fully customisable asynchronous validation rules
+      li Grouped validation rules
+  div(data-nav-anchor='Usage')
+    h5 Download
+    | With jQuery Prompt  (
+    a(href='http://www.github.com/jpillora/prompt') http://www.github.com/jpillora/prompt
+    | )
+    ul
+      li
+        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.js') verify.prompt.js (Development Version with jquery.prompt)
+      li
+        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.min.js') verify.prompt.min.js (Production Version with jquery.prompt)
+    | Without jQuery Prompt
+    ul
+      li
+        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.js') verify.js (Development Version)
+      li
+        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js') verify.min.js (Production Version)
+    .alert
+      strong Note 
+      | Without jQuery Prompt, you will need to implement a 
+      a(data-link) Prompt Handler
+      |  in order to see visible changes.
+    h5 GitHub Hosted
+    pre.prettyprint.
+      <!-- jQuery -->
+      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+      
+      <!-- Verify.js (with jQuery Prompt included) -->
+      <script src="//raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.min.js"></script>
+                      
+    .alert.alert-error
+      strong Careful with this link 
+      | GitHub Pages don't support HTTPS and may have download limits.

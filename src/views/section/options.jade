@@ -1,0 +1,89 @@
+.row-fluid(data-nav-heading='Options')
+  .demo(data-nav-anchor='How To Option')
+    p
+      | There are two levels of options:
+      ul
+        li Global Options
+        li Form Specific Options
+      | The form specific options prototypically inherit from the global options. Since they aren't copied, any changes to the globals will propogate through to each validation form on the page.
+    p
+      | These options can be changed using the 
+      a(data-link) Configure
+      |  API above.
+    br
+    table.table.table-striped.table-bordered.api-table.highlight-col3-table
+      thead
+        tr
+          th Name
+          th Description
+          th Default
+      tbody
+        tr
+          td debug
+          td Display log messages flag
+          td false
+        tr
+          td validateAttribute
+          td Attribute to use for listing validation rules
+          td "data-validate"
+        tr
+          td validationEventTrigger
+          td Event which will trigger validation
+          td "blur"
+        tr
+          td scroll
+          td Automatically scroll viewport to the first error
+          td true
+        tr
+          td focusFirstField
+          td Automatically focus into to the first field with an error
+          td true
+        tr
+          td hideErrorOnChange
+          td Hide error while the user is editing the field
+          td false
+        tr
+          td skipHiddenFields
+          td Whether to skip the hidden fields with validators
+          td true
+        tr
+          td errorContainer
+          td A function which returns the element in which to add or remove the "errorClass"
+          td function(input) { return input; }
+        tr
+          td errorClass
+          td The class name to be toggled on the "errorContainer"
+          td "error"
+        tr
+          td beforeSubmit
+          td
+            | Pre-form-submit hook. If you return 
+            code true
+            | , form will submit.
+          td function(form, result) { return result; }
+        tr
+          td track
+          td
+            | Method used for tracking user validation interactions. Read more here 
+            a(data-link) Validation Tracking
+          td $.noop
+        tr
+          td prompt
+          td
+            | Method used to display validation errors. Read more here 
+            a(data-link) Prompt Handler
+          td function(element, text, opts) { $.prompt(element, text, opts); }
+     
+  .demo(data-nav-anchor='Validation Tracking')
+
+    .alert
+      strong Note 
+      | Documentation In Progress !
+
+  .demo(data-nav-anchor='Prompt Handler')
+
+    .alert
+      strong Note 
+      | Documentation In Progress !
+
+//Options 
