@@ -8,26 +8,37 @@ html
     meta(name='author', content='Jaime Pillora')
     title Verify.js - A powerful, customizable, asynchronous form validation library
     link(rel='stylesheet', type='text/css', href='//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.css')
-    link(rel='stylesheet', type='text/css', href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css')
+    link(rel='stylesheet', type='text/css', href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap.min.css')
     //- link(rel='stylesheet', type='text/css', href='css/aller/stylesheet.css')
     link(rel='stylesheet', type='text/css', href='css/app.css')
-  
+
   body#app
     include absolutes
 
     // Scripts
     script(src='//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.1/lodash.min.js')
     script(src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js')
-    script(src='demo/lib/verify.prompt.min.js')
+    script(src='../verifyjs/dist/verify.prompt.js')
     script(src="js/viewport.js")
     script(src="js/app.js")
     
-    .container-fluid
-      .row-fluid
-        include nav
-        include content
+    //- include share
+    .sidebar-nav.pull-left.yscroll
+      ul#nav-list.nav.nav-list
+
+    .content-wrapper
+      include title
+      include section/intro
+      include section/basic
+      include section/custom
+      include section/advanced
+      include section/api
+      include section/options
+      include section/githubs
+
       hr
       footer
         p © Jaime Pillora 2012

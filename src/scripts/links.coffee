@@ -1,17 +1,21 @@
 setupLinks = ->
-  
-  handleHashClick = (e) ->
-    e.preventDefault()
-    id = $(this).attr("href")
-    elem = $(id).scrollView(->
-      window.location.hash = id
-    )
-    alert "Sorry those docs are still in progress !"  if elem.length is 0
-    false
 
-  $(document).on "click", "a[href^=#]", handleHashClick
+  get = (id) -> $("[nav-id=#{id}]")
+
+  $window.on 'hashchange', ->
+    console.log "hash change"
+    elem = get location.hash.substr(1)
+    if elem.length is 0
+      alert "Sorry those docs are still in progress !"
+    else
+      $('html,body').animate(
+        {scrollTop: elem.offset().top},
+        {duration: 1000, easing: 'easeInOutExpo'}
+      );
+
+  $window.trigger 'hashchange'
 
   $("a[data-link]").each ->
-    sel = "#" + slugify($(this).html())
-    $(this).attr "href", sel
-    console.log "missing: ", sel if $(sel).length is 0
+    id = slugify $(@).text()
+    $(@).attr 'href', '#'+id
+    console.log "missing: ", id if get(id).length is 0

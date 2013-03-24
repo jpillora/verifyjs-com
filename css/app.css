@@ -1,18 +1,16 @@
+.yscroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 body {
+  min-width: 650px;
+}
+.sidebar-nav {
   padding-top: 20px;
+  position: fixed;
 }
-@media (max-width: 979px) {
-  body#app {
-    padding-top: 20px;
-  }
-}
-@media (min-width: 767px) {
-  .sidebar-nav {
-    position: fixed;
-  }
-  body {
-    min-width: 950px;
-  }
+.content-wrapper {
+  margin-left: 200px;
 }
 .share-buttons {
   padding: 15px;
@@ -32,9 +30,6 @@ div[data-nav-anchor] {
   margin: 10px;
   margin-bottom: 50px;
 }
-.nav-anchors {
-  display: none;
-}
 .alert {
   margin: 10px;
   display: inline-block;
@@ -42,7 +37,7 @@ div[data-nav-anchor] {
 .alert strong {
   font-style: italic;
 }
-a[data-goto] {
+a[data-link] {
   cursor: pointer;
 }
 .api-table td:nth-child(1) {

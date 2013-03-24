@@ -11,9 +11,9 @@
           td $.verify({...})
           td Override the global options object
           td
-            | An
-            a(data-link='data-link') Options
-            | Object
+            | An 
+            a(data-link) Options
+            |  Object
         tr
           td
             | $
@@ -21,14 +21,18 @@
             | .verify({...})
           td Enable and/or override the options of a selected form
           td
-            | An
-            a(data-link='data-link') Options
-            | Object
+            | An 
+            a(data-link) Options
+            |  Object
+
     .alert.alert-info
       strong Note 
       code $("form").verify()
-      | gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.
-  .demo(data-nav-anchor='Custom Validation Rules')
+      |  gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.
+  
+
+  .demo(data-nav-anchor='Adding Validation Rules')
+
     table.table.table-striped.table-bordered.api-table
       thead
         tr
@@ -40,22 +44,96 @@
           td
             | $.verify.
             code addRules
-            | ([...])
-          td Add rules for field validations.
-          td
-            | An array of Field
-            a(data-link='data-link') Rule Object
-            | s
+            | ({...})
+          td Add object of names to rule validation defintions.
         tr
           td
             | $.verify.
             code addGroupRules
-            | ([...])
-          td Add rules for group validations.
+            | ({...})
+          td Add object of names to rule validation defintions.
+
+    p Most validation rules will be in the Function form:
+
+    pre.prettyprint.
+      $.verify.addRules({
+        //r is a Rule Object with API below
+        myRule: function(r) {
+          return r.val() === "42" ? true : "Wasn't 42";
+        },
+        myOtherRule: function(r) {
+          ...
+        },
+        ...
+      });
+
+    p Though if a rule required variables, it could also be in Object form:
+    pre.prettyprint.
+      $.verify.addRules({
+        myRule: {
+          expected: "42",
+          message: "it failed",
+          fn: function(r) {
+            return r.val() === r.expected ? true : r.message;
+          }
+        }
+      });
+
+    p Not very exciting on the face of it, though when it comes time to use multiple languages, you can just extend over the message:
+    pre.prettyprint.
+      $.verify.updateRules({
+        myRule: {
+          message: "no tuvo éxito"
+        }
+      });
+
+    p And the following shortcut is also accepted:
+    pre.prettyprint.
+      $.verify.addRules({
+        myRule: {
+          regex: /^[ab]+$/i
+          message: "It contained something other than 'a's and 'b's"
+        }
+      });
+    p
+      | So if the rule has a 
+      code regex
+      |  and 
+      code message
+      |  properties, it will be transformed to it's corresponding Object form 
+
+
+  .demo(data-nav-anchor='Rule Object')
+
+    p
+      | The Rule Object is the single parameter in all validation rules. It is known as 
+      code r
+      |  in the examples. 
+      
+
+    table.table.table-striped.table-bordered.api-table
+      thead
+        tr
+          th Property
+          th Description
+          th Parameters
+      tbody
+        tr
           td
-            | An array of Group
-            a(data-link='data-link') Rule Object
-            | s
+            | $("#my-form").
+            code validate
+            | (...)
+          td Programmatically trigger validation on every element in the form.
+          td callback(success)
+        tr
+          td
+            | $("#my-text-input").
+            code validate
+            | (...)
+          td Programmatically trigger validation on a single element.
+          td callback(success)
+
+
   .demo(data-nav-anchor='JQuery Helpers')
     table.table.table-striped.table-bordered.api-table
       thead

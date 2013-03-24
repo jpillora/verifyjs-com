@@ -36,10 +36,14 @@ successElem = $("<div class=\"alert alert-success\"><strong>" +
     "Validation successful ! </strong> If this was a real form, it would be submitting right now..." +
      "</div>")
 
-$(document).ready ->
+$window = $(window)
+$document = $(document)
+
+$document.ready ->
   setupCode()
   setupNav()
   setupLinks()
+  setupWindow()
   $(".loading-cover").fadeOut "fast"
   window.prettyPrint()
-  $(document).on("submit", "form", handleDemoFormSubmit)
+  $document.on("submit", "form", handleDemoFormSubmit)
