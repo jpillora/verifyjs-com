@@ -34,7 +34,7 @@ div[data-nav-anchor] {
   margin-bottom: 50px;
 }
 .nav-item.active a {
-  text-decoration: underline;
+  font-weight: bold;
 }
 .alert {
   margin: 10px;
