@@ -33,7 +33,14 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.1/lodash.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js"></script>
-    <script src="js/verify.prompt.js"></script>
+    <script>
+      !function() {
+        var local = !!window.location.host.match(/localhost/);
+        document.writeln('<script src="'+(local?'/notifyjs/dist/':'js/')+'notify.js"><\/script>');
+        document.writeln('<script src="'+(local?'/verifyjs/dist/':'js/')+'verify.js"><\/script>');
+        if(!local) alert("Warning this documentation is currently in progress.");
+      }();
+    </script>
     <script src="js/jquery.viewport.js"></script>
     <script src="js/app.js"></script>
     <div class="sidebar-nav pull-left yscroll">
@@ -44,7 +51,7 @@
         <h1>Verify.js</h1>
         <p>A powerful, customizable asynchronous form validation library</p>
       </div><a href="https://github.com/jpillora/verifyjs"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"/></a>
-      <div class="alert"><strong>Note </strong>This documentation is a work in progress and this library is currently in development, therefore its API is subject to change.</div>
+      <div class="alert"><strong>Note </strong>This library and corresponding documentation is a work in progress, as such, this API is subject to change.</div>
       <div data-nav-heading="Introduction" class="row-fluid">
         <div data-nav-anchor="Features">
           <ul>
@@ -56,24 +63,24 @@
           </ul>
         </div>
         <div data-nav-anchor="Usage">
-          <h5>Download</h5>With jQuery Prompt  (<a href="http://www.github.com/jpillora/prompt">http://www.github.com/jpillora/prompt</a>)
+          <h5>Download</h5><b>With</b> Notify.js (<a href="http://notifyjs.com" target="_blank">http://notifyjs.com</a>)
           <ul>
-            <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.js">verify.prompt.js (Development Version with jquery.prompt)</a></li>
-            <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.min.js">verify.prompt.min.js (Production Version with jquery.prompt)</a></li>
-          </ul>Without jQuery Prompt
+            <li>Production - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.notify.min.js">verify.notify.min.js</a></li>
+            <li>Development - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.notify.js">verify.notify.js</a></li>
+          </ul>Without Notify.js
           <ul>
-            <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.js">verify.js (Development Version)</a></li>
-            <li><a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js">verify.min.js (Production Version)</a></li>
+            <li>Production - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js">verifyjs.js</a></li>
+            <li>Development - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.js">verify.js</a></li>
           </ul>
-          <div class="alert"><strong>Note </strong>Without jQuery Prompt, you will need to implement a <a data-link="data-link">Prompt Handler</a> in order to see visible changes.</div>
+          <div class="alert"><strong>Note </strong>Without Notify.js, you will need to implement a <a data-link="data-link">Prompt Handler</a> in order to see visible changes.</div>
           <h5>GitHub Hosted</h5>
           <pre class="prettyprint">&lt;!-- jQuery --&gt;
 &lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js&quot;&gt;&lt;/script&gt;
 
-&lt;!-- Verify.js (with jQuery Prompt included) --&gt;
-&lt;script src=&quot;//raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.min.js&quot;&gt;&lt;/script&gt;
+&lt;!-- Verify.js (with Notify.js included) --&gt;
+&lt;script src=&quot;http://verifyjs.com/js/verify.notify.min.js&quot;&gt;&lt;/script&gt;
 </pre>
-          <div class="alert alert-error"><strong>Careful with this link </strong>GitHub Pages don't support HTTPS and may have download limits.</div>
+          <div class="alert alert-error"><strong>Careful  </strong>This website is hosted on GitHub Pages and may be subject to bandwidth limits.</div>
         </div>
       </div>
       <div data-nav-heading="Basic" class="row-fluid">

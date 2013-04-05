@@ -22,7 +22,13 @@ html
     script(src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js')
     //- script(src='//raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.js')
-    script(src='js/verify.prompt.js')
+    script
+      !function() {
+        var local = !!window.location.host.match(/localhost/);
+        document.writeln('<script src="'+(local?'/notifyjs/dist/':'js/')+'notify.js"><\/script>');
+        document.writeln('<script src="'+(local?'/verifyjs/dist/':'js/')+'verify.js"><\/script>');
+        if(!local) alert("Warning this documentation is currently in progress.");
+      }();
     script(src="js/jquery.viewport.js")
     script(src="js/app.js")
 

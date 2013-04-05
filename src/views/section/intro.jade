@@ -8,23 +8,28 @@
       li Grouped validation rules
   div(data-nav-anchor='Usage')
     h5 Download
-    | With jQuery Prompt  (
-    a(href='http://www.github.com/jpillora/prompt') http://www.github.com/jpillora/prompt
+    b With
+    |  Notify.js (
+    a(href='http://notifyjs.com', target='_blank') http://notifyjs.com
     | )
     ul
       li
-        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.js') verify.prompt.js (Development Version with jquery.prompt)
+        | Production - 
+        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.notify.min.js') verify.notify.min.js
       li
-        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.min.js') verify.prompt.min.js (Production Version with jquery.prompt)
-    | Without jQuery Prompt
+        | Development - 
+        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.notify.js') verify.notify.js
+    | Without Notify.js
     ul
       li
-        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.js') verify.js (Development Version)
+        | Production - 
+        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js') verifyjs.js
       li
-        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js') verify.min.js (Production Version)
+        | Development - 
+        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.js') verify.js
     .alert
       strong Note 
-      | Without jQuery Prompt, you will need to implement a 
+      | Without Notify.js, you will need to implement a 
       a(data-link) Prompt Handler
       |  in order to see visible changes.
     h5 GitHub Hosted
@@ -32,9 +37,9 @@
       <!-- jQuery -->
       <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
       
-      <!-- Verify.js (with jQuery Prompt included) -->
-      <script src="//raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.min.js"></script>
+      <!-- Verify.js (with Notify.js included) -->
+      <script src="http://verifyjs.com/js/verify.notify.min.js"></script>
                       
     .alert.alert-error
-      strong Careful with this link 
-      | GitHub Pages don't support HTTPS and may have download limits.
+      strong Careful  
+      | This website is hosted on GitHub Pages and may be subject to bandwidth limits.
