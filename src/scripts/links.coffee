@@ -2,8 +2,16 @@ setupLinks = ->
 
   get = (id) -> $("[nav-id=#{id}]")
 
+  #setup data links
+  $("a[data-link]").each ->
+    id = slugify $.trim $(@).text()
+    $(@).attr 'href', '#'+id
+    console.warn "missing: ", id if get(id).length is 0
+  
   $window.on 'hashchange', ->
-    elem = get location.hash.substr(1)
+    hash = location.hash.substr(1)
+    return unless hash
+    elem = get hash
     if elem.length is 0
       alert "Sorry those docs are still in progress !"
     else
@@ -14,7 +22,3 @@ setupLinks = ->
 
   $window.trigger 'hashchange'
 
-  $("a[data-link]").each ->
-    id = slugify $(@).text()
-    $(@).attr 'href', '#'+id
-    console.warn "missing: ", id if get(id).length is 0

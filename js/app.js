@@ -74,10 +74,23 @@
     get = function(id) {
       return $("[nav-id=" + id + "]");
     };
-    $window.on('hashchange', function() {
-      var elem;
+    $("a[data-link]").each(function() {
+      var id;
 
-      elem = get(location.hash.substr(1));
+      id = slugify($.trim($(this).text()));
+      $(this).attr('href', '#' + id);
+      if (get(id).length === 0) {
+        return console.warn("missing: ", id);
+      }
+    });
+    $window.on('hashchange', function() {
+      var elem, hash;
+
+      hash = location.hash.substr(1);
+      if (!hash) {
+        return;
+      }
+      elem = get(hash);
       if (elem.length === 0) {
         return alert("Sorry those docs are still in progress !");
       } else {
@@ -89,16 +102,7 @@
         });
       }
     });
-    $window.trigger('hashchange');
-    return $("a[data-link]").each(function() {
-      var id;
-
-      id = slugify($(this).text());
-      $(this).attr('href', '#' + id);
-      if (get(id).length === 0) {
-        return console.warn("missing: ", id);
-      }
-    });
+    return $window.trigger('hashchange');
   };
 
   setupNav = function() {
@@ -163,22 +167,6 @@
       return obj.nav.toggleClass('active', obj.content.is(':in-viewport'));
     };
     return $document.scroll(_.throttle(check));
-  };
-
-  encode = function(value) {
-    return $("<div/>").text(value).html();
-  };
-
-  prettify = function(str) {
-    return prettyPrintOne(encode(str));
-  };
-
-  create = function(type) {
-    return $(document.createElement(type));
-  };
-
-  slugify = function(title) {
-    return title.replace(/\s/g, "-").toLowerCase();
   };
 
   $.fn.togglers = function() {

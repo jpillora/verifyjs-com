@@ -241,9 +241,11 @@
 
         tr
           td(rowspan=2) Group Only
-          td field
-          td JQuery Object
-          td A reference to element being validated
+          td field(id)
+          td Function
+          td
+            | Gets a field by 
+            a(data-link) group ID 
           td None
         tr
           td val()
@@ -254,7 +256,7 @@
           td None (Getter) / Value (Setter)
 
 
-  .demo(data-nav-anchor='JQuery Helpers')
+  .demo(data-nav-anchor='Selector API')
     table.table.table-striped.table-bordered.api-table
       thead
         tr
