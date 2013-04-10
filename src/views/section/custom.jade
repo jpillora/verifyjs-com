@@ -62,8 +62,8 @@
     script(data-script='data-script', type='text/javascript')
       $.verify.addRules({
         myAjax: function(r) {
-          //Give the user some feedback
-          r.field.prompt("Loading...", "black");
+          //Give the user some feedback (with notify.js)
+          r.field.notify("Loading...", "black");
           //Simulate delay
           setTimeout(function() {
             var result;
