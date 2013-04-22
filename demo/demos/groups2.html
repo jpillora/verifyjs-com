@@ -1,27 +1,33 @@
 
+
 <!-- jQuery -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 <!-- Local Test -->
-<script src="../../dist/verify.prompt.js"></script>
+<script>
+  !function() {
+    var local = !!window.location.host.match(/localhost/);
+    document.writeln('<script src="'+(local?'/notifyjs/dist/':'/js/')+'notify.js"><\/script>');
+    document.writeln('<script src="'+(local?'/verifyjs/dist/':'/js/')+'verify.js"><\/script>');
+    if(!local) alert("Warning this documentation is currently in progress.");
+  }();
+</script>
+
 
 <script type="text/javascript">
   
   $.verify({
     debug: true,
     skipNotRequired: false,
-    onValidationComplete: function(e, result) {
+    beforeSubmit: function(e, result) {
       console.log("VALIDATION COMPLETE: " + result)
       return false;
     },
-    // prompt: function() {
-    //   console.warn("PROMPT", arguments[0].attr('id'), arguments[1]);
-    // },
     track: function() {
       console.log("TRACK", arguments);
     }
   });
 
-  var pass = function(r) { return true; },
+  var pass = function(r) { setTimeout(function() { r.callback(true); }, 100); },
       fail = function(n) { return function(r) { return "'"+n+"' failed."; }; };
 
   $.verify.addRules({
@@ -40,7 +46,7 @@
 
       var s = "";    
 
-      r.groupElems().each(function() {
+      r.fields().each(function() {
         s += $(this).val();
       });
 
@@ -66,13 +72,11 @@
 </script>
 
 <form>
-  <span >hello afdfas dfsda fasdf asdf adsfa sf</span>
-
-  <input id="F1" value="42" data-validate="a,b,g#a,d"/>
-  <input id="F2" value="abc" data-validate="g#b"/>
-  <input id="F3" value="def" data-validate="e,g#c,c,f"/>
+  <input id="F1" value="42" data-validate="g#a"/>
+  <input id="F2" value="abc" data-validate="a,b,c,d,e,f,g#b"/>
+  <input id="F3" value="def" data-validate="g#c"/>
   <input id="F4" value="" data-validate="d"/>
-  <input id="F5" value="" data-validate="f"/>
+  <input id="F5" value="" data-validate="a"/>
   <input type="submit"/>
 </form>
 
