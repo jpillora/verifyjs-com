@@ -17,6 +17,11 @@
       |  attribute. Since we're just using defaults settings, no extra code is required.
 
   .demo(data-nav-anchor='Included Rules')
+
+    p
+      | This is a list of all of the validation rules that come pre-packaged
+      | and will work out of the box.
+
     table.rules-table.table.table-striped.table-bordered
       thead
         tr
@@ -24,13 +29,89 @@
           th Parameters
           th Description
         tr
-          td currency
-          td None
-          td Ensures a monetary value has been entered
-        tr
           td required
           td None
           td The value of the element cannot be blank
+        tr
+          td email
+          td None
+          td Ensures valid email format
+        tr
+          td url
+          td None
+          td Ensures valid URL format
+        tr
+          td number
+          td None
+          td Ensures only digits 
+        tr
+          td numberSpace
+          td None
+          td Ensures only digits and spaces 
+        tr
+          td alphaNumeric
+          td None
+          td Ensures only digits and letters 
+        tr
+          td currency
+          td None
+          td Ensures a monetary value (E.g. $34.95) 
+        tr
+          td decimal
+          td places (default: 2)
+          td Ensures a decimal value (E.g. 83.415). Will round to 'places' places. 
+        tr(nav-id='regex')
+          td regex or pattern
+          td regular expression,error message (default: "Invalid format")
+          td Ensures the specified regular expression matches
+
+        tr
+          td phone
+          td None
+          td Ensures an Australian phone number
+        tr
+          td min
+          td min
+          td Ensures that at least 'min' number of characters exist
+
+        tr
+          td max
+          td max
+          td Ensures that at most 'max' number of characters exist
+
+        tr
+          td size
+          td length
+          td Ensures that exactly 'length' number of characters exist
+
+        tr
+          td size
+          td min,max
+          td Ensures that between 'min' and 'max' number of characters exist
+
+        tr
+          td minVal
+          td minVal
+          td Ensures that the value of the field is greater than or equal to 'minVal'
+        tr
+          td maxVal
+          td maxVal
+          td Ensures that the value of the field is less than or equal to 'maxVal'
+        tr
+          td rangeVal
+          td minVal,maxVal
+          td Ensures that the value of the field is between 'minVal' and 'maxVal'
+
+        tr
+          td agreement
+          td None
+          td Ensures that the checkbox has been checked
+
+        tr
+          td minAge
+          td age
+          td Ensures that the date of birth equates to a minimum age of 'age' 
+
         tr
           td(colspan='3')
             i and many more yet to be documented...
@@ -50,5 +131,19 @@
       | validation rules in sequence, even asynchronous rules ! See 
       a(data-link) Execution Sequence
       |  for more information.
+
+
+  .demo(data-nav-anchor='Configuring Rules')
+    | Some rules may also accept arguments
+    pre(data-html='data-html').
+      
+    | For example, the 
+    a(data-link) regex
+    |  rule:
+    div(data-html='data-html')
+      form
+        input(name='a', value='abdef', data-validate='regex(abc,Must contain abc)')
+        input.submit(type='submit')
+
   
 //Basic 

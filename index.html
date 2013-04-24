@@ -99,6 +99,10 @@
           <div class="alert alert-info"><strong>Note </strong>Verify.js will auto-initialise all forms that contain an element with a <code>data-validate</code> attribute. Since we're just using defaults settings, no extra code is required.</div>
         </div>
         <div data-nav-anchor="Included Rules" class="demo">
+          <p>
+            This is a list of all of the validation rules that come pre-packaged
+            and will work out of the box.
+          </p>
           <table class="rules-table table table-striped table-bordered">
             <thead>
               <tr>
@@ -107,14 +111,99 @@
                 <th>Description</th>
               </tr>
               <tr>
-                <td>currency</td>
-                <td>None</td>
-                <td>Ensures a monetary value has been entered</td>
-              </tr>
-              <tr>
                 <td>required</td>
                 <td>None</td>
                 <td>The value of the element cannot be blank</td>
+              </tr>
+              <tr>
+                <td>email</td>
+                <td>None</td>
+                <td>Ensures valid email format</td>
+              </tr>
+              <tr>
+                <td>url</td>
+                <td>None</td>
+                <td>Ensures valid URL format</td>
+              </tr>
+              <tr>
+                <td>number</td>
+                <td>None</td>
+                <td>Ensures only digits </td>
+              </tr>
+              <tr>
+                <td>numberSpace</td>
+                <td>None</td>
+                <td>Ensures only digits and spaces </td>
+              </tr>
+              <tr>
+                <td>alphaNumeric</td>
+                <td>None</td>
+                <td>Ensures only digits and letters </td>
+              </tr>
+              <tr>
+                <td>currency</td>
+                <td>None</td>
+                <td>Ensures a monetary value (E.g. $34.95) </td>
+              </tr>
+              <tr>
+                <td>decimal</td>
+                <td>places (default: 2)</td>
+                <td>Ensures a decimal value (E.g. 83.415). Will round to 'places' places. </td>
+              </tr>
+              <tr nav-id="regex">
+                <td>regex or pattern</td>
+                <td>regular expression,error message (default: "Invalid format")</td>
+                <td>Ensures the specified regular expression matches</td>
+              </tr>
+              <tr>
+                <td>phone</td>
+                <td>None</td>
+                <td>Ensures an Australian phone number</td>
+              </tr>
+              <tr>
+                <td>min</td>
+                <td>min</td>
+                <td>Ensures that at least 'min' number of characters exist</td>
+              </tr>
+              <tr>
+                <td>max</td>
+                <td>max</td>
+                <td>Ensures that at most 'max' number of characters exist</td>
+              </tr>
+              <tr>
+                <td>size</td>
+                <td>length</td>
+                <td>Ensures that exactly 'length' number of characters exist</td>
+              </tr>
+              <tr>
+                <td>size</td>
+                <td>min,max</td>
+                <td>Ensures that between 'min' and 'max' number of characters exist</td>
+              </tr>
+              <tr>
+                <td>minVal</td>
+                <td>minVal</td>
+                <td>Ensures that the value of the field is greater than or equal to 'minVal'</td>
+              </tr>
+              <tr>
+                <td>maxVal</td>
+                <td>maxVal</td>
+                <td>Ensures that the value of the field is less than or equal to 'maxVal'</td>
+              </tr>
+              <tr>
+                <td>rangeVal</td>
+                <td>minVal,maxVal</td>
+                <td>Ensures that the value of the field is between 'minVal' and 'maxVal'</td>
+              </tr>
+              <tr>
+                <td>agreement</td>
+                <td>None</td>
+                <td>Ensures that the checkbox has been checked</td>
+              </tr>
+              <tr>
+                <td>minAge</td>
+                <td>age</td>
+                <td>Ensures that the date of birth equates to a minimum age of 'age' </td>
               </tr>
               <tr>
                 <td colspan="3"><i>and many more yet to be documented...</i></td>
@@ -132,6 +221,15 @@
           </div>
           <div class="alert alert-info"><strong>Note </strong>You can use any combination of validation rules. Each field will execute it's 
             validation rules in sequence, even asynchronous rules ! See <a data-link="data-link">Execution Sequence</a> for more information.
+          </div>
+        </div>
+        <div data-nav-anchor="Configuring Rules" class="demo">Some rules may also accept arguments
+          <pre data-html="data-html"></pre>For example, the <a data-link="data-link">regex</a> rule:
+          <div data-html="data-html">
+            <form>
+              <input name="a" value="abdef" data-validate="regex(abc,Must contain abc)"/>
+              <input type="submit" class="submit"/>
+            </form>
           </div>
         </div>
       </div>
@@ -171,7 +269,7 @@
             $.verify.addRules({
               myAjax: function(r) {
                 //Give the user some feedback (uses the Prompt Handler)
-                r.prompt(r.field(), "Loading...", "black");
+                r.prompt(r.field, "Loading...", "black");
                 //Simulate delay
                 setTimeout(function() {
                   var result;
@@ -472,16 +570,19 @@
                 <td>field(id)</td>
                 <td>Function</td>
                 <td>Gets a field by <a data-link="data-link">group ID </a></td>
-                <td>None</td>
+                <td>id</td>
               </tr>
               <tr>
-                <td>val()</td>
+                <td>val(id)</td>
                 <td>Function</td>
                 <td>
                    
-                  An  alias to<code>r.field.val()</code>
+                  An  alias to<code>r.field(id).val()</code>
                 </td>
-                <td>None (Getter) / Value (Setter)</td>
+                <td>id (Getter) / id,Value (Setter)</td>
+              </tr>
+              <tr>
+                <td colspan="5"><i>Documentation in progress...</i></td>
               </tr>
             </tbody>
           </table>

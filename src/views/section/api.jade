@@ -246,14 +246,17 @@
           td
             | Gets a field by 
             a(data-link) group ID 
-          td None
+          td id
         tr
-          td val()
+          td val(id)
           td Function
           td 
             | An  alias to
-            code r.field.val()
-          td None (Getter) / Value (Setter)
+            code r.field(id).val()
+          td id (Getter) / id,Value (Setter)
+
+        tr
+          td(colspan='5'): i Documentation in progress...
 
 
   .demo(data-nav-anchor='Selector API')

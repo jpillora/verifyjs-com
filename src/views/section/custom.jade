@@ -63,7 +63,7 @@
       $.verify.addRules({
         myAjax: function(r) {
           //Give the user some feedback (uses the Prompt Handler)
-          r.prompt(r.field(), "Loading...", "black");
+          r.prompt(r.field, "Loading...", "black");
           //Simulate delay
           setTimeout(function() {
             var result;
