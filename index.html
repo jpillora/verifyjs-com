@@ -50,28 +50,30 @@
         <h1>Verify.js</h1>
         <p>A powerful, customizable asynchronous form validation library</p>
       </div><a href="https://github.com/jpillora/verifyjs"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"/></a>
-      <div class="alert"><strong>Note </strong>This library and corresponding documentation is a work in progress, as such, this API is subject to change.</div>
+      <div class="alert"><strong>Note </strong>As this library and corresponding documentation is a work
+        in progress, this API is subject to change.
+      </div>
       <div data-nav-heading="Introduction" class="row-fluid">
         <div data-nav-anchor="Features">
           <ul>
             <li>Unobtrusive</li>
             <li>Easily extendable</li>
             <li>Configurable validations with parameters</li>
-            <li>Fully customisable asynchronous validation rules</li>
-            <li>Grouped validation rules</li>
+            <li>Fully customisable asynchronous validations</li>
+            <li>Grouped validations</li>
           </ul>
         </div>
         <div data-nav-anchor="Include">
-          <h5>Download</h5><b>With</b> Notify.js (<a href="http://notifyjs.com" target="_blank">http://notifyjs.com</a>)
+          <h5 nav-id="download">Download</h5><b>With</b> Notify.js (<a href="http://notifyjs.com" target="_blank">http://notifyjs.com</a>)
           <ul>
             <li>Production - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.notify.min.js">verify.notify.min.js</a></li>
             <li>Development - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.notify.js">verify.notify.js</a></li>
           </ul>Without Notify.js
           <ul>
-            <li>Production - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js">verifyjs.js</a></li>
+            <li>Production - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js">verifyjs.min.js</a></li>
             <li>Development - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.js">verify.js</a></li>
           </ul>
-          <div class="alert"><strong>Note </strong>Without Notify.js, you will need to implement a <a data-link="data-link">Prompt Handler</a> in order to see visible changes.</div>
+          <div class="alert"><strong>Note </strong>Without Notify.js, you will need to implement a <a data-link="data-link">Prompt Handler</a> in order to see validation results.</div>
           <h5>GitHub Hosted</h5>
           <pre class="prettyprint">&lt;!-- jQuery --&gt;
 &lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js&quot;&gt;&lt;/script&gt;
@@ -79,7 +81,7 @@
 &lt;!-- Verify.js (with Notify.js included) --&gt;
 &lt;script src=&quot;http://verifyjs.com/js/verify.notify.min.js&quot;&gt;&lt;/script&gt;
 </pre>
-          <div class="alert alert-error"><strong>Careful  </strong>This website is hosted on GitHub Pages and may be subject to bandwidth limits.</div>
+          <div class="alert alert-error"><strong>Watch out !  </strong>This website is hosted on GitHub Pages and this link may be subject to bandwidth limits.</div>
         </div>
       </div>
       <div data-nav-heading="Basic" class="row-fluid">
@@ -168,8 +170,8 @@
           <script data-script="data-script" type="text/javascript">
             $.verify.addRules({
               myAjax: function(r) {
-                //Give the user some feedback
-                r.field.prompt("Loading...", "black");
+                //Give the user some feedback (uses the Prompt Handler)
+                r.prompt(r.field(), "Loading...", "black");
                 //Simulate delay
                 setTimeout(function() {
                   var result;
@@ -196,10 +198,6 @@
       </div>
       <!--Custom -->
       <div data-nav-heading="Advanced Validation" class="row-fluid">
-        <div data-nav-anchor="Execution Sequence" class="demo">
-          <p>In order to better understand what's actually happening when you submit the form, I've included this nice diagram:</p>
-          <p>INSERT DIAGRAM</p>
-        </div>
         <div data-nav-anchor="Groups" class="demo">
           <p>Group validations are required when validation depends on two or more fields. Useful for checking the combined result of a set of fields, such as a date range.</p>
           <p>Group validations are defined in the same way as field (or single) validations, except you can provide two extra peices of optionally information:</p>
@@ -256,6 +254,14 @@
             </div>
             <div class="alert alert-info"><strong>Note </strong>If the group validation is asynchronous, use<code>r.callback({ ... })</code>.</div>
           </p>
+        </div>
+        <div data-nav-anchor="Execution Sequence" class="demo">
+          <p>
+             
+            In order to better understand what's actually happening when you submit 
+            the form, I've included this nice diagram:
+          </p>
+          <p><i>Diagram in progress !</i></p>
         </div>
       </div>
       <!--Advanced -->
@@ -314,7 +320,7 @@
               </tr>
             </tbody>
           </table>
-          <p>The difference between field and group rules is largely outlined in the <a data-link="data-link">Group Validation</a> section above. There are also differences in the <a data-link="data-link">Rule Object</a> of each.</p>
+          <p>The difference between field and group rules is largely outlined in the <a data-link="data-link">Groups</a> section above. There are also differences in the <a data-link="data-link">Rule Object</a> of each.</p>
         </div>
         <div data-nav-anchor="Definition Object" class="demo">
           <table class="table table-striped table-bordered">
@@ -533,7 +539,7 @@
                 <td>Attribute to use for listing validation rules</td>
                 <td>"data-validate"</td>
               </tr>
-              <tr>
+              <tr nav-id="validationeventtrigger">
                 <td>validationEventTrigger</td>
                 <td>Event which will trigger validation</td>
                 <td>"blur"</td>
@@ -581,28 +587,101 @@
               <tr>
                 <td>prompt</td>
                 <td>Method used to display validation errors. Read more here <a data-link="data-link">Prompt Handler</a></td>
-                <td>function(element, text, opts) { $.prompt(element, text, opts); }</td>
+                <td>function(element, text, opts) { $.notify(element, text, opts); }</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div data-nav-anchor="Validation Tracking" class="demo">
-          <div class="alert"><strong>Note </strong>Documentation In Progress !</div>
+          <p>The Validation Tracking Handler is a function which looks like <code>function(type, fieldId, result)</code></p>
+          <ul>
+            <li><code>type</code> - Currently, there is only one type:  <code>"Validate"</code></li>
+            <li><code>fieldId</code> -  Field Identifier is made up of the form name
+              followed by the field name. Name is id attribute, otherwise
+              falls back to the name attribute, otherwise falls back to a
+              randomly generated ID.
+            </li>
+            <li><code>result</code> - The validation result will be one of:
+              <ol>
+                <li><code>"Valid"</code></li>
+                <li><code>"Skip"</code><i> (Meaning the field was hidden or has no validators)</i></li>
+                <li>The error message that was displayed on the field</li>
+              </ol>
+            </li>
+          </ul>
+          <p>
+            This was intended for use with Google Analytics Event Tracking.
+            Following it's 3 column implementation: Category, Action and Label.
+          </p>
+          <p>An example function to track validations using Google Analytics might be something like:</p>
+          <pre class="prettyprint">$.verify({
+  track: function(type, fieldId, result) {
+    if(_gaq) _gaq.push(['_trackEvent', type, fieldId, result]);
+  }
+});
+</pre>
+          <p>Also note, only validations triggered from the <a data-link="data-link">validationEventTrigger</a> ("blur" by default) will be tracked. This prevents
+            false positives from early form validations.
+          </p>
         </div>
         <div data-nav-anchor="Prompt Handler" class="demo">
-          <div class="alert"><strong>Note </strong>Documentation In Progress !</div>
+          <p>The Prompt Handler is a function which looks like <code>function(element, text[, opts])</code>. So a really simple function might be:</p>
+          <pre class="prettyprint">$.verify({
+  prompt: function(element, text) {
+    alert(text);
+  }
+});
+</pre>
+          <p>Or you might want to get abit more fancy with some assistance of HTML:</p>
+          <pre class="prettyprint">&lt;input type='text' data-validate='required'/&gt;
+&lt;span class='tip'&gt;&lt;/span&gt;
+</pre>
+          <pre class="prettyprint">$.verify({
+  prompt: function(element, text) {
+    element.siblings(&quot;.tip&quot;).html(text || '');
+  }
+});
+</pre>
+          <div class="alert alert-info"><strong>Pro Tip </strong>The <code>text</code> parameter will be <code>null</code> when there is no error, thereby clearing the error.</div>
+          <p>Or you could get <b>even </b>fancier and include Notify.js by <a data-link="data-link">download</a>ing the packaged version and then you don't have to worry 
+            about making your own Prompt Handler.
+          </p>
+          <pre class="prettyprint">$.verify({
+  // no options required !
+});
+</pre>
+          <p>
+             
+            Also note,
+            Notify.js allows you make custom prompt styles and themes as
+            opposed to the standard bootstrap alert style.
+          </p>
+          <h4>Check out Notify.js at  <a href="http://notifyjs.com">http://notifyjs.com </a></h4>
         </div>
       </div>
       <!--Options -->
       <div data-nav-heading="The Githubs" class="row-fluid">
         <div data-nav-anchor="Contributing" class="demo">
-          <div class="alert"><strong>Note </strong>Documentation In Progress !</div>
-        </div>
-        <div data-nav-anchor="Change Log" class="demo">
-          <div class="alert"><strong>Note </strong>Documentation In Progress !</div>
+          <p>Contributing is easy as </p>
+          <ol>
+            <li><a href="https://github.com/jpillora/verifyjs/fork">Fork </a></li>
+            <li><code>npm install</code></li>
+            <li><code>grunt</code></li>
+          </ol>
+          <p><i>Node and Grunt 4.x required.</i></p>
+          <p>
+             
+            You can also bug reports on  <a href=https://github.com/jpillora/verifyjs/issues="href=https://github.com/jpillora/verifyjs/issues">GitHub Issues</a> and I should get on it reasonable quickly. 
+          </p>
         </div>
         <div data-nav-anchor="Credits" class="demo">
-          <div class="alert"><strong>Note </strong>Documentation In Progress !</div>
+          <p>
+            Thanks to @posabsolute as this plugin was originally a fork of
+            jQuery Validation Engine though it has now been completely rewritten.
+            Many good ideas we're reimplemented like the list of validators inside
+            an attribute. New goals are to be <b>fully asynchronous</b>, easily extendable and to have a 
+            cleaner code base.
+          </p>
         </div>
       </div>
       <hr/>

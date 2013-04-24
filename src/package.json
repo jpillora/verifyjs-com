@@ -2,10 +2,9 @@
   "name": "verifyjs-com",
   "version": "0.0.1",
   "dependencies": {
-    "optimist": "latest",
     "jade": "latest",
     "coffee-script": "latest",
-    "colors": "~0.6.0-1",
-    "stylus": "~0.32.1"
+    "stylus": "~0.32.1",
+    "nib": "~0.9.1"
   }
 }

@@ -27,14 +27,25 @@ h5 {
   padding: 15px;
   margin: 10px;
   border: 1px solid rgba(0,0,0,0.15);
+  -webkit-border-radius: 3px;
   border-radius: 3px;
 }
 div[data-nav-anchor] {
   margin: 10px;
   margin-bottom: 50px;
 }
+.nav-item a {
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  color: #08c;
+}
 .nav-item.active a {
-  font-weight: bold;
+  color: #ec9422;
+  font-weight: 500;
+  padding-left: 10px;
 }
 .alert {
   margin: 10px;

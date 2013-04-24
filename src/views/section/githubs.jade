@@ -1,13 +1,29 @@
 .row-fluid(data-nav-heading='The Githubs')
+
   .demo(data-nav-anchor='Contributing')
-    .alert
-      strong Note 
-      | Documentation In Progress !
-  .demo(data-nav-anchor='Change Log')
-    .alert
-      strong Note 
-      | Documentation In Progress !
+    p Contributing is easy as 
+    ol
+      li: a(href='https://github.com/jpillora/verifyjs/fork') Fork 
+      li: code npm install
+      li: code grunt
+    p: i Node and Grunt 4.x required.
+
+    p 
+      | You can also bug reports on  
+      a('href='https://github.com/jpillora/verifyjs/issues') GitHub Issues
+      |  and I should get on it reasonable quickly. 
+
   .demo(data-nav-anchor='Credits')
-    .alert
-      strong Note 
-      | Documentation In Progress !
+    p
+      | Thanks to @posabsolute as this plugin was originally a fork of
+      | jQuery Validation Engine though it has now been completely rewritten.
+      | Many good ideas we're reimplemented like the list of validators inside
+      | an attribute. New goals are to be 
+      b fully asynchronous
+      | , easily extendable and to have a 
+      | cleaner code base.
+
+  //- .demo(data-nav-anchor='Change Log')
+  //-   .alert
+  //-     strong Note 
+  //-     | Documentation In Progress !

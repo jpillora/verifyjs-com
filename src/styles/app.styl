@@ -1,4 +1,6 @@
 
+@import "nib"
+
 //resusables
 .yscroll
   overflow-x: hidden
@@ -36,9 +38,13 @@ div[data-nav-anchor]
   margin: 10px
   margin-bottom: 50px
 
-.nav-item.active
-  a
-    font-weight: bold
+.nav-item a
+  transition: all 0.5s ease-out;
+  color: #08C
+.nav-item.active a
+  color: #EC9422
+  font-weight: 500
+  padding-left: 10px
 
 //alerts
 .alert
