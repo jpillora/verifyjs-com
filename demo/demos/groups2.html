@@ -24,6 +24,9 @@
     },
     track: function() {
       console.log("TRACK", arguments);
+    },
+    prompt: function() {
+      console.log("PROMPT", arguments);
     }
   });
 
@@ -75,8 +78,8 @@
   <input id="F1" value="42" data-validate="g#a"/>
   <input id="F2" value="abc" data-validate="a,b,c,d,e,f,g#b"/>
   <input id="F3" value="def" data-validate="g#c"/>
-  <input id="F4" value="" data-validate="d"/>
-  <input id="F5" value="" data-validate="a"/>
+<!--   <input id="F4" value="" data-validate="d"/>
+  <input id="F5" value="" data-validate="a"/> -->
   <input type="submit"/>
 </form>
 
