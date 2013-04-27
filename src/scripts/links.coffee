@@ -11,8 +11,10 @@ setupLinks = ->
   $window.on 'hashchange', ->
     hash = location.hash.substr(1)
     return unless hash
-    track 'goto', hash
+    
     elem = get hash
+
+    track 'Go To', elem.text() or hash
 
     if elem.length is 0
       alert "Sorry those docs are still in progress !"
