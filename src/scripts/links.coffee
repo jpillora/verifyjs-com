@@ -12,9 +12,8 @@ setupLinks = ->
     hash = location.hash.substr(1)
     return unless hash
     
+    track 'Go To',  hash
     elem = get hash
-
-    track 'Go To', elem.text() or hash
 
     if elem.length is 0
       alert "Sorry those docs are still in progress !"

@@ -94,8 +94,8 @@
       if (!hash) {
         return;
       }
+      track('Go To', hash);
       elem = get(hash);
-      track('Go To', elem.text() || hash);
       if (elem.length === 0) {
         return alert("Sorry those docs are still in progress !");
       } else {
