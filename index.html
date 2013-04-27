@@ -256,7 +256,7 @@
               <input type="submit" class="submit"/>
             </form>
           </div>
-          <div class="alert"><strong>Note </strong>See the<a data-link="data-link">Rule Object</a>Spec for more information.</div>
+          <div class="alert"><strong>Note </strong>See the <a data-link="data-link">Rule Object</a> Spec for more information.</div>
         </div>
         <div data-nav-anchor="Asynchronous Rules" class="demo">
           <p>They key to asynchronous rules is just to use the <a data-link="data-link">Rule Object</a>'s <code>callback</code> method. So instead of <code>return "Failed"</code> and <code>return true</code> , we'll now use <code>r.callback("Failed")</code> and <code>r.callback(true)</code>. By not <code>return</code>ing (which will actually returns <code>undefined</code>), you're telling the library to wait for a callback. 
