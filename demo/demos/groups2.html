@@ -17,7 +17,6 @@
   
   $.verify({
     debug: true,
-    skipNotRequired: false,
     beforeSubmit: function(e, result) {
       console.log("VALIDATION COMPLETE: " + result)
       return false;
@@ -74,7 +73,7 @@
 
 </script>
 
-<form>
+<form name="FORM">
   <input id="F1" value="42" data-validate="g#a"/>
   <input id="F2" value="abc" data-validate="a,b,c,d,e,f,g#b"/>
   <input id="F3" value="def" data-validate="g#c"/>
