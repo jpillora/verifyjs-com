@@ -1,7 +1,8 @@
-setupNav = ->
 
-  sections = []
-  anchors = []
+sections = []
+anchors = []
+
+setupNav = ->
 
   setupNavHeading = ->
 
@@ -22,7 +23,7 @@ setupNav = ->
 
     navList.append container
 
-    sections.push { content: section, nav: container }
+    sections.push { type:'section', content: section, nav: container }
 
   setupNavAnchor = (container, anchor) ->
     title = anchor.data("nav-anchor")
@@ -36,7 +37,7 @@ setupNav = ->
       slug: slug
     ))
     container.append li
-    anchors.push { content: anchor, nav: li }
+    anchors.push { type:'anchor', content: anchor, nav: li, title }
 
   headerTemplate = _.template("<li class='nav-header'><%= heading %></li>")
   anchorTemplate = _.template("<li class='nav-item'><a href='#<%= slug %>''><%= title %></a></li>")
@@ -50,7 +51,19 @@ setupNav = ->
     _.each anchors, activeInView
 
   activeInView = (obj) ->
-    obj.nav.toggleClass 'active', obj.content.is ':in-viewport'
+    isActive = obj.content.is ':in-viewport'
+    obj.nav.toggleClass 'active', isActive
+
+    if obj.type is 'anchor'
+      trackTiming obj.title, isActive
+
+    # if obj.nav.hasClass 'active' and not isActive
+    #   obj.nav.removeClass 'active'
+    #   trackTiming obj, false
+    # else if not obj.nav.hasClass 'active' and isActive
+    #   obj.nav.addClass 'active'
+    #   trackTiming obj, true
 
 
   $document.scroll _.throttle check
+  $document.trigger 'scroll'

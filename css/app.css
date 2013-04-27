@@ -47,6 +47,17 @@ div[data-nav-anchor] {
   font-weight: 500;
   padding-left: 10px;
 }
+.nav-section .nav-header {
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  position: relative;
+}
+.nav-section.active .nav-header {
+  left: 5px;
+}
 .alert {
   margin: 10px;
   display: inline-block;

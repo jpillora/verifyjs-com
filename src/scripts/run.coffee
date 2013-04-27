@@ -24,13 +24,14 @@ handleDemoFormSubmit = ->
   false
 
 successElem = $("<div class=\"alert alert-success\"><strong>" +
-    "Validation successful ! </strong> If this was a real form, it would be submitting right now..." +
-    "</div>")
+    "Validation successful ! </strong> If this was a real form, " +
+    "it would be submitting right now...</div>")
 
 $window = $(window)
 $document = $(document)
 
 $document.ready ->
+  setupTracking()
   setupCode()
   setupNav()
   setupLinks()
