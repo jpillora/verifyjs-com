@@ -15,25 +15,49 @@
 <div data-demo>
   <form id="extending">
     <input name="field1" value="abc" data-validate="test">
-    <input name="field2" value="abc" data-validate="testExtended">
+    <input name="field2" value="abc" data-validate="test2">
+    <input name="field3" value="abc" data-validate="test4">
     <input class="submit" type="submit"/>
   </form>
 </div>
 
 <script data-demo type="text/javascript">
+
+  $.verify({
+    debug: true,
+    beforeSubmit: function(e, result) {
+      console.log("VALIDATION COMPLETE: " + result)
+      return false;
+    }
+  });
+
   $.verify.addRules({
+
     test: {
       fn: function(r) {
-        console.log("comparing: " + r.val())
+        console.log("test1 comparing: " + r.val())
         if(r.val() !== r.myVar)
           return "Must equal '"+ r.myVar +"'";
         return true;
       },
       myVar: "abc"
     },
-    testExtended: {
+    test2: {
       extend: "test",
       myVar: "def" //test.myVar overridden !
+    },
+    test3: {
+      extend: "test2",
+      fn: function(r) {
+        return "test3 error!";
+      }
+    },
+    test4: {
+      extend: "test2",
+      fn: function(r) {
+        console.log("test4 and...")
+        return r.super.super.fn(r);
+      }
     }
   });
 </script>
