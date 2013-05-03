@@ -1,0 +1,38 @@
+
+
+<!-- jQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+<!-- Local Test -->
+<script>
+  !function() {
+    var local = !!window.location.host.match(/localhost/);
+    document.writeln('<script src="'+(local?'/notifyjs/dist/':'/js/')+'notify.js"><\/script>');
+    document.writeln('<script src="'+(local?'/verifyjs/dist/':'/js/')+'verify.js"><\/script>');
+    if(!local) alert("Warning this documentation is currently in progress.");
+  }();
+</script>
+
+
+<script type="text/javascript">
+
+  $.verify({
+    debug: true
+  });
+
+  $.verify.addGroupRules({
+    myGroup: function(r) {
+      return { a: "An error for 'a'", c: "An error for 'c'"};
+    }
+  });
+</script>
+
+<form>
+  <input value="a" data-validate="myGroup#a">
+  <input value="b" data-validate="myGroup#b">
+  <input value="c" data-validate="myGroup#c">
+  <input type="submit" class="submit">
+</form>
+
+
+
+
