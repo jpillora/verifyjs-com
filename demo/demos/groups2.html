@@ -14,7 +14,7 @@
 
 
 <script type="text/javascript">
-  
+
   $.verify({
     debug: true,
     beforeSubmit: function(e, result) {
@@ -46,7 +46,7 @@
 
       console.log("G!")
 
-      var s = "";    
+      var s = "";
 
       r.fields().each(function() {
         s += $(this).val();
@@ -61,12 +61,19 @@
 
   $(function() {
 
-    // var selector = "form"// "#F1"
-    // setTimeout(function() {
-    //   $(selector).validate(function(result) {
-    //     console.log("DONE", result);
-    //   });
-    // }, 1000);
+    setTimeout(function() {
+      console.info("FORM START");
+      $("form").validate(function(result) {
+        console.info("FORM DONE", result);
+      });
+    }, 250);
+
+    setTimeout(function() {
+      console.info("FORM2 START");
+      $("form").validate(function(result) {
+        console.info("FORM2 DONE", result);
+      });
+    }, 250);
 
   });
 
