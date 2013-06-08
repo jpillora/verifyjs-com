@@ -8,11 +8,8 @@
     var local = !!window.location.host.match(/localhost/);
     document.writeln('<script src="'+(local?'/notifyjs/dist/':'/js/')+'notify.js"><\/script>');
     document.writeln('<script src="'+(local?'/verifyjs/dist/':'/js/')+'verify.js"><\/script>');
-    if(!local) alert("Warning this documentation is currently in progress.");
   }();
 </script>
-
-
 
 <div data-demo>
   <form>
@@ -22,9 +19,6 @@
     <input class="submit" type="submit"/>
   </form>
 </div>
-
-
-
 
 <script data-demo type="text/javascript">
 

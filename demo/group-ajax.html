@@ -11,7 +11,13 @@
 <!-- jQuery -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
 <!-- Local Test -->
-<script src="../../dist/verify.prompt.js"></script>
+<script>
+  !function() {
+    var local = !!window.location.host.match(/localhost/);
+    document.writeln('<script src="'+(local?'/notifyjs/dist/':'/js/')+'notify-combined.js"><\/script>');
+    document.writeln('<script src="'+(local?'/verifyjs/dist/':'/js/')+'verify.js"><\/script>');
+  }();
+</script>
 
 <script data-demo type="text/javascript">
 

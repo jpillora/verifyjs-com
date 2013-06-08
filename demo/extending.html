@@ -6,9 +6,8 @@
 <script>
   !function() {
     var local = !!window.location.host.match(/localhost/);
-    document.writeln('<script src="'+(local?'/notifyjs/dist/':'/js/')+'notify.js"><\/script>');
+    document.writeln('<script src="'+(local?'/notifyjs/dist/':'/js/')+'notify-combined.js"><\/script>');
     document.writeln('<script src="'+(local?'/verifyjs/dist/':'/js/')+'verify.js"><\/script>');
-    if(!local) alert("Warning this documentation is currently in progress.");
   }();
 </script>
 
@@ -16,12 +15,16 @@
   <form id="extending">
     <input name="field1" value="abc" data-validate="test">
     <input name="field2" value="abc" data-validate="test2">
-    <input name="field3" value="abc" data-validate="test4">
+    <input name="field3" value="abc">
     <input class="submit" type="submit"/>
   </form>
 </div>
 
 <script data-demo type="text/javascript">
+
+  setTimeout(function() {
+    $("input[name=field3]").val("def").attr("data-validate", "test4")
+  }, 5000);
 
   $.verify({
     debug: true,
@@ -56,7 +59,7 @@
       extend: "test2",
       fn: function(r) {
         console.log("test4 and...")
-        return r.super.super.fn(r);
+        return r.parent.parent.fn(r);
       }
     }
   });

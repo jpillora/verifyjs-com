@@ -1,0 +1,23 @@
+
+
+<!-- jQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+<!-- Local Test -->
+<script>
+  !function() {
+    var local = !!window.location.host.match(/localhost/);
+    document.writeln('<script src="'+(local?'/notifyjs/dist/':'/js/')+'notify-combined.js"><\/script>');
+    document.writeln('<script src="'+(local?'/verifyjs/dist/':'/js/')+'verify.js"><\/script>');
+  }();
+</script>
+
+<div data-demo>
+  <form id="regexDemo">
+    <input name="field" value="abc" data-validate="regex(^ab+c$)">
+    <input class="submit" type="submit"/>
+  </form>
+</div>
+
+<script data-demo type="text/javascript">
+  $("form#regexDemo").verify();
+</script>
