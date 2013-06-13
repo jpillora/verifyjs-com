@@ -40,7 +40,7 @@
       input#parseStringInput(style='height: 14px;')
       code "
     pre#parseStringOutput         
-    script(type='text/javascript')
+    script(type='text/javascript').
       $("#parseStringInput").keyup(function() {
       var result = $.verify._hidden.ruleManager.parseString( $(this).val() );
       if(result) $("#parseStringOutput").text(JSON.stringify(result,null, 2));
@@ -67,7 +67,7 @@
       | s, as shown here:
       pre(data-script='data-script').
         
-      script(data-script='data-script', type='text/javascript')
+      script(data-script='data-script', type='text/javascript').
         $.verify.addGroupRules({
           myGroup: function(r) {
             return { a: "An error for 'a'", c: "An error for 'c'"};
@@ -78,9 +78,9 @@
       | Which will produce:
       div(data-html='data-html')
         form
-          input(data-validate='myGroup#a')
-          input(data-validate='myGroup#b')
-          input(data-validate='myGroup#c')
+          input(value="a",data-validate='myGroup#a')
+          input(value="b",data-validate='myGroup#b')
+          input(value="c",data-validate='myGroup#c')
           input.submit(type='submit')
       .alert.alert-info
         strong Note 

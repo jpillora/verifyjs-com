@@ -28,6 +28,7 @@
     </div>
     <!-- Scripts-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script src="js/jquery.viewport.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.1/lodash.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
@@ -37,10 +38,8 @@
         var local = !!window.location.host.match(/localhost/);
         document.writeln('<script src="'+(local?'/notifyjs/dist/':'js/')+'notify.js"><\/script>');
         document.writeln('<script src="'+(local?'/verifyjs/dist/':'js/')+'verify.js"><\/script>');
-        if(!local) alert("Warning this documentation is currently in progress.");
       }();
     </script>
-    <script src="js/jquery.viewport.js"></script>
     <script src="js/app.js"></script>
     <div class="sidebar-nav pull-left yscroll">
       <ul id="nav-list" class="nav nav-list"></ul>
@@ -75,11 +74,11 @@
           </ul>
           <div class="alert"><strong>Note </strong>Without Notify.js, you will need to implement a <a data-link="data-link">Prompt Handler</a> in order to see validation results.</div>
           <h5>GitHub Hosted</h5>
-          <pre class="prettyprint">&lt;!-- jQuery --&gt;
-&lt;script src=&quot;//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js&quot;&gt;&lt;/script&gt;
+          <pre class="prettyprint"><!-- jQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 
-&lt;!-- Verify.js (with Notify.js included) --&gt;
-&lt;script src=&quot;http://verifyjs.com/js/verify.notify.min.js&quot;&gt;&lt;/script&gt;
+<!-- Verify.js (with Notify.js included) -->
+<script src="http://verifyjs.com/js/verify.notify.min.js"></script>
 </pre>
           <div class="alert alert-error"><strong>Watch out !  </strong>This website is hosted on GitHub Pages and this link may be subject to bandwidth limits.</div>
         </div>
@@ -269,7 +268,7 @@
             $.verify.addRules({
               myAjax: function(r) {
                 //Give the user some feedback (uses the Prompt Handler)
-                r.prompt(r.field, "Loading...", "black");
+                r.prompt(r.field, "Loading...", "info");
                 //Simulate delay
                 setTimeout(function() {
                   var result;
@@ -344,9 +343,9 @@
             <pre data-html="data-html"></pre>Which will produce:
             <div data-html="data-html">
               <form>
-                <input data-validate="myGroup#a"/>
-                <input data-validate="myGroup#b"/>
-                <input data-validate="myGroup#c"/>
+                <input value="a" data-validate="myGroup#a"/>
+                <input value="b" data-validate="myGroup#b"/>
+                <input value="c" data-validate="myGroup#c"/>
                 <input type="submit" class="submit"/>
               </form>
             </div>
@@ -462,7 +461,7 @@
           <pre class="prettyprint">$.verify.addRules({
   myRule: {
     fn: function(r) {
-      return r.val() === &quot;42&quot; ? true : &quot;Wasn't 42&quot;;
+      return r.val() === "42" ? true : "Wasn't 42";
     }
   }
 });
@@ -470,7 +469,7 @@
           <p>Then it can be shortened to:</p>
           <pre class="prettyprint">$.verify.addRules({
   myRule: function(r) {
-    return r.val() === &quot;42&quot; ? true : &quot;Wasn't 42&quot;;
+    return r.val() === "42" ? true : "Wasn't 42";
   }
 });
 </pre>
@@ -478,15 +477,15 @@
           <pre class="prettyprint">$.verify.addRules({
   myRule: {
     regex: /^[ab]+$/i
-    message: &quot;It contained something other than 'a's and 'b's&quot;
+    message: "It contained something other than 'a's and 'b's"
   }
 });</pre>
           <p>So if the rule has a <code>regex</code> and an optional  <code>message</code> property, its fn property will automatically built.</p>
           <p>Use of variables:</p>
           <pre class="prettyprint">$.verify.addRules({
   myRule: {
-    expected: &quot;42&quot;,
-    message: &quot;Wasn't 42&quot;,
+    expected: "42",
+    message: "Wasn't 42",
     fn: function(r) {
       return r.val() === r.expected ? true : r.message;
     }
@@ -497,14 +496,14 @@
           <p>The above example isn't very exciting, though when it comes time to use multiple languages, you can just update the message:</p>
           <pre class="prettyprint">$.verify.updateRules({
   myRule: {
-    message: &quot;no tuvo éxito&quot;
+    message: "no tuvo éxito"
   }
 });
 </pre>
           <p>Now, getting abit fancier, we can extend existing rules with the extend property </p>
           <pre class="prettyprint">$.verify.addRules({
   myRule: {
-    message: &quot;An error&quot;,
+    message: "An error",
     
     common: function(n) {
       //a useful task...
@@ -518,18 +517,18 @@
   
   //Alternative uses of 'common'
   myOtherRule: {
-    extend: &quot;myRule&quot;,
+    extend: "myRule",
     
     fn: function(r) {
       r.common(42);
-      return r.message; //&quot;An Error&quot;
+      return r.message; //"An Error"
     }
   },
   
   //Only modify the 'message'
   myThirdRule: {
-    extend: &quot;myRule&quot;,
-    message: &quot;A super bad error&quot;
+    extend: "myRule",
+    message: "A super bad error"
   }
 });
 
@@ -721,12 +720,12 @@
   }
 });
 </pre>
-          <p>Also note, only validations triggered from the <a data-link="data-link">validationEventTrigger</a> ("blur" by default) will be tracked. This prevents
-            false positives from early form validations.
+          <p>Also note, only validations triggered from the <a data-link="data-link">validationEventTrigger</a> ("blur" by default) will be tracked. This ensures only user actions are
+            tracked as opposed to tracking every field from early form validations.
           </p>
         </div>
         <div data-nav-anchor="Prompt Handler" class="demo">
-          <p>The Prompt Handler is a function which looks like <code>function(element, text[, opts])</code>. So a really simple function might be:</p>
+          <p>The Prompt Handler is a function which looks like <code>function(element, text[, opts])</code>. So a really simple handler might be:</p>
           <pre class="prettyprint">$.verify({
   prompt: function(element, text) {
     alert(text);
@@ -734,17 +733,17 @@
 });
 </pre>
           <p>Or you might want to get abit more fancy with some assistance of HTML:</p>
-          <pre class="prettyprint">&lt;input type='text' data-validate='required'/&gt;
-&lt;span class='tip'&gt;&lt;/span&gt;
+          <pre class="prettyprint"><input type='text' data-validate='required'/>
+<span class='tip'></span>
 </pre>
           <pre class="prettyprint">$.verify({
   prompt: function(element, text) {
-    element.siblings(&quot;.tip&quot;).html(text || '');
+    element.siblings(".tip").html(text || '');
   }
 });
 </pre>
           <div class="alert alert-info"><strong>Pro Tip </strong>The <code>text</code> parameter will be <code>null</code> when there is no error, thereby clearing the error.</div>
-          <p>Or you could get <b>even </b>fancier and include Notify.js by <a data-link="data-link">download</a>ing the packaged version and then you don't have to worry 
+          <p>Or you could get <b>even </b>fancier and include Notify.js by <a data-link="data-link">download</a>ing a pre-packaged version and then you don't have to worry 
             about making your own Prompt Handler.
           </p>
           <pre class="prettyprint">$.verify({
@@ -753,11 +752,10 @@
 </pre>
           <p>
              
-            Also note,
-            Notify.js allows you make custom prompt styles and themes as
-            opposed to the standard bootstrap alert style.
+            Also note, Notify.js allows you make custom prompt styles and themes as
+            opposed to the standard bootstrap alert style. Read more about Notify.js at:
           </p>
-          <h4>Check out Notify.js at  <a href="http://notifyjs.com">http://notifyjs.com </a></h4>
+          <h4><a href="http://notifyjs.com">http://notifyjs.com </a></h4>
         </div>
       </div>
       <!--Options -->
@@ -772,7 +770,7 @@
           <p><i>Node and Grunt 4.x required.</i></p>
           <p>
              
-            You can also bug reports on  <a href=https://github.com/jpillora/verifyjs/issues="href=https://github.com/jpillora/verifyjs/issues">GitHub Issues</a> and I should get on it reasonable quickly. 
+            You can also bug reports on  <a href="https://github.com/jpillora/verifyjs/issues">GitHub Issues</a> and I should get on it reasonable quickly. 
           </p>
         </div>
         <div data-nav-anchor="Credits" class="demo">

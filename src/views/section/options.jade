@@ -118,15 +118,15 @@
     p
       | Also note, only validations triggered from the 
       a(data-link) validationEventTrigger
-      |  ("blur" by default) will be tracked. This prevents
-      | false positives from early form validations.
+      |  ("blur" by default) will be tracked. This ensures only user actions are
+      | tracked as opposed to tracking every field from early form validations.
 
   .demo(data-nav-anchor='Prompt Handler')
 
     p
       | The Prompt Handler is a function which looks like 
       code function(element, text[, opts])
-      | . So a really simple function might be:
+      | . So a really simple handler might be:
 
     pre.prettyprint.
       $.verify({
@@ -162,7 +162,7 @@
       b even 
       | fancier and include Notify.js by 
       a(data-link) download
-      | ing the packaged version and then you don't have to worry 
+      | ing a pre-packaged version and then you don't have to worry 
       | about making your own Prompt Handler.
 
     pre.prettyprint.
@@ -171,12 +171,9 @@
       });
 
     p 
-      | Also note,
-      | Notify.js allows you make custom prompt styles and themes as
-      | opposed to the standard bootstrap alert style.
+      | Also note, Notify.js allows you make custom prompt styles and themes as
+      | opposed to the standard bootstrap alert style. Read more about Notify.js at:
 
-    h4
-      | Check out Notify.js at  
-      a(href='http://notifyjs.com') http://notifyjs.com 
+    h4: a(href='http://notifyjs.com') http://notifyjs.com 
 
 //Options 

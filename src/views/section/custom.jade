@@ -11,7 +11,7 @@
     | Now, we can use it
     pre(data-html='data-html').
       
-    script(data-script='data-script', type='text/javascript')
+    script(data-script='data-script', type='text/javascript').
       $.verify.addRules({
         divisibleByThree: function(r) {
           var n = parseInt(r.val());
@@ -59,11 +59,11 @@
     p The above is exemplied here:
     pre(data-script='data-script')
     
-    script(data-script='data-script', type='text/javascript')
+    script(data-script='data-script', type='text/javascript').
       $.verify.addRules({
         myAjax: function(r) {
           //Give the user some feedback (uses the Prompt Handler)
-          r.prompt(r.field, "Loading...", "black");
+          r.prompt(r.field, "Loading...", "info");
           //Simulate delay
           setTimeout(function() {
             var result;

@@ -1,6 +1,6 @@
 {
-  "coffee": "node_modules/coffee-script/bin/coffee -w -l -j ../js/app.js -c scripts",
-  "jade": "node_modules/jade/bin/jade -P -w views/index.jade -O ../",
+  "coffee": "node_modules/coffee-script/bin/coffee -w -j ../js/app.js -c scripts/",
+  "jade": "node_modules/jade/bin/jade -P -w views/index.jade -o ../",
   "stylus": "node_modules/stylus/bin/stylus styles/ -w -u nib -o ../css/",
   "serve": "serve -p 8888 ../../"
 }
