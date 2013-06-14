@@ -13,22 +13,7 @@ html
 
   body#app
     include absolutes
-
-    // Scripts
-    script(src='//ajax.googleapis.com/ajax/libs/jquery/1/jquery.js')
-    script(src="js/jquery.viewport.js")
-    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.1/lodash.min.js')
-    script(src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js')
-    //- script(src='//raw.github.com/jpillora/verifyjs/master/dist/verify.prompt.js')
-    script.
-      !function() {
-        var local = !!window.location.host.match(/localhost/);
-        document.writeln('<script src="'+(local?'/notifyjs/dist/':'js/')+'notify.js"><\/script>');
-        document.writeln('<script src="'+(local?'/verifyjs/dist/':'js/')+'verify.js"><\/script>');
-      }();
-    script(src="js/app.js")
+    include scripts
 
     .sidebar-nav.pull-left.yscroll
       ul#nav-list.nav.nav-list
@@ -46,5 +31,3 @@ html
       hr
       footer
         p © Jaime Pillora 2012
-
-    include vendor

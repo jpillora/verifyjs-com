@@ -6,39 +6,61 @@
       li Configurable validations with parameters
       li Fully customisable asynchronous validations
       li Grouped validations
-  div(data-nav-anchor='Include')
-    h5(nav-id='download') Download
-    b With
-    |  Notify.js (
-    a(href='http://notifyjs.com', target='_blank') http://notifyjs.com
-    | )
-    ul
-      li
-        | Production - 
-        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.notify.min.js') verify.notify.min.js
-      li
-        | Development - 
-        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.notify.js') verify.notify.js
-    | Without Notify.js
-    ul
-      li
-        | Production - 
-        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js') verifyjs.min.js
-      li
-        | Development - 
-        a(href='https://raw.github.com/jpillora/verifyjs/master/dist/verify.js') verify.js
+
+  div.download(data-nav-anchor='Download')
+
+
+
+    .build-tool(ng-controller="BuildToolController")
+      | Build your own Verify.js with only the rules you need
+      .buttons
+        button.btn.btn-primary Build your own Verify.js
+
+      .build-tool-content
+        | hello world
+
+    p.disclaimer.italic.
+      Alternatively, you can download one of the pre-packaged versions. Please note, that
+      the date validation rules are <b>not</b> included as it requires
+      <a>Moment.js</a>.
+
+    .with-notify
+      b With
+      |  Notify.js (
+      a(href='http://notifyjs.com', target='_blank') http://notifyjs.com
+      | )
+      .buttons
+        a(href='js/verify.notify.min.js')
+          button.btn Download verify.notify.min.js
+        a(href='js/verify.notify.js')
+          button.btn Download verify.notify.js
+
+    .without-notify
+      | Without Notify.js
+      .buttons
+        a(href='js/verify.min.js')
+          button.btn Download verifyjs.min.js
+        a(href='js/verify.js')
+          button.btn Download verify.js
+
     .alert
       strong Note 
       | Without Notify.js, you will need to implement a 
       a(data-link) Prompt Handler
       |  in order to see validation results.
+
+
+
+
+
+
     h5 GitHub Hosted
-    pre.prettyprint.
-      <!-- jQuery -->
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+    pre.prettyprint
+      &lt;!-- jQuery --&gt;
+      &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"&gt;&lt;/script&gt;
       
-      <!-- Verify.js (with Notify.js included) -->
-      <script src="http://verifyjs.com/js/verify.notify.min.js"></script>
+      &lt;!-- Verify.js (with Notify.js included) --&gt;
+      &lt;script src="http://verifyjs.com/js/verify.notify.min.js"&gt;&lt;/script&gt;
                       
     .alert.alert-error
       strong Watch out !  

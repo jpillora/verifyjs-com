@@ -31,14 +31,24 @@
     <script src="js/jquery.viewport.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/1.0.1/lodash.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r224/prettify.js"></script>
-    <script>
+    <script type="text/javascript">
       !function() {
         var local = !!window.location.host.match(/localhost/);
-        document.writeln('<script src="'+(local?'/notifyjs/dist/':'js/')+'notify.js"><\/script>');
+        document.writeln('<script src="'+(local?'/notifyjs/dist/':'js/')+'notify-combined.js"><\/script>');
         document.writeln('<script src="'+(local?'/verifyjs/dist/':'js/')+'verify.js"><\/script>');
       }();
+      
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-38709761-5']);
+      _gaq.push(['_trackPageview']);
+      
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+      
     </script>
     <script src="js/app.js"></script>
     <div class="sidebar-nav pull-left yscroll">
@@ -62,24 +72,35 @@
             <li>Grouped validations</li>
           </ul>
         </div>
-        <div data-nav-anchor="Include">
-          <h5 nav-id="download">Download</h5><b>With</b> Notify.js (<a href="http://notifyjs.com" target="_blank">http://notifyjs.com</a>)
-          <ul>
-            <li>Production - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.notify.min.js">verify.notify.min.js</a></li>
-            <li>Development - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.notify.js">verify.notify.js</a></li>
-          </ul>Without Notify.js
-          <ul>
-            <li>Production - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.min.js">verifyjs.min.js</a></li>
-            <li>Development - <a href="https://raw.github.com/jpillora/verifyjs/master/dist/verify.js">verify.js</a></li>
-          </ul>
+        <div data-nav-anchor="Download" class="download">
+          <div ng-controller="BuildToolController" class="build-tool">Build your own Verify.js with only the rules you need
+            <div class="buttons">
+              <button class="btn btn-primary">Build your own Verify.js</button>
+            </div>
+            <div class="build-tool-content">hello world</div>
+          </div>
+          <p class="disclaimer italic">
+            Alternatively, you can download one of the pre-packaged versions. Please note, that
+            the date validation rules are <b>not</b> included as it requires
+            <a>Moment.js</a>.
+            
+          </p>
+          <div class="with-notify"><b>With</b> Notify.js (<a href="http://notifyjs.com" target="_blank">http://notifyjs.com</a>)
+            <div class="buttons"><a href="js/verify.notify.min.js">
+                <button class="btn">Download verify.notify.min.js</button></a><a href="js/verify.notify.js">
+                <button class="btn">Download verify.notify.js</button></a></div>
+          </div>
+          <div class="without-notify">Without Notify.js
+            <div class="buttons"><a href="js/verify.min.js">
+                <button class="btn">Download verifyjs.min.js</button></a><a href="js/verify.js">
+                <button class="btn">Download verify.js</button></a></div>
+          </div>
           <div class="alert"><strong>Note </strong>Without Notify.js, you will need to implement a <a data-link="data-link">Prompt Handler</a> in order to see validation results.</div>
           <h5>GitHub Hosted</h5>
-          <pre class="prettyprint"><!-- jQuery -->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
-
-<!-- Verify.js (with Notify.js included) -->
-<script src="http://verifyjs.com/js/verify.notify.min.js"></script>
-</pre>
+          <pre class="prettyprint">&lt;!-- jQuery --&gt;
+&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"&gt;&lt;/script&gt;
+&lt;!-- Verify.js (with Notify.js included) --&gt;
+&lt;script src="http://verifyjs.com/js/verify.notify.min.js"&gt;&lt;/script&gt;</pre>
           <div class="alert alert-error"><strong>Watch out !  </strong>This website is hosted on GitHub Pages and this link may be subject to bandwidth limits.</div>
         </div>
       </div>
@@ -788,16 +809,5 @@
         <p>© Jaime Pillora 2012</p>
       </footer>
     </div>
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-38709761-5']);
-      _gaq.push(['_trackPageview']);
-      
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
   </body>
 </html>
