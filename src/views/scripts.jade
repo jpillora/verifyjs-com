@@ -13,6 +13,8 @@ script(type='text/javascript').
   !function() {
     var local = !!window.location.host.match(/localhost/);
     document.writeln('<script src="'+(local?'/verifyjs/':'')+'dist/verify.js"><\/script>');
+    document.writeln('<script src="'+(local?'/verifyjs/':'')+'dist/rules/date/vendor/moment-2.0.js"><\/script>');
+    document.writeln('<script src="'+(local?'/verifyjs/':'')+'dist/rules/date/date.js"><\/script>');
   }();
 
   var _gaq = _gaq || [];

@@ -1,11 +1,14 @@
 
 sections = []
-anchors = []
+topics = []
+subtopics = []
 
 setupNav = ->
 
-  setupNavHeading = ->
+  navList = $("#nav-list")
+  navList.empty()
 
+  setupSections = ->
     section = $(@)
     heading = section.data("nav")
     slug = slugify(heading)
@@ -18,37 +21,35 @@ setupNav = ->
     container = create("div").addClass("nav-section")
     container.append li
 
-    $(this).find(".demo[data-nav]").each ->
-      setupNavAnchor container, $(this)
+    $(this).find(".topic[data-nav]").each ->
+      setupTopics container, $(this)
 
     navList.append container
 
     sections.push { type:'section', content: section, nav: container }
 
-  setupNavAnchor = (container, anchor) ->
-    title = anchor.data("nav")
+  setupTopics = (container, topic) ->
+    title = topic.data("nav")
     slug = slugify(title)
-    first = anchor.children(":first")
+    first = topic.children(":first")
     #auto add title (if needed)
-    anchor.prepend create("h4").html(title) unless first.is("h4")
-    anchor.attr "data-anchor", slug
+    topic.prepend create("h4").html(title) unless first.is("h4")
+    topic.attr "data-anchor", slug
     li = $(anchorTemplate(
       title: title
       slug: slug
     ))
     container.append li
-    anchors.push { type:'anchor', content: anchor, nav: li, title }
+    topics.push { type:'anchor', content: topic, nav: li, title }
 
   headerTemplate = _.template("<li class='nav-header'><%= heading %></li>")
   anchorTemplate = _.template("<li class='nav-item'><a href='#<%= slug %>''><%= title %></a></li>")
-
-  navList = $("#nav-list")
-
-  $(".section[data-nav]").each setupNavHeading
+  
+  $(".section[data-nav]").each setupSections
 
   check = ->
     _.each sections, activeInView
-    _.each anchors, activeInView
+    _.each topics, activeInView
 
   activeInView = (obj) ->
     isActive = obj.content.is ':in-viewport'
@@ -57,7 +58,6 @@ setupNav = ->
     # TODO - use ticker method
     # if obj.type is 'anchor'
     #   trackTiming obj.title, isActive
-
 
   $document.scroll _.throttle check
   $document.trigger 'scroll'

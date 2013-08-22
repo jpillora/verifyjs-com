@@ -1,5 +1,5 @@
 (function() {
-  var $document, $window, anchors, create, encode, handleDemoFormSubmit, local, prettify, sections, setupCode, setupLinks, setupNav, setupTracking, setupWindow, slugify, successElem, track;
+  var $document, $window, create, encode, handleDemoFormSubmit, local, prettify, sections, setupCode, setupLinks, setupNav, setupTracking, setupWindow, slugify, subtopics, successElem, topics, track;
 
   setupCode = function() {
     var insertCode;
@@ -72,6 +72,15 @@
     get = function(id) {
       return $("[data-anchor=" + id + "]");
     };
+    $("[data-anchor]").each(function() {
+      var curr, id;
+      curr = $(this).attr('data-anchor');
+      if (curr && curr !== 'data-anchor') {
+        return;
+      }
+      id = slugify($.trim($(this).text()));
+      return $(this).attr('data-anchor', id);
+    });
     $("a[data-link]").each(function() {
       var curr, id;
       curr = $(this).attr('data-link');
@@ -84,15 +93,6 @@
       if (get(id).length === 0) {
         return console.warn("missing: ", id);
       }
-    });
-    $("[data-anchor]").each(function() {
-      var curr, id;
-      curr = $(this).attr('data-anchor');
-      if (curr && curr !== 'data-anchor') {
-        return;
-      }
-      id = slugify($.trim($(this).text()));
-      return $(this).attr('data-anchor', id);
     });
     $window.on('hashchange', function() {
       var elem, hash;
@@ -118,11 +118,15 @@
 
   sections = [];
 
-  anchors = [];
+  topics = [];
+
+  subtopics = [];
 
   setupNav = function() {
-    var activeInView, anchorTemplate, check, headerTemplate, navList, setupNavAnchor, setupNavHeading;
-    setupNavHeading = function() {
+    var activeInView, anchorTemplate, check, headerTemplate, navList, setupSections, setupTopics;
+    navList = $("#nav-list");
+    navList.empty();
+    setupSections = function() {
       var container, first, heading, li, section, slug;
       section = $(this);
       heading = section.data("nav");
@@ -137,8 +141,8 @@
       });
       container = create("div").addClass("nav-section");
       container.append(li);
-      $(this).find(".demo[data-nav]").each(function() {
-        return setupNavAnchor(container, $(this));
+      $(this).find(".topic[data-nav]").each(function() {
+        return setupTopics(container, $(this));
       });
       navList.append(container);
       return sections.push({
@@ -147,34 +151,33 @@
         nav: container
       });
     };
-    setupNavAnchor = function(container, anchor) {
+    setupTopics = function(container, topic) {
       var first, li, slug, title;
-      title = anchor.data("nav");
+      title = topic.data("nav");
       slug = slugify(title);
-      first = anchor.children(":first");
+      first = topic.children(":first");
       if (!first.is("h4")) {
-        anchor.prepend(create("h4").html(title));
+        topic.prepend(create("h4").html(title));
       }
-      anchor.attr("data-anchor", slug);
+      topic.attr("data-anchor", slug);
       li = $(anchorTemplate({
         title: title,
         slug: slug
       }));
       container.append(li);
-      return anchors.push({
+      return topics.push({
         type: 'anchor',
-        content: anchor,
+        content: topic,
         nav: li,
         title: title
       });
     };
     headerTemplate = _.template("<li class='nav-header'><%= heading %></li>");
     anchorTemplate = _.template("<li class='nav-item'><a href='#<%= slug %>''><%= title %></a></li>");
-    navList = $("#nav-list");
-    $(".section[data-nav]").each(setupNavHeading);
+    $(".section[data-nav]").each(setupSections);
     check = function() {
       _.each(sections, activeInView);
-      return _.each(anchors, activeInView);
+      return _.each(topics, activeInView);
     };
     activeInView = function(obj) {
       var isActive;

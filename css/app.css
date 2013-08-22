@@ -117,7 +117,7 @@ h5 {
 
 /* line 53 : /Users/jpillora/Code/JavaScript/verifyjs-com/src/styles/app.styl */
 #app pre,
-#app .demo[data-nav] div[data-html] {
+#app div[data-html] {
   padding: 15px;
   margin: 10px;
   border: 1px solid rgba(0,0,0,0.15);
@@ -126,7 +126,7 @@ h5 {
 }
 
 /* line 60 : /Users/jpillora/Code/JavaScript/verifyjs-com/src/styles/app.styl */
-.demo[data-nav] {
+.topic[data-nav] {
   margin: 10px;
   margin-bottom: 50px;
 }

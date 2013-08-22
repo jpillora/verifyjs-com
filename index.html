@@ -39,6 +39,8 @@
       !function() {
         var local = !!window.location.host.match(/localhost/);
         document.writeln('<script src="'+(local?'/verifyjs/':'')+'dist/verify.js"><\/script>');
+        document.writeln('<script src="'+(local?'/verifyjs/':'')+'dist/rules/date/vendor/moment-2.0.js"><\/script>');
+        document.writeln('<script src="'+(local?'/verifyjs/':'')+'dist/rules/date/date.js"><\/script>');
       }();
       
       var _gaq = _gaq || [];
@@ -65,7 +67,7 @@
         in progress, this API is subject to change.
       </div>
       <div data-nav="Introduction" class="row-fluid section">
-        <div data-nav="Features">
+        <div data-nav="Features" class="topic">
           <ul>
             <li>Unobtrusive</li>
             <li>Easily extendable</li>
@@ -74,7 +76,7 @@
             <li>Grouped validations</li>
           </ul>
         </div>
-        <div data-nav="Download" class="download">
+        <div data-nav="Download" class="download topic">
           <div ng-controller="BuildToolController" class="build-tool">Build your own Verify.js with only the rules you need
             <div class="buttons">
               <button class="btn btn-primary">Build your own Verify.js</button>
@@ -88,13 +90,13 @@
             
           </p>
           <div class="with-notify"><b>With</b> Notify.js (<a href="http://notifyjs.com" target="_blank">http://notifyjs.com</a>)
-            <div class="buttons"><a href="dist/verify.notify.min.js">
-                <button class="btn">Download verify.notify.min.js</button></a><a href="dist/verify.notify.js">
+            <div class="buttons"><a href="dist/verify.notify.min.js" download="verify.notify.min.js" target="_blank">
+                <button class="btn">Download verify.notify.min.js</button></a><a href="dist/verify.notify.js" download="verify.notify.js" target="_blank">
                 <button class="btn">Download verify.notify.js</button></a></div>
           </div>
           <div class="without-notify">Without Notify.js
-            <div class="buttons"><a href="dist/verify.min.js">
-                <button class="btn">Download verifyjs.min.js</button></a><a href="dist/verify.js">
+            <div class="buttons"><a href="dist/verify.min.js" download="verify.min.js" target="_blank">
+                <button class="btn">Download verifyjs.min.js</button></a><a href="dist/verify.js" download="verify.js" target="_blank">
                 <button class="btn">Download verify.js</button></a></div>
           </div>
           <div class="alert"><strong>Note </strong>Without Notify.js, you will need to implement a <a data-link="data-link">Prompt Handler</a> in order to see validation results.</div>
@@ -107,7 +109,7 @@
         </div>
       </div>
       <div data-nav="Basic" class="row-fluid section">
-        <div data-nav="Usage" class="demo">
+        <div data-nav="Usage" class="demo topic">
            
           Add some validation rules
           <pre data-html="data-html"></pre>And that's it !
@@ -120,7 +122,7 @@
           </div>
           <div class="alert alert-info"><strong>Note </strong>Verify.js will auto-initialise all forms that contain an element with a <code>data-validate</code> attribute. Since we're just using defaults settings, no extra code is required.</div>
         </div>
-        <div data-nav="Included Rules" class="demo">
+        <div data-nav="Included Rules" class="demo topic">
           <p>
             This is a list of all of the validation rules that come pre-packaged
             and will work out of the box.
@@ -233,7 +235,7 @@
             </thead>
           </table>
         </div>
-        <div data-nav="Multiple Rules" class="demo">You can also add multiple validation rules
+        <div data-nav="Multiple Rules" class="demo topic">You can also add multiple validation rules
           <pre data-html="data-html"></pre>Like so
           <div data-html="data-html">
             <form>
@@ -245,7 +247,7 @@
             validation rules in sequence, even asynchronous rules ! See <a data-link="data-link">Execution Sequence</a> for more information.
           </div>
         </div>
-        <div data-nav="Configuring Rules" class="demo">Some rules may also accept arguments
+        <div data-nav="Configuring Rules" class="demo topic">Some rules may also accept arguments
           <pre data-html="data-html"></pre>For example, the <a data-link="data-link">regex</a> rule:
           <div data-html="data-html">
             <form>
@@ -268,7 +270,7 @@
           a function (the <code>fn</code> property).  
           
         </p>
-        <div data-nav="Simple Rules" class="demo">
+        <div data-nav="Simple Rules" class="demo topic">
           <p>
             If the validation rule you're looking for isn't in the
             list above, it's easy to create your own custom rule.
@@ -297,7 +299,7 @@
             </form>
           </div>
           <div class="alert"><strong>Note </strong>See the <a data-link="data-link">Rule Object</a> Spec for more information.</div>
-          <div data-nav-sub="Regular Expression Rules" class="sub-demo"></div>
+          <div data-nav-sub="Regular Expression Rules" class="sub demo topic"></div>
           <p>Regular expression shortcut:</p>
           <pre class="prettyprint">$.verify.addRules({
   myRule: {
@@ -331,7 +333,7 @@
 
 </pre>
         </div>
-        <div data-nav="Asynchronous Rules" class="demo">
+        <div data-nav="Asynchronous Rules" class="demo topic">
           <p>
             Asynchronous rules are exactly the same as synchronous 
             rules except for one key difference. 
@@ -423,7 +425,7 @@
       </div>
       <!--Custom -->
       <div data-nav="API" class="row-fluid section">
-        <div data-nav="Configure" class="demo">
+        <div data-nav="Configure" class="demo topic">
           <table class="table table-striped table-bordered api-table">
             <thead>
               <tr>
@@ -447,7 +449,7 @@
           </table>
           <div class="alert alert-info"><strong>Note </strong><code>$("form").verify()</code> gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.</div>
         </div>
-        <div data-nav="Rules" class="demo">
+        <div data-nav="Rules" class="demo topic">
           <h5>Adding Rules</h5>
           <table class="table table-striped table-bordered api-table">
             <thead>
@@ -573,7 +575,7 @@
             </tbody>
           </table>
         </div>
-        <div data-nav="Selectors" class="demo">
+        <div data-nav="Selectors" class="demo topic">
           <table class="table table-striped table-bordered api-table">
             <thead>
               <tr>
@@ -599,7 +601,7 @@
       </div>
       <!--API -->
       <div data-nav="Options" class="row-fluid section">
-        <div data-nav="List" class="demo">
+        <div data-nav="List" class="demo topic">
           <p>There are two levels of options:
             <ul>
               <li>Global Options</li>
@@ -681,7 +683,7 @@
         </div>
       </div>
       <div data-nav="Advanced" class="row-fluid section">
-        <div data-nav="Groups" class="demo">
+        <div data-nav="Groups" class="demo topic">
           <p>Group validations are required when validation depends on two or more fields. Useful for checking the combined result of a set of fields, such as a date range.</p>
           <p>Group validations are defined in the same way as field (or single) validations, except you can provide two extra peices of optionally information:</p>
           <p><b data-link="group-id">Group ID </b>is generally required in most cases. 
@@ -715,7 +717,7 @@
             </form>
           </div>
         </div>
-        <div data-nav="Group Errors" class="demo">
+        <div data-nav="Group Errors" class="demo topic">
           <p>By default the error prompt will NOT be displayed on each member of the group, instead, only the field that triggered validation will display the message.</p>
           <p>This can be overriden by instead returning a map of <code>id</code>s to <code>string</code>s, as shown here:
             <pre data-script="data-script"></pre>
@@ -738,7 +740,7 @@
             <div class="alert alert-info"><strong>Note </strong>If the group validation is asynchronous, use<code>r.callback({ ... })</code>.</div>
           </p>
         </div>
-        <div data-nav="Prompt Handler" class="demo">
+        <div data-nav="Prompt Handler" class="demo topic">
           <p>The Prompt Handler is a function which looks like <code>function(element, text[, opts])</code>. So a really simple handler might be:</p>
           <pre class="prettyprint">$.verify({
   prompt: function(element, text) {
@@ -771,7 +773,7 @@
           </p>
           <h4><a href="http://notifyjs.com">http://notifyjs.com </a></h4>
         </div>
-        <div data-nav="Validation Tracking" class="demo">
+        <div data-nav="Validation Tracking" class="demo topic">
           <p>The Validation Tracking Handler is a function which looks like <code>function(type, fieldId, result)</code></p>
           <ul>
             <li><code>type</code> - Currently, there is only one type:  <code>"Validate"</code></li>
@@ -803,7 +805,7 @@
             tracked as opposed to tracking every field from early form validations.
           </p>
         </div>
-        <div data-nav="Execution Sequence" class="demo">
+        <div data-nav="Execution Sequence" class="demo topic">
           <p>
              
             In order to better understand what's actually happening when you submit 
@@ -834,7 +836,7 @@
         </div>
       </div>
       <div data-nav="The Githubs" class="row-fluid section">
-        <div data-nav="Contributing" class="demo">
+        <div data-nav="Contributing" class="demo topic">
           <p>Contributing is easy as </p>
           <ol>
             <li><a href="https://github.com/jpillora/verifyjs/fork">Fork </a></li>
@@ -847,7 +849,7 @@
             You can also bug reports on  <a href="https://github.com/jpillora/verifyjs/issues">GitHub Issues</a> and I should get on it reasonable quickly. 
           </p>
         </div>
-        <div data-nav="Credits" class="demo">
+        <div data-nav="Credits" class="demo topic">
           <p>
             Thanks to @posabsolute as this plugin was originally a fork of
             jQuery Validation Engine though it has now been completely rewritten.

@@ -1,5 +1,5 @@
 .row-fluid.section(data-nav='Introduction')
-  div(data-nav='Features')
+  .topic(data-nav='Features')
     ul
       li Unobtrusive
       li Easily extendable
@@ -7,7 +7,7 @@
       li Fully customisable asynchronous validations
       li Grouped validations
 
-  div.download(data-nav='Download')
+  .download.topic(data-nav='Download')
 
     .build-tool(ng-controller="BuildToolController")
       | Build your own Verify.js with only the rules you need
@@ -28,17 +28,17 @@
       a(href='http://notifyjs.com', target='_blank') http://notifyjs.com
       | )
       .buttons
-        a(href='dist/verify.notify.min.js')
+        a(href='dist/verify.notify.min.js', download='verify.notify.min.js', target='_blank')
           button.btn Download verify.notify.min.js
-        a(href='dist/verify.notify.js')
+        a(href='dist/verify.notify.js', download='verify.notify.js', target='_blank')
           button.btn Download verify.notify.js
 
     .without-notify
       | Without Notify.js
       .buttons
-        a(href='dist/verify.min.js')
+        a(href='dist/verify.min.js', download='verify.min.js', target='_blank')
           button.btn Download verifyjs.min.js
-        a(href='dist/verify.js')
+        a(href='dist/verify.js', download='verify.js', target='_blank')
           button.btn Download verify.js
 
     .alert
