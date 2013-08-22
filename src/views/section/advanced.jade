@@ -1,7 +1,7 @@
-.row-fluid(data-nav-heading='Advanced')
+.row-fluid(data-nav='Advanced')
   
 
-  .demo(data-nav-anchor='Groups')
+  .demo(data-nav='Groups')
     p
       | Group validations are required when validation depends on two or more fields. Useful for checking the combined result of a set of fields, such as a date range.
     p
@@ -56,7 +56,7 @@
         input(value='2/1/2013', data-validate='date,dateRange#end')
         input.submit(type='submit')
 
-  .demo(data-nav-anchor='Group Errors')
+  .demo(data-nav='Group Errors')
     p
       | By default the error prompt will NOT be displayed on each member of the group, instead, only the field that triggered validation will display the message.
     p
@@ -89,7 +89,7 @@
         | .
 
 
-  .demo(data-nav-anchor='Prompt Handler')
+  .demo(data-nav='Prompt Handler')
 
     p
       | The Prompt Handler is a function which looks like 
@@ -144,7 +144,7 @@
 
     h4: a(href='http://notifyjs.com') http://notifyjs.com 
 
-  .demo(data-nav-anchor='Validation Tracking')
+  .demo(data-nav='Validation Tracking')
 
     p
       | The Validation Tracking Handler is a function which looks like 
@@ -193,7 +193,7 @@
 
 
 
-  .demo(data-nav-anchor='Execution Sequence')
+  .demo(data-nav='Execution Sequence')
 
     p 
       | In order to better understand what's actually happening when you submit 

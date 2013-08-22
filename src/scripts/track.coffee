@@ -8,9 +8,9 @@ track = (cat, act, lab, val) ->
 setupTracking = ->
 
   $document.on 'click', 'input[type=submit]', ->
-    anchor = $(@).closest "[data-nav-anchor]"
+    anchor = $(@).closest "[data-nav]"
     if anchor[0]
-      track 'Demo Submit', anchor.attr 'data-nav-anchor' 
+      track 'Demo Submit', anchor.attr 'data-nav' 
 
   timers = {}
   t = -> new Date().getTime()

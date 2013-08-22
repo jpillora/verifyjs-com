@@ -149,7 +149,7 @@
     };
     setupNavAnchor = function(container, anchor) {
       var first, li, slug, title;
-      title = anchor.data("nav-anchor");
+      title = anchor.data("nav");
       slug = slugify(title);
       first = anchor.children(":first");
       if (!first.is("h4")) {
@@ -197,9 +197,9 @@
     var t, timers;
     $document.on('click', 'input[type=submit]', function() {
       var anchor;
-      anchor = $(this).closest("[data-nav-anchor]");
+      anchor = $(this).closest("[data-nav]");
       if (anchor[0]) {
-        return track('Demo Submit', anchor.attr('data-nav-anchor'));
+        return track('Demo Submit', anchor.attr('data-nav'));
       }
     });
     timers = {};

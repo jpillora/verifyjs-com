@@ -26,7 +26,7 @@ setupNav = ->
     sections.push { type:'section', content: section, nav: container }
 
   setupNavAnchor = (container, anchor) ->
-    title = anchor.data("nav-anchor")
+    title = anchor.data("nav")
     slug = slugify(title)
     first = anchor.children(":first")
     #auto add title (if needed)
