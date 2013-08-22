@@ -44,7 +44,7 @@ setupNav = ->
 
   navList = $("#nav-list")
 
-  $(".row-fluid[data-nav]").each setupNavHeading
+  $(".section[data-nav]").each setupNavHeading
 
   check = ->
     _.each sections, activeInView

@@ -171,7 +171,7 @@
     headerTemplate = _.template("<li class='nav-header'><%= heading %></li>");
     anchorTemplate = _.template("<li class='nav-item'><a href='#<%= slug %>''><%= title %></a></li>");
     navList = $("#nav-list");
-    $(".row-fluid[data-nav]").each(setupNavHeading);
+    $(".section[data-nav]").each(setupNavHeading);
     check = function() {
       _.each(sections, activeInView);
       return _.each(anchors, activeInView);
