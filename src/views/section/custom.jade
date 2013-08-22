@@ -1,11 +1,22 @@
-.row-fluid(data-nav-heading='Custom Validation')
-  .demo(data-nav-anchor='Custom Rules')
-    p
-      | If the validation rule you're looking for isn't in the list above, it's easy to create your own custom rule.
-    p
-      | For example, if for some strange reason, we wanted to check if a field is divible by 3, we can add a new rule
-      code divisibleByThree
-      | .
+.row-fluid(data-nav-heading='Custom')
+
+  p.
+    The process of adding custom rules has been made
+    as simple as possible. Optionally, we may use the
+    advanced features.
+
+  p.
+    The only requirement for a rule is that it specifies
+    a function (the <code>fn</code> property).  
+
+  .demo(data-nav-anchor='Simple Rules')
+    p.
+      If the validation rule you're looking for isn't in the
+      list above, it's easy to create your own custom rule.
+    p.
+      For example, if we wanted to check if a field is divible 
+      by 3, we can add a new rule <code>divisibleByThree</code>.
+
     pre(data-script='data-script').
       
     | Now, we can use it
@@ -20,7 +31,7 @@
           return true;
         }
       });
-    | And Voila:
+    | And voila:
     div(data-html='data-html')
       form
         input(name='num', value='5', data-validate='divisibleByThree')
@@ -32,11 +43,50 @@
       |  Spec for more information.
 
 
+    .sub-demo(data-nav-sub='Regular Expression Rules')
+
+
+    p Regular expression shortcut:
+    pre.prettyprint.
+      $.verify.addRules({
+        myRule: {
+          regex: /^[ab]+$/i
+          message: "It contained something other than 'a's and 'b's"
+        }
+      });
+    p.
+      So if the rule has a <code>regex</code> property and an optional  
+      <code>message</code> property, its <code>fn</code>
+      property will be automatically built.
+
+
+    h5(data-anchor) Shorter Rules
+
+    p.
+      If your rule only has the one <code>fn</code> property:
+    pre.prettyprint.
+      $.verify.addRules({
+        myRule: {
+          fn: function(r) {
+            return r.val() === "42" ? true : "Wasn't 42";
+          }
+        }
+      });
+
+    p Then it can be shortened to:
+    pre.prettyprint.
+      $.verify.addRules({
+        myRule: function(r) {
+          return r.val() === "42" ? true : "Wasn't 42";
+        }
+      });
 
 
   .demo(data-nav-anchor='Asynchronous Rules')
     p
-      | They key to asynchronous rules is just to use the 
+      | Asynchronous rules are exactly the same as synchronous 
+      | rules except for one key difference. 
+      | Instead of returning a value, we'll instead use the  
       a(data-link) Rule Object
       | 's 
       code callback
@@ -50,7 +100,7 @@
       code r.callback(true)
       | . By not 
       code return
-      | ing (which will actually returns 
+      | ing (or equivalently, returning  
       code undefined
       | ), you're telling the library to wait for a callback. 
       | If no callback is fired, a timeout warning will be 
@@ -88,4 +138,65 @@
       | Asynchronous rules execute in the same sequence as synchronous rules. See
       a(data-link) Execution Sequence
       | for more information.
+
+
+
+
+
+
+
+    p Use of variables:
+    pre.prettyprint.
+      $.verify.addRules({
+        myRule: {
+          expected: "42",
+          message: "Wasn't 42",
+          fn: function(r) {
+            return r.val() === r.expected ? true : r.message;
+          }
+        }
+      });
+
+
+    p The above example isn't very exciting, though when it comes time to use multiple languages, you can just update the message:
+    pre.prettyprint.
+      $.verify.updateRules({
+        myRule: {
+          message: "no tuvo éxito"
+        }
+      });
+
+    p Now, getting abit fancier, we can extend existing rules with the extend property 
+    pre.prettyprint.
+      $.verify.addRules({
+        myRule: {
+          message: "An error",
+
+          common: function(n) {
+            //a useful task...
+          },
+
+          fn: function(r) {
+            r.common(21);
+            return r.message;
+          }
+        },
+
+        //Alternative uses of 'common'
+        myOtherRule: {
+          extend: "myRule",
+
+          fn: function(r) {
+            r.common(42);
+            return r.message; //"An Error"
+          }
+        },
+
+        //Only modify the 'message'
+        myThirdRule: {
+          extend: "myRule",
+          message: "A super bad error"
+        }
+      });
+
 //Custom 

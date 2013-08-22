@@ -1,5 +1,5 @@
 (function() {
-  var setupCode;
+  var $document, $window, anchors, create, encode, handleDemoFormSubmit, local, prettify, sections, setupCode, setupLinks, setupNav, setupTracking, setupWindow, slugify, successElem, track;
 
   setupCode = function() {
     var insertCode;
@@ -47,11 +47,6 @@
     });
   };
 
-}).call(this);
-
-(function() {
-  var create, encode, local, prettify, slugify;
-
   encode = function(value) {
     return $("<div/>").text(value).html();
   };
@@ -72,23 +67,32 @@
     return /localhost/.test(window.location.host);
   };
 
-}).call(this);
-
-(function() {
-  var setupLinks;
-
   setupLinks = function() {
     var get;
     get = function(id) {
-      return $("[nav-id=" + id + "]");
+      return $("[data-anchor=" + id + "]");
     };
     $("a[data-link]").each(function() {
-      var id;
-      id = slugify($.trim($(this).text()));
+      var curr, id;
+      curr = $(this).attr('data-link');
+      if (curr && curr !== 'data-link') {
+        id = curr;
+      } else {
+        id = slugify($.trim($(this).text()));
+      }
       $(this).attr('href', '#' + id);
       if (get(id).length === 0) {
         return console.warn("missing: ", id);
       }
+    });
+    $("[data-anchor]").each(function() {
+      var curr, id;
+      curr = $(this).attr('data-anchor');
+      if (curr && curr !== 'data-anchor') {
+        return;
+      }
+      id = slugify($.trim($(this).text()));
+      return $(this).attr('data-anchor', id);
     });
     $window.on('hashchange', function() {
       var elem, hash;
@@ -112,11 +116,6 @@
     return $window.trigger('hashchange');
   };
 
-}).call(this);
-
-(function() {
-  var anchors, sections, setupNav;
-
   sections = [];
 
   anchors = [];
@@ -126,19 +125,19 @@
     setupNavHeading = function() {
       var container, first, heading, li, section, slug;
       section = $(this);
-      heading = section.data("nav-heading");
+      heading = section.data("nav");
       slug = slugify(heading);
       first = section.children(":first");
       if (!first.is("h3")) {
         section.prepend(create("h3").html(heading));
       }
-      section.attr("nav-id", slug);
+      section.attr("data-anchor", slug);
       li = headerTemplate({
         heading: heading
       });
       container = create("div").addClass("nav-section");
       container.append(li);
-      $(this).find("[data-nav-anchor]").each(function() {
+      $(this).find(".demo[data-nav]").each(function() {
         return setupNavAnchor(container, $(this));
       });
       navList.append(container);
@@ -156,7 +155,7 @@
       if (!first.is("h4")) {
         anchor.prepend(create("h4").html(title));
       }
-      anchor.attr("nav-id", slug);
+      anchor.attr("data-anchor", slug);
       li = $(anchorTemplate({
         title: title,
         slug: slug
@@ -172,7 +171,7 @@
     headerTemplate = _.template("<li class='nav-header'><%= heading %></li>");
     anchorTemplate = _.template("<li class='nav-item'><a href='#<%= slug %>''><%= title %></a></li>");
     navList = $("#nav-list");
-    $("[data-nav-heading]").each(setupNavHeading);
+    $(".row-fluid[data-nav]").each(setupNavHeading);
     check = function() {
       _.each(sections, activeInView);
       return _.each(anchors, activeInView);
@@ -180,19 +179,49 @@
     activeInView = function(obj) {
       var isActive;
       isActive = obj.content.is(':in-viewport');
-      obj.nav.toggleClass('active', isActive);
-      if (obj.type === 'anchor') {
-        return trackTiming(obj.title, isActive);
-      }
+      return obj.nav.toggleClass('active', isActive);
     };
     $document.scroll(_.throttle(check));
     return $document.trigger('scroll');
   };
 
-}).call(this);
+  track = function(cat, act, lab, val) {
+    var event;
+    event = ['_trackEvent', cat, act, lab, val];
+    if (!local()) {
+      return _gaq.push(event);
+    }
+  };
 
-(function() {
-  var $document, $window, handleDemoFormSubmit, successElem;
+  setupTracking = function() {
+    var t, timers;
+    $document.on('click', 'input[type=submit]', function() {
+      var anchor;
+      anchor = $(this).closest("[data-nav-anchor]");
+      if (anchor[0]) {
+        return track('Demo Submit', anchor.attr('data-nav-anchor'));
+      }
+    });
+    timers = {};
+    t = function() {
+      return new Date().getTime();
+    };
+    return window.trackTiming = function(title, active) {
+      var ms;
+      if (timers[title] && !active) {
+        ms = t() - timers[title];
+        if (ms > 3000) {
+          track('Anchor View Length', title, '', ms);
+        }
+        timers[title] = null;
+      }
+      if (!timers[title] && active) {
+        return timers[title] = t();
+      }
+    };
+  };
+
+  setupWindow = function() {};
 
   $.fn.togglers = function() {
     var container, togglers;
@@ -241,66 +270,5 @@
     window.prettyPrint();
     return $document.on("submit", "form", handleDemoFormSubmit);
   });
-
-}).call(this);
-
-(function() {
-  var setupTracking, track;
-
-  track = function(cat, act, lab, val) {
-    var event;
-    event = ['_trackEvent', cat, act, lab, val];
-    if (local()) {
-      return console.log(event);
-    } else {
-      return _gaq.push(event);
-    }
-  };
-
-  setupTracking = function() {
-    var t, timers;
-    $document.on('click', 'input[type=submit]', function() {
-      var anchor;
-      anchor = $(this).closest("[data-nav-anchor]");
-      if (anchor[0]) {
-        return track('Demo Submit', anchor.attr('data-nav-anchor'));
-      }
-    });
-    timers = {};
-    t = function() {
-      return new Date().getTime();
-    };
-    return window.trackTiming = function(title, active) {
-      var ms;
-      if (timers[title] && !active) {
-        ms = t() - timers[title];
-        if (ms > 3000) {
-          track('Anchor View Length', title, '', ms);
-        }
-        timers[title] = null;
-      }
-      if (!timers[title] && active) {
-        return timers[title] = t();
-      }
-    };
-  };
-
-}).call(this);
-
-(function() {
-  var setupWindow;
-
-  setupWindow = function() {
-    var gap, padding, resizeViewport, shares, sidebar;
-    sidebar = $('.sidebar-nav');
-    padding = 20;
-    gap = 20;
-    shares = $('.share-buttons').height();
-    resizeViewport = function() {
-      return sidebar.height($window.height() - (padding + gap + shares));
-    };
-    $window.resize(_.debounce(resizeViewport));
-    return resizeViewport();
-  };
 
 }).call(this);

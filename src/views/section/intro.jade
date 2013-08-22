@@ -9,8 +9,6 @@
 
   div.download(data-nav-anchor='Download')
 
-
-
     .build-tool(ng-controller="BuildToolController")
       | Build your own Verify.js with only the rules you need
       .buttons
@@ -30,17 +28,17 @@
       a(href='http://notifyjs.com', target='_blank') http://notifyjs.com
       | )
       .buttons
-        a(href='js/verify.notify.min.js')
+        a(href='dist/verify.notify.min.js')
           button.btn Download verify.notify.min.js
-        a(href='js/verify.notify.js')
+        a(href='dist/verify.notify.js')
           button.btn Download verify.notify.js
 
     .without-notify
       | Without Notify.js
       .buttons
-        a(href='js/verify.min.js')
+        a(href='dist/verify.min.js')
           button.btn Download verifyjs.min.js
-        a(href='js/verify.js')
+        a(href='dist/verify.js')
           button.btn Download verify.js
 
     .alert
@@ -49,18 +47,13 @@
       a(data-link) Prompt Handler
       |  in order to see validation results.
 
-
-
-
-
-
     h5 GitHub Hosted
     pre.prettyprint
       &lt;!-- jQuery --&gt;
       &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"&gt;&lt;/script&gt;
       
       &lt;!-- Verify.js (with Notify.js included) --&gt;
-      &lt;script src="http://verifyjs.com/js/verify.notify.min.js"&gt;&lt;/script&gt;
+      &lt;script src="http://verifyjs.com/dist/verify.notify.min.js"&gt;&lt;/script&gt;
                       
     .alert.alert-error
       strong Watch out !  

@@ -1,4 +1,15 @@
 {
-  "source": "~/Code/JavaScript/grunt-source-ghpages",
-  "repo": "https://github.com/jpillora/grunt-source-ghpages.git"
+  "source": "~/.grunt-sources/ghpages",
+  "repo": "https://github.com/jpillora/grunt-source-ghpages.git",
+  "dependency": "0.7.x",
+  "config": {
+    "copy": {
+      "dist": {
+        "expand": true,
+        "cwd": "../verifyjs",
+        "src": "./dist/**",
+        "dest": "."
+      }
+    }
+  }
 }

@@ -31,7 +31,9 @@
       |  gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.
   
 
-  .demo(data-nav-anchor='Adding Rules')
+  .demo(data-nav-anchor='Rules')
+
+    h5 Adding Rules
 
     table.table.table-striped.table-bordered.api-table
       thead
@@ -85,7 +87,11 @@
       a(data-link) Rule Object
       |  of each.
 
-  .demo(data-nav-anchor='Definition Object')
+    h5(data-anchor) Definition Object
+
+    p.
+      When a Definition Object <code>o</code> is a <b>function</b>, it will be transformed
+      into the object <code>{ fn: o }</code>.
 
     table.table.table-striped.table-bordered
       thead
@@ -115,100 +121,10 @@
               code anything
           td Any
           td 
-            | A variable that will be passed to the  
+            | A variable that will be set on the  
             a(data-link) Rule Object
 
-    p If your rule only has the one 'fn' property:
-    pre.prettyprint.
-      $.verify.addRules({
-        myRule: {
-          fn: function(r) {
-            return r.val() === "42" ? true : "Wasn't 42";
-          }
-        }
-      });
-
-    p Then it can be shortened to:
-    pre.prettyprint.
-      $.verify.addRules({
-        myRule: function(r) {
-          return r.val() === "42" ? true : "Wasn't 42";
-        }
-      });
-
-    p Regular expression shortcut:
-    pre.prettyprint.
-      $.verify.addRules({
-        myRule: {
-          regex: /^[ab]+$/i
-          message: "It contained something other than 'a's and 'b's"
-        }
-      });
-    p
-      | So if the rule has a 
-      code regex
-      |  and an optional  
-      code message
-      |  property, its fn property will automatically built.
-
-
-    p Use of variables:
-    pre.prettyprint.
-      $.verify.addRules({
-        myRule: {
-          expected: "42",
-          message: "Wasn't 42",
-          fn: function(r) {
-            return r.val() === r.expected ? true : r.message;
-          }
-        }
-      });
-
-
-    p The above example isn't very exciting, though when it comes time to use multiple languages, you can just update the message:
-    pre.prettyprint.
-      $.verify.updateRules({
-        myRule: {
-          message: "no tuvo éxito"
-        }
-      });
-
-    p Now, getting abit fancier, we can extend existing rules with the extend property 
-    pre.prettyprint.
-      $.verify.addRules({
-        myRule: {
-          message: "An error",
-
-          common: function(n) {
-            //a useful task...
-          },
-
-          fn: function(r) {
-            r.common(21);
-            return r.message;
-          }
-        },
-
-        //Alternative uses of 'common'
-        myOtherRule: {
-          extend: "myRule",
-
-          fn: function(r) {
-            r.common(42);
-            return r.message; //"An Error"
-          }
-        },
-
-        //Only modify the 'message'
-        myThirdRule: {
-          extend: "myRule",
-          message: "A super bad error"
-        }
-      });
-
-
-
-  .demo(data-nav-anchor='Rule Object')
+    h5(data-anchor) Rule Object
 
     p
       | The Rule Object is the single parameter in all validation rules. It is known as 
@@ -259,7 +175,7 @@
           td(colspan='5'): i Documentation in progress...
 
 
-  .demo(data-nav-anchor='Selector API')
+  .demo(data-nav-anchor='Selectors')
     table.table.table-striped.table-bordered.api-table
       thead
         tr

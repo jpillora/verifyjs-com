@@ -2,9 +2,7 @@
 
 track = (cat, act, lab, val) ->
   event = ['_trackEvent', cat, act, lab, val]
-  if local()
-    console.log event
-  else
+  unless local()
     _gaq.push event
 
 setupTracking = ->

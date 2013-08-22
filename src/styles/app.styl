@@ -14,8 +14,12 @@ body
   min-width: 650px
 
 .sidebar-nav
-  padding-top: 20px
   position: fixed
+  height 100%
+  width 200px
+  .nav-list
+    padding-top: 20px
+    padding-bottom: 20px
 
 .content-wrapper
   margin-left: 200px
@@ -32,10 +36,14 @@ body
 
 //share
 .share-buttons
-  padding: 15px
-  position: fixed
-  bottom: 0
-  height: 70px
+  padding 10px
+  position fixed
+  bottom 0
+  right 0
+  height 70px
+  opacity 0.85
+  &:hover
+    opacity 1
 
 //headers
 h3,h5

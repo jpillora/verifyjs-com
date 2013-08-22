@@ -1,4 +1,4 @@
-.row-fluid(data-nav-heading='Advanced Validation')
+.row-fluid(data-nav-heading='Advanced')
   
 
   .demo(data-nav-anchor='Groups')
@@ -7,7 +7,7 @@
     p
       | Group validations are defined in the same way as field (or single) validations, except you can provide two extra peices of optionally information:
     p
-      b(nav-id='group-id') Group ID 
+      b(data-link='group-id') Group ID 
       | is generally required in most cases. 
       | It will provide an easy way to tag given elements in the 
       | context of validation. For example, the date range rule 
@@ -89,12 +89,133 @@
         | .
 
 
+  .demo(data-nav-anchor='Prompt Handler')
+
+    p
+      | The Prompt Handler is a function which looks like 
+      code function(element, text[, opts])
+      | . So a really simple handler might be:
+
+    pre.prettyprint.
+      $.verify({
+        prompt: function(element, text) {
+          alert(text);
+        }
+      });
+    
+    p
+      | Or you might want to get abit more fancy with some assistance of HTML:
+
+    pre.prettyprint.
+      &lt;input type='text' data-validate='required'/&gt;
+      &lt;span class='tip'&gt;&lt;/span&gt;
+
+    pre.prettyprint.
+      $.verify({
+        prompt: function(element, text) {
+          element.siblings(".tip").html(text || '');
+        }
+      });
+
+    .alert.alert-info
+      strong Pro Tip 
+      | The 
+      code text
+      |  parameter will be 
+      code null
+      |  when there is no error, thereby clearing the error.
+
+    p
+      | Or you could get 
+      b even 
+      | fancier and include Notify.js by 
+      a(data-link) download
+      | ing a pre-packaged version and then you don't have to worry 
+      | about making your own Prompt Handler.
+
+    pre.prettyprint.
+      $.verify({
+        // no options required !
+      });
+
+    p 
+      | Also note, Notify.js allows you make custom prompt styles and themes as
+      | opposed to the standard bootstrap alert style. Read more about Notify.js at:
+
+    h4: a(href='http://notifyjs.com') http://notifyjs.com 
+
+  .demo(data-nav-anchor='Validation Tracking')
+
+    p
+      | The Validation Tracking Handler is a function which looks like 
+      code function(type, fieldId, result)
+
+    ul
+      li
+        code type
+        |  - Currently, there is only one type:  
+        code "Validate"
+      li
+        code fieldId
+        |  -  Field Identifier is made up of the form name
+        | followed by the field name. Name is id attribute, otherwise
+        | falls back to the name attribute, otherwise falls back to a
+        | randomly generated ID.
+      li
+        code result
+        |  - The validation result will be one of:
+        ol
+          li: code "Valid"
+          li
+            code "Skip"
+            i  (Meaning the field was hidden or has no validators)
+          li The error message that was displayed on the field
+
+    p
+      | This was intended for use with Google Analytics Event Tracking.
+      | Following it's 3 column implementation: Category, Action and Label.
+
+    p
+      | An example function to track validations using Google Analytics might be something like:
+    
+    pre.prettyprint.
+      $.verify({
+        track: function(type, fieldId, result) {
+          if(_gaq) _gaq.push(['_trackEvent', type, fieldId, result]);
+        }
+      });
+
+    p
+      | Also note, only validations triggered from the 
+      a(data-link) validationEventTrigger
+      |  ("blur" by default) will be tracked. This ensures only user actions are
+      | tracked as opposed to tracking every field from early form validations.
+
+
+
   .demo(data-nav-anchor='Execution Sequence')
 
     p 
       | In order to better understand what's actually happening when you submit 
       | the form, I've included this nice diagram:
 
-    p: i Diagram in progress !
+    .diagram
+      img(src="img/exec-sequence.png")
 
-//Advanced 
+    ul
+      li.
+        When we submit a form, all of its fields <b>with validations</b> are 
+        triggered <b>in parallel</b>. Validation will fail if <b>any</b> field fails.
+        Validation will pass only when <b>all</b> fields have passed.
+      li.
+        When a field (blue rectangle) is triggered, it will run all its rules <b>in sequence</b>.
+        Similarly, validation will fail <b>any</b> rule fails (which will cancel
+        the current sequence and report fail to the parent form). Validation will
+        pass only when <b>all</b> rules pass.
+      li.
+        When a [field] rule (yellow circle) is triggered, it will pass only if returns (or callsback) true.
+        Everything else is considered a fail. If a rule is a <a data-link="groups">group</a> 
+        rule (red circle), it will wait for the other fields to reach the corresponding group 
+        rule in their execution sequence. When <b>all</b> groups report that they are "waiting",
+        the group rule can start, it gets executed once, however it's result is used across all
+        related fields.

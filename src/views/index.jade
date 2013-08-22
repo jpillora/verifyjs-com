@@ -19,15 +19,26 @@ html
       ul#nav-list.nav.nav-list
 
     .content-wrapper
-      include title
+      //- Heading
+      .row-fluid
+        h1 Verify.js
+        p A powerful, customizable asynchronous form validation library
+
+      .alert
+        strong Note 
+        | As this library and corresponding documentation is a work
+        | in progress, this API is subject to change.
+      
+      //- Sections
       include section/intro
       include section/basic
       include section/custom
-      include section/advanced
       include section/api
       include section/options
+      include section/advanced
       include section/githubs
 
+      //- Footer
       hr
       footer
         p © Jaime Pillora 2012

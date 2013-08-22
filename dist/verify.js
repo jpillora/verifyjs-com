@@ -1,10 +1,9 @@
-/** Verify.js - v0.0.1 - 2013/04/28
- * https://github.com/jpillora/verify
+/** Verify.js - v0.2.0 - 2013/08/22
+ * http://verifyjs.com
  * Copyright (c) 2013 Jaime Pillora - MIT
  */
 
-(function(window,document,undefined) {
-(function($) {
+(function(window,document,$,undefined) {(function($) {
 
   if(window.console === undefined)
     window.console = { isFake: true };
@@ -146,26 +145,42 @@ function ajaxHelper(userOpts, r) {
   exec.ajax = $.ajax($.extend(defaults, userOpts, realCallbacks));
 }
 
+
+
+// var guid = function() {
+//   return (((1 + Math.random()) * 65536) | 0).toString(16).substring(1);
+// };
+
 var guid = function() {
-  return (((1 + Math.random()) * 65536) | 0).toString(16).substring(1);
+  return guid.curr++;
 };
-$.fn.scrollView = function(onComplete) {
+guid.curr = 1;
 
+$.fn.verifyScrollView = function(onComplete) {
   var field = $(this).first();
-  if(field.length === 1) {
-    if(field.is(".styled")) field = field.siblings("span");
-    $('html, body').animate({
-        scrollTop: Math.max(0,field.offset().top - 100)
-    }, {
-        duration: 1000,
-        complete: onComplete || $.noop
-    });
-  }
-
-  return $(this);
+  if(field.length !== 1) return $(this);
+  return $(this).verifyScrollTo(field, onComplete);
 };
 
-$.fn.equals = function(that) {
+$.fn.verifyScrollTo = function( target, options, callback ){
+  if(typeof options == 'function' && arguments.length == 2){ callback = options; options = target; }
+  var settings = $.extend({
+    scrollTarget  : target,
+    offsetTop     : 50,
+    duration      : 500,
+    easing        : 'swing'
+  }, options);
+  return this.each(function(){
+    var scrollPane = $(this);
+    var scrollTarget = (typeof settings.scrollTarget == "number") ? settings.scrollTarget : $(settings.scrollTarget);
+    var scrollY = (typeof scrollTarget == "number") ? scrollTarget : scrollTarget.offset().top + scrollPane.scrollTop() - parseInt(settings.offsetTop, 10);
+    scrollPane.animate({scrollTop : scrollY }, parseInt(settings.duration, 10), settings.easing, function(){
+      if (typeof callback == 'function') { callback.call(this); }
+    });
+  });
+};
+
+$.fn.verifyEquals = function(that) {
   if($(this).length !== that.length)
     return false;
   for(var i=0,l=$(this).length;i<l;++i)
@@ -289,7 +304,7 @@ var Set = Class.extend({
   remove: function(item) {
     var newSet = [];
     for(var i = 0, l = this.array.length; i<l; ++i)
-      if(!this.equals(this.get(i),item))
+      if(!this.verifyEquals(this.get(i),item))
         newSet.push(this.get(i));
 
     this.array = newSet;
@@ -299,8 +314,10 @@ var Set = Class.extend({
     this.array = [];
   },
   equals: function(i1, i2) {
-    if(i1 && i2 && i1.equals !== undefined && i2.equals !== undefined)
-      return i1.equals(i2);
+    if(i1 && i2 &&
+       i1.verifyEquals !== undefined &&
+       i2.verifyEquals !== undefined)
+      return i1.verifyEquals(i2);
     else
       return i1 === i2;
   },
@@ -336,6 +353,16 @@ var TypedSet = Set.extend({
 });
 var Utils = {
 
+  //object create implementation
+  create: function (o) {
+    function F() {}
+    F.prototype = o;
+    return new F();
+  },
+
+  //bind method
+  bind: $.proxy,
+
   //check options - throws a warning if the option doesn't exist
   checkOptions: function(opts) {
     if(!opts) return;
@@ -358,7 +385,7 @@ var Utils = {
     return function () {
       var args = Array.prototype.slice.call(arguments),
       hash = "",
-      i  = args.length;
+      i  = args.length,
       currentArg = null;
       while(i--){
         currentArg = args[i];
@@ -369,30 +396,6 @@ var Utils = {
       return (hash in fn.memoize) ? fn.memoize[hash] :
       fn.memoize[hash] = fn.apply( this , args );
     };
-  },
-
-  dateToString: function(date) {
-    return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-  },
-
-  parseDate: function(dateStr) {
-    //format check
-    var m = dateStr.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-    if(!m) return null;
-
-    var date;
-    //parse with jquery ui's date picker
-    if($.datepicker !== undefined) {
-      try {
-        var epoch = $.datepicker.parseDate("dd/mm/yy", dateStr);
-        date = new Date(epoch);
-      } catch(e) { return null; }
-    //simple regex parse
-    } else {
-      date = new Date(parseInt(m[3], 10),parseInt(m[2], 10)-1,parseInt(m[1], 10));
-    }
-
-    return date;
   },
 
   /**
@@ -420,6 +423,8 @@ var VERSION = "0.0.1",
     warn = cons.warn,
     info = cons.info;
 
+
+
 /* ===================================== *
  * Plugin Settings/Variables
  * ===================================== */
@@ -427,6 +432,8 @@ var VERSION = "0.0.1",
 var globalOptions = {
   // Display log messages flag
   debug: false,
+  // Auto initialise forms (on DOM ready)
+  autoInit: true,
   // Attribute used to find validators
   validateAttribute: "data-validate",
   // Name of the event triggering field validation
@@ -443,12 +450,14 @@ var globalOptions = {
   skipDisabledFields: true,
   // What class name to apply to the 'errorContainer'
   errorClass: "error",
-  // Filter method to find element to apply error class (default: the input)
+  // Filter method to find element to apply error class
   errorContainer: function (e) {
     return e;
   },
   // Filter method to find element which reskins the current element
-  reskinContainer: null,
+  reskinContainer: function (e) {
+    return e;
+  },
   //Before form-submit hook
   beforeSubmit: function(e, result) {
     return result;
@@ -469,6 +478,9 @@ var globalOptions = {
 //option object creator inheriting from globals
 function CustomOptions(opts) {
   $.extend(true, this, opts);
+
+
+
 }
 CustomOptions.prototype = globalOptions;
 
@@ -478,15 +490,10 @@ CustomOptions.prototype = globalOptions;
 
 var BaseClass = Class.extend({
   name: "Class",
-
-  init: function() {
-  },
-
   toString: function() {
     return (this.type ? this.type + ": ":'') +
            (this.name ? this.name + ": ":'');
   },
-
   log: function() {
     if(!globalOptions.debug) return;
     log.apply(this, Utils.appendArg(arguments, this.toString()));
@@ -497,11 +504,10 @@ var BaseClass = Class.extend({
   info: function() {
     info.apply(this, Utils.appendArg(arguments, this.toString()));
   },
-
   bind: function(name) {
     var prop = this[name];
     if(prop && $.isFunction(prop))
-        this[name] = $.proxy(prop,this);
+        this[name] = Utils.bind(prop,this);
   },
   bindAll: function() {
     for(var propName in this)
@@ -514,7 +520,6 @@ var BaseClass = Class.extend({
       fn.apply(_this, args);
     }, ms || 0);
   }
-
 });
 // the Rule class will store all state relating to
 // the user definition, all rule state from the DOM
@@ -525,69 +530,75 @@ var Rule = BaseClass.extend({
 
   init: function(name, userObj){
     this.name = name;
-    this.buildFn(userObj);
-  },
-
-  //extracts the validation function out of the user defined object
-  buildFn: function(userObj) {
 
     if(!$.isPlainObject(userObj))
       return this.warn("rule definition must be a function or an object");
-    
+
+    this.type = userObj.__ruleType;
+
+    //construct user obj inheriting parent
+    this.extendInterface(userObj.extend);
+    //does not inherit
+    if(!this.userObj) this.userObj = {};
     //clone object to keep a canonical version intact
-    this.userObj = $.extend(true, {}, userObj);
+    $.extend(true, this.userObj, userObj);
+    //infer 'fn' property
+    this.buildFn();
+    //rule is ready to be used
+    this.ready = typeof this.fn === 'function';
+  },
 
-    this.type = userObj.type;
+  extendInterface: function(parentName) {
 
-    //handle object.extend (may inherit a object.fn)
-    while($.type(this.userObj.extend) === 'string') {
-      //extend using another validator -> validator name
-      var otherName = this.userObj.extend;
-      delete this.userObj.extend;
+    if(!parentName || typeof parentName !== 'string')
+      return;
 
-      var otherUserObj = ruleManager.getRawRule(otherName);
-      //check not extending itself
-      if(this.userObj === otherUserObj)
-        return this.warn("Cannot extend self");
-
-      //type check
-      if($.isPlainObject(otherUserObj))
-        this.userObj = $.extend(true, {}, otherUserObj, this.userObj);
-      else
-        return this.warn("Cannot extend: '"+otherName+"'");
+    //circular dependancy check - not extending itself or any of it's parents
+    var p, name = parentName, names = [];
+    while(name) {
+      if(name === this.name)
+        return this.error("Rule already extends '%s'", parentName);
+      p = ruleManager.getRawRule(name);
+      name = p ? p.extend : null;
     }
+    //extend using another validator -> validator name
+    var parentRule = ruleManager.getRule(parentName);
+    if(!parentRule)
+      return this.warn("Rule missing '%s'", name);
 
+    this.parent = parentRule;
+
+    //type check
+    if(!(parentRule instanceof Rule))
+      return this.error("Cannot extend: '"+otherName+"' invalid type");
+
+    this.userObj = Utils.create(parentRule.userObj);
+    this.userObj.parent = parentRule.userObj;
+  },
+
+  buildFn: function() {
     //handle object.fn
     if($.isFunction(this.userObj.fn)) {
 
-      //move function into the rule
+      //createe ref on the rule
       this.fn = this.userObj.fn;
-      delete this.userObj.fn;
 
     //handle object.regexp
     } else if($.type(this.userObj.regex) === "regexp") {
 
       //build regex function
-      this.fn = (function(regex) {
+      this.fn = (function(re) {
         return function(r) {
-          var re = new RegExp(regex);
-          if(!r.val().match(re))
+          if(!re.test(r.val()))
             return r.message || "Invalid Format";
           return true;
         };
-
       })(this.userObj.regex);
 
-      delete this.userObj.regex;
-
     } else {
-      return this.warn("rule definition lacks a function");
+      return this.error("Rule has no function");
     }
-
-    this.ready = true;
-    //function built
   },
-
 
   //the 'this's in these interface mixins
   //refer to the rule 'r' object
@@ -639,8 +650,7 @@ var Rule = BaseClass.extend({
     if(this.type === 'field') {
       objs.push(this.defaultFieldInterface);
       objs.push({ field: exec.element.domElem });
-    }
-    if(this.type === 'group')
+    } else if(this.type === 'group')
       objs.push(this.defaultGroupInterface);
 
     objs.push({
@@ -662,7 +672,7 @@ var Rule = BaseClass.extend({
 var ruleManager = null;
 (function() {
 
-  //cached token parser - must be in form 'one(1,2,two(3,4),three.scope(6,7),five)'
+  //regex parser - with pre 'one(1,2),three.scope(6,7),five)'
   var parseString = function(str) {
 
     var chars = str.split(""),
@@ -670,6 +680,7 @@ var ruleManager = null;
         c, m, depth = 0;
 
     //replace argument commas with semi-colons
+    // TODO allow escaping of '(' ')' ','
     for(var i = 0, l = chars.length; i<l; ++i) {
       c = chars[i];
       if(c === '(') depth++;
@@ -708,10 +719,11 @@ var ruleManager = null;
       if(rawRules[name])
         warn("validator '%s' already exists", name);
 
+      //functions get auto-objectified
       if($.isFunction(obj[name]))
         obj[name] = { fn: obj[name] };
-
-      obj[name].type = type;
+      //
+      obj[name].__ruleType = type;
     }
 
     //deep extend rules by obj
@@ -742,7 +754,7 @@ var ruleManager = null;
       if(builtRules[name])
         delete builtRules[name];
     }
-    
+
     $.extend(true, rawRules, data);
   };
 
@@ -754,12 +766,11 @@ var ruleManager = null;
     var r = builtRules[name],
         obj = rawRules[name];
 
-    if(!obj) {
+    if(!obj)
       warn("Missing rule: " + name);
-    } else if(!r) {
-      r = new Rule(name, obj);
-      builtRules[name] = r;
-    }
+    else if(!r)
+      r = builtRules[name] = new Rule(name, obj);
+
     return r;
   };
 
@@ -793,7 +804,7 @@ var ruleManager = null;
     //add rule instances
     $.each(attrResults, function(i, result) {
       //special required case
-      if(result.name === 'required')
+      if(/required/.test(result.name))
         required = true;
 
       result.rule = getRule(result.name);
@@ -862,8 +873,8 @@ var ValidationForm = null;
       else if( that instanceof ValidationElement && that.domElem )
         e2 = that.domElem;
 
-      if(e1 && e2)
-        return e1.equals(e2);
+      if(e1.verifyEquals && e2.verifyEquals)
+        return e1.verifyEquals(e2);
 
       return false;
     }
@@ -892,10 +903,10 @@ var ValidationForm = null;
 
     //for use with $(field).validate(callback);
     validate: function(callback) {
-      if(!callback) callback = $.noop; 
+      if(!callback) callback = $.noop;
 
       var exec = new FieldExecution(this);
-      
+
       exec.execute().done(function() {
         callback(true);
       }).fail(function() {
@@ -924,35 +935,54 @@ var ValidationForm = null;
         this.groups[r.name][scope].add(this);
       }
 
-      if(typeof this.options.reskinContainer === 'function')
-        this.reskinElem = this.options.reskinContainer(this.domElem);
-      else
-        this.reskinElem = this.domElem;
-
     },
 
     handleResult: function(exec) {
 
+      var opts = this.options,
+          reskinElem = opts.reskinContainer(this.domElem);
 
-      // console.warn(this.name + " display: ", exec.type, exec.name);
+      if(!reskinElem || !reskinElem.length)
+        return this.warn("No reskin element found. Check 'reskinContainer' option.");
 
-      var opts = this.options;
+      //handle first error
+      // if(!exec.success &&
+      //    exec.parent.type === 'FormExecution' &&
+      //    !exec.parent.handledError) {
+      //   exec.parent.handledError = true;
+      //   this.scrollFocus(reskinElem);
+      // }
 
       //show prompt
       if(opts.showPrompt)
-        opts.prompt(this.reskinElem, exec.prompt);
+        opts.prompt(reskinElem, exec.response);
 
       //toggle error classes
-      var container = opts.errorContainer(this.reskinElem);
+      var container = opts.errorContainer(reskinElem);
       if(container && container.length)
         container.toggleClass(opts.errorClass, !exec.success);
-      
+
       //track event
       this.options.track(
         'Validate',
         [this.form.name,this.name].join(' '),
-        exec.success ? 'Valid' : exec.prompt ? '"'+exec.prompt+'"' : 'Silent Fail'
+        exec.success ? 'Valid' : exec.response ? '"'+exec.response+'"' : 'Silent Fail'
       );
+    },
+
+    //listening for 'validate' event
+    scrollFocus: function(reskinElem) {
+
+      var callback = $.noop;
+      if(this.options.focusFirstField)
+        callback = function() {
+          reskinElem.focus();
+        };
+
+      if (this.options.scroll)
+        reskinElem.verifyScrollView(callback);
+      else if(this.options.focusFirstField)
+        field.focus();
     }
 
   });
@@ -1100,37 +1130,18 @@ var ValidationForm = null;
      * ===================================== */
 
     validate: function(callback) {
-      if(!callback) callback = $.noop; 
+      if(!callback) callback = $.noop;
+
+      this.updateFields();
 
       var exec = new FormExecution(this);
-      
+
       exec.execute().done(function() {
         callback(true);
       }).fail(function() {
         callback(false);
       });
       return;
-    },
-
-    //listening for 'validate' event
-    scrollFocus: function() {
-
-      var lastExec = this.execution;
-
-      if(!lastExec.errors.length) return;
-
-      var field = lastExec.errors[0].field;
-
-      var doFocus =
-        this.options.focusFirstField &&
-        field.is("input[type=text]");
-
-      if (this.options.scroll)
-        field.scrollView(function() {
-          if(doFocus) field.focus();
-        });
-      else if(doFocus)
-        field.focus();
     }
   });
 
@@ -1148,8 +1159,6 @@ var FormExecution = null,
     COMPLETE: 2
   };
 
-  window.liveExecs = new Set();
-
   //super class
   //set in private scope
   var Execution = BaseClass.extend({
@@ -1158,15 +1167,17 @@ var FormExecution = null,
 
     init: function(element, parent) {
       //corresponding <Form|Field>Element class
+
       this.element = element;
       if(element) {
+        this.prevExec = element.execution;
         element.execution = this;
         this.options = this.element.options;
         this.domElem = element.domElem;
       }
       //parent Execution class
       this.parent = parent;
-      this.name = guid();
+      this.name = '#'+guid();
       this.status = STATUS.NOT_STARTED;
       this.bindAll();
 
@@ -1177,8 +1188,12 @@ var FormExecution = null,
 
     },
 
+    isPending: function() {
+      return this.prevExec && this.prevExec.status !== STATUS.COMPLETE;
+    },
+
     toString: function() {
-      return this._super() + (this.element || this.rule).toString();
+      return this._super() + "[" + this.element.name + (!this.rule ? "" : ":" + this.rule.name) + "] ";
     },
 
     //execute in sequence, stop on fail
@@ -1220,15 +1235,15 @@ var FormExecution = null,
       if(!$.isArray(fns) || l === 0)
         return this.resolve();
 
-      function pass(prompt) {
+      function pass(response) {
         n++;
-        if(n === l) _this.resolve(prompt);
+        if(n === l) _this.resolve(response);
       }
 
-      function fail(prompt) {
+      function fail(response) {
         if(rejected) return;
         rejected = true;
-        _this.reject(prompt);
+        _this.reject(response);
       }
 
       //execute all at once
@@ -1250,6 +1265,17 @@ var FormExecution = null,
       });
     },
 
+    linkPass: function(that) {
+      that.d.done(this.resolve);
+    },
+    linkFail: function(that) {
+      that.d.fail(this.reject);
+    },
+    link: function(that) {
+      this.linkPass(that);
+      this.linkFail(that);
+    },
+
     execute: function() {
 
       var p = this.parent,
@@ -1265,41 +1291,41 @@ var FormExecution = null,
       if(this.domElem)
         this.domElem.triggerHandler("validating");
 
-      liveExecs.add(this);
+      return true;
     },
 
-    executePassed: function(prompt) {
+    executePassed: function(response) {
       this.success = true;
-      this.prompt = prompt;
+      this.response = this.filterResponse(response);
       this.executed();
     },
-    executeFailed: function(prompt) {
+    executeFailed: function(response) {
       this.success = false;
-      this.prompt = prompt;
+      this.response = this.filterResponse(response);
       this.executed();
     },
 
     executed: function() {
-      this.status = STATUS.COMPLETE;
-      liveExecs.remove(this);
 
-      this.log(this.success ? 'Passed' : 'Failed', this.prompt);
+      this.status = STATUS.COMPLETE;
+
+      this.log((this.success ? 'Passed' : 'Failed') + ": " + this.response);
 
       if(this.domElem)
         this.domElem.triggerHandler("validated", this.success);
     },
 
     //resolves or rejects the execution's deferred object 'd'
-    resolve: function(prompt) {
-      return this.resolveOrReject(true, prompt);
+    resolve: function(response) {
+      return this.resolveOrReject(true, response);
     },
-    reject: function(prompt) {
-      return this.resolveOrReject(false, prompt);
+    reject: function(response) {
+      return this.resolveOrReject(false, response);
     },
-    resolveOrReject: function(success, prompt) {
+    resolveOrReject: function(success, response) {
       var fn = success ? '__resolve' : '__reject';
       if(!this.d || !this.d[fn]) throw "Invalid Deferred Object";
-      this.nextTick(this.d[fn], [prompt], 0);
+      this.nextTick(this.d[fn], [response], 0);
       return this.d.promise();
     },
     restrictDeferred: function(d) {
@@ -1310,8 +1336,12 @@ var FormExecution = null,
         console.error("Use execution.resolve|reject()");
       };
       return d;
+    },
+    filterResponse: function(response) {
+      if(typeof response === 'string')
+        return response;
+      return null;
     }
-
   });
 
   //set in plugin scope
@@ -1330,6 +1360,12 @@ var FormExecution = null,
 
     execute: function() {
       this._super();
+
+      if(this.isPending()) {
+        this.warn("pending... (waiting for %s)", this.prevExec.name);
+        return this.reject();
+      }
+
       this.log("exec fields #" + this.children.length);
       return this.parallelize(this.children);
     }
@@ -1351,11 +1387,17 @@ var FormExecution = null,
     execute: function() {
       this._super();
 
+      if(this.isPending()) {
+        this.warn("pending... (waiting for %s)", this.prevExec.name);
+        return this.reject();
+      }
+
       //execute rules
       var ruleParams = ruleManager.parseElement(this.element);
 
       //skip check
-      if(this.skipValidations(ruleParams))
+      this.skip = this.skipValidations(ruleParams);
+      if(this.skip)
         return this.resolve();
 
       //ready
@@ -1385,14 +1427,15 @@ var FormExecution = null,
       }
 
       //custom-form-elements.js hidden fields
-      if(this.element.form.options.skipHiddenFields &&
-         this.element.reskinElem.is(':hidden')) {
+      if(this.options.skipHiddenFields &&
+         this.options.reskinContainer(this.domElem).is(':hidden')) {
         this.log("skip (hidden)");
         return true;
       }
 
       //skip disabled
-      if(this.domElem.is('[disabled]')) {
+      if(this.options.skipDisabledFields &&
+         this.domElem.is('[disabled]')) {
         this.log("skip (disabled)");
         return true;
       }
@@ -1402,7 +1445,16 @@ var FormExecution = null,
 
     executed: function() {
       this._super();
-      this.element.handleResult(this);
+
+      //pass error to element
+      var i, exec = this,
+          children = this.children;
+      for(i = 0; i < children.length; ++i)
+        if(children[i].success === false) {
+          exec = children[i];
+          break;
+        }
+      this.element.handleResult(exec);
     }
 
   });
@@ -1426,7 +1478,7 @@ var FormExecution = null,
     callback: function(response) {
       clearTimeout(this.t);
       this.callbackCount++;
-      this.log(this.rule.name + " (cb#" + this.callbackCount + "): " + response);
+      this.log(this.rule.name + " (cb:" + this.callbackCount + "): " + response);
 
       if(this.callbackCount > 1)
         return;
@@ -1477,16 +1529,20 @@ var FormExecution = null,
       return this.d.promise();
     },
 
-    //filter response
-    resolveOrReject: function(success, response) {
-      return this._super(success, this.extractPrompt(response));
+    templateResponse: function(string, prop) {
+
+      var val = this.r[prop];
+
+      if(val !== undefined)
+        return val;
+
+      this.warn('Could not find r.'+prop);
+      return prop;
     },
 
-    //transforms the result from the rule
-    //into an array of elems and errors
-    extractPrompt: function(response) {
+    filterResponse: function(response) {
       if(typeof response === 'string')
-        return response;
+        return response.replace(/\{\{\s*(\w+)\s*\}\}/g, this.templateResponse);
       return null;
     }
 
@@ -1516,25 +1572,37 @@ var FormExecution = null,
           groupOrigin = originExec instanceof GroupRuleExecution,
           fieldOrigin = !originExec,
           formOrigin = originExec instanceof FormExecution,
-          _this = this, i, j, field, exec, child;
+          _this = this, i, j, field, exec, child,
+          isMember = false;
 
       if(!sharedExec || sharedExec.status === STATUS.COMPLETE) {
         this.log("MASTER");
         this.members = [this];
         this.executeGroup = this._super;
         sharedExec = this.group.exec = this;
+
+        if(formOrigin)
+          sharedExec.linkFail(originExec);
+
       } else {
-        this.log("SLAVE (", sharedExec.name, ")");
+
         this.members = sharedExec.members;
-
         for(i = 0; i < this.members.length; ++i)
-          if(this.element === this.members[i].element) {
-            this.log("ALREADY A MEMBER");
-            return this.reject();
-          }
+          if(this.element === this.members[i].element)
+            isMember = true;
 
-        this.members.push(this);
-        this.linkExec(sharedExec);
+        if(isMember) {
+          //start a new execution - reject old
+          this.log("ALREADY A MEMBER OF %s", sharedExec.name);
+          this.reject();
+          return;
+
+        } else {
+          this.log("SLAVE TO %s", sharedExec.name);
+          this.members.push(this);
+          this.link(sharedExec);
+          if(this.parent) sharedExec.linkFail(this.parent);
+        }
       }
 
       if(fieldOrigin)
@@ -1545,7 +1613,7 @@ var FormExecution = null,
           continue;
 
         this.log("CHECK:", field.name);
-        //let the user make their way onto 
+        //let the user make their way onto
         // the field first - silent fail!
         if(!field.touched) {
           this.log("FIELD NOT READY: ", field.name);
@@ -1562,41 +1630,36 @@ var FormExecution = null,
         exec.execute();
       }
 
+      var groupSize = this.group.size(),
+          execSize = sharedExec.members.length;
 
-      if(this.group.size() === sharedExec.members.length &&
+      if(groupSize === execSize&&
          sharedExec.status === STATUS.NOT_STARTED) {
         sharedExec.log("RUN");
         sharedExec.executeGroup();
       } else {
-        this.log("WAIT");
+        this.log("WAIT (" + execSize + "/" + groupSize + ")");
       }
 
       return this.d.promise();
     },
 
-    linkExec: function(master) {
-      //use the status of this group
-      //as the status of each linked
-      master.d.done(this.resolve).fail(this.reject);
-      // todo
-      //silent fail if one of the linked fields' rules
-      //fails prior to reaching the group validation
-      // if(master.parent)
-      //   master.parent.d.fail(this.reject);
-    },
+    filterResponse: function(response) {
+      var str = null;
 
-    extractPrompt: function(response) {
+      if(response && this.members.length) {
+        var isObj = $.isPlainObject(response),
+            isStr = (typeof response === 'string');
 
-      if(!response || !this.members.length)
-        return this._super(response);
+        //string - only show on master execution
+        if(isStr && this === this.group.exec)
+          str = response;
+        //obj - show by id
+        else if(isObj && response[this.id])
+          str = response[this.id];
+      }
 
-      var isObj = $.isPlainObject(response),
-          isStr = (typeof response === 'string');
-
-      if(isStr && this === this.group.exec) return response;
-      if(isObj && response[this.id]) return response[this.id];
-
-      return null;
+      return this._super(str);
     }
 
   });
@@ -1613,7 +1676,7 @@ $.fn.validate = function(callback) {
 $.fn.validate.version = VERSION;
 
 $.fn.verify = function(userOptions) {
-  return this.each(function(i) {
+  return this.each(function() {
 
     //get existing form class this element
     var form = $.verify.forms.find($(this));
@@ -1630,6 +1693,7 @@ $.fn.verify = function(userOptions) {
     Utils.checkOptions(userOptions);
     if(form) {
       form.extendOptions(userOptions);
+      form.updateFields();
     } else {
       form = new ValidationForm($(this), userOptions);
       $.verify.forms.add(form);
@@ -1665,6 +1729,7 @@ $.extend($.verify, {
  * ===================================== */
 
 $(function() {
+  if(globalOptions.autoInit)
   $("form").filter(function() {
     return $(this).find("[" + globalOptions.validateAttribute + "]").length > 0;
   }).verify();
@@ -1674,56 +1739,65 @@ log("plugin added.");
 
 
 (function($) {
-
-  if($.verify === undefined) {
-    window.alert("Please include verify.js before each rule file");
-    return;
-  }
-
   $.verify.addFieldRules({
-    /* Regex validators
-     * - at plugin load, 'regex' will be transformed into validator function 'fn' which uses 'message'
+    /**
+     * Ensures a valid email address
+     * @name email
+     * @type field
+     * 
+     * @valid dev@jpillora.com
+     * @invalid devjpillora.com
+     * @invalid dev@jpillora.c
      */
-    currency: {
-      regex: /^\-?\$?\d{1,2}(,?\d{3})*(\.\d+)?$/,
-      message: "Invalid monetary value"
-    },
     email: {
       regex: /^(([^<>()\[\]\\.,;:\s@\"]+(\.[^<>()\[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       message: "Invalid email address"
     },
+    /**
+     * Ensures a valid URL
+     * @name url
+     * @type field
+     *
+     * @valid http://jpillora.com
+     * @invalid jpillora.com
+     * @invalid http://jpilloracom
+     */
     url: {
-      regex: /^https?:\/\/[\-A-Za-z0-9+&@#\/%?=~_|!:,.;]*[\-A-Za-z0-9+&@#\/%=~_|]/,
+      regex: /^https?:\/\/(\S+(\:\S*)?@)?((?:[a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)(\.([a-z\u00a1-\uffff0-9]+-?)*[a-z\u00a1-\uffff0-9]+)*(\.([a-z\u00a1-\uffff]{2,}))(:\d{2,5})?(\/[^\s]*)?$/i,
       message: "Invalid URL"
     },
+    /**
+     * Ensures only alphanumeric characters are used
+     * @name alphanumeric
+     * @type field
+     *
+     * @valid abc123ABC
+     * @invalid abc!123ABC
+     */
     alphanumeric: {
       regex: /^[0-9A-Za-z]+$/,
       message: "Use digits and letters only"
     },
-    street_number: {
-      regex: /^\d+[A-Za-z]?(-\d+)?[A-Za-z]?$/,
-      message: "Street Number only"
-    },
+    /**
+     * Ensures only numbers are used
+     * @name number
+     * @type field
+     *
+     * @valid 123
+     * @invalid 123abc
+     */
     number: {
       regex: /^\d+$/,
       message: "Use digits only"
     },
-    numberSpace: {
-      regex: /^[\d\ ]+$/,
-      message: "Use digits and spaces only"
-    },
-    postcode: {
-      regex: /^\d{4}$/,
-      message: "Invalid postcode"
-    },
-    date: {
-      fn: function(r) {
-        if($.verify.utils.parseDate(r.val()))
-          return true;
-        return r.message;
-      },
-      message: "Invalid date"
-    },
+    /**
+     * Ensures the field has filled in
+     * @name required
+     * @type field
+     *
+     * @valid abc
+     * @invalid 
+     */
     required: {
 
       fn: function(r) {
@@ -1746,11 +1820,11 @@ log("plugin added.");
 
             if (group.is(":checked"))
               break;
+
             if (group.size() === 1)
               return r.messages.single;
-            else
-              return r.messages.multiple;
-            break;
+
+            return r.messages.multiple;
 
           default:
             if (! $.trim(v))
@@ -1760,11 +1834,22 @@ log("plugin added.");
         return true;
       },
       messages: {
-        "all": "This field is required",
-        "multiple": "Please select an option",
-        "single": "This checkbox is required"
+        all: "This field is required",
+        multiple: "Please select an option",
+        single: "This checkbox is required"
       }
     },
+    /**
+     * Ensures the field matches the provided regular expression
+     * @name regex
+     * @param {String} regex The regular expression
+     * @param {String} message The error message displayed (default: 'Invalid Format')
+     * @type field
+     * 
+     * @valid #params(bcde) abcdef
+     * @valid #params(^abc) abcdef
+     * @invalid #params($cde) abcdef
+     */
     regex: {
       fn: function(r) {
         var re;
@@ -1776,185 +1861,257 @@ log("plugin added.");
           return true;
         }
 
-        if(!r.val().match(re))
+        if(!re.test(r.val()))
           return r.args[1] || r.message;
         return true;
       },
       message: "Invalid format"
     },
-    //an alias
+    /**
+     * An alias to 'regex'
+     * @name pattern
+     * @type field
+     */
     pattern: {
       extend: 'regex'
     },
-    asyncTest: function(r) {
-
-      r.prompt(r.field, "Please wait...");
-      setTimeout(function() {
-        r.callback();
-      },2000);
-
-    },
-    phone: function(r) {
-      r.val(r.val().replace(/\D/g,''));
-      var v = r.val();
-      if(!v.match(/^[\d\s]+$/))
-        return "Use digits and spaces only";
-      if(!v.match(/^0/))
-        return "Number must start with 0";
-      if(v.replace(/\s/g,"").length !== 10)
-        return "Must be 10 digits long";
-      return true;
-    },
-    size: function(r){
-      var v = r.val(), exactOrLower = r.args[0], upper = r.args[1];
-      if(exactOrLower !== undefined && upper === undefined) {
-        var exact = parseInt(exactOrLower, 10);
-        if(r.val().length !== exact)
-          return  "Must be "+exact+" characters";
-      } else if(exactOrLower !== undefined && upper !== undefined) {
-        var lower = parseInt(exactOrLower, 10);
-        upper = parseInt(upper, 10);
-        if(v.length < lower || upper < v.length)
-          return "Must be between "+lower+" and "+upper+" characters";
-      } else {
-        r.warn("size validator parameter error on field: " + r.field.attr('name'));
-      }
-
-      return true;
-    },
-    min: function(r) {
-      var v = r.val(), min = parseInt(r.args[0], 10);
-      if(v.length < min)
-        return "Must be at least " + min + " characters";
-      return true;
-    },
-    max: function(r) {
-      var v = r.val(), max = parseInt(r.args[0], 10);
-      if(v.length > max)
-        return "Must be at most " + max + " characters";
-      return true;
-    },
-
-    decimal: function(r) {
-      var vStr = r.val(),
-          places = r.args[0] ? parseInt(r.args[0], 10) : 2;
-
-      if(!vStr.match(/^\d+(,\d{3})*(\.\d+)?$/))
-        return "Invalid decimal value";
-
-      var v = parseFloat(vStr.replace(/[^\d\.]/g,'')),
-          factor = Math.pow(10,places);
-
-      v = (Math.round(v*factor)/factor);
-      r.field.val(v);
-
-      return true;
-    },
-    minVal: function(r) {
-      var v = parseFloat(r.val().replace(/[^\d\.]/g,'')),
-          suffix = r.args[1] || '',
-          min = parseFloat(r.args[0]);
-      if(v < min)
-        return "Must be greater than " + min + suffix;
-      return true;
-    },
-    maxVal: function(r) {
-      var v = parseFloat(r.val().replace(/[^\d\.]/g,'')),
-          suffix = r.args[1] || '',
-          max = parseFloat(r.args[0]);
-      if(v > max)
-        return "Must be less than " + max + suffix;
-      return true;
-    },
-    rangeVal: function(r) {
-      var v = parseFloat(r.val().replace(/[^\d\.]/g,'')),
-          prefix = r.args[2] || '',
-          suffix = r.args[3] || '',
-          min = parseFloat(r.args[0]),
-          max = parseFloat(r.args[1]);
-      if(v > max || v < min)
-        return "Must be between " + prefix + min + suffix + "\nand " + prefix + max + suffix;
-      return true;
-    },
-
-    agreement: function(r){
-      if(!r.field.is(":checked"))
-        return "You must agree to continue";
-      return true;
-    },
-    minAge: function(r){
-      var age = parseInt(r.args[0],10);
-      if(!age || isNaN(age)) {
-        console.log("WARNING: Invalid Age Param: " + age);
+    /**
+     * Ensures the number of characters is at least a given length  
+     * @name min
+     * @param {Integer} min An integer representing the minimum number of characters
+     * @type field
+     *
+     * @valid   #params(5) aaaaa
+     * @valid   #params(3) aaaaa
+     * @invalid #params(5) aaa
+     */
+    min: {
+      fn:function(r) {
+        var v = r.val();
+        r.min = parseInt(r.args[0], 10);
+        if(v.length < r.min)
+          return r.message;
         return true;
-      }
-      var currDate = new Date();
-      var minDate = new Date();
-      minDate.setFullYear(minDate.getFullYear() - age);
-      var fieldDate = $.verify.utils.parseDate(r.val());
-
-      if(fieldDate === "Invalid Date")
-        return "Invalid Date";
-      if(fieldDate > minDate)
-        return "You must be at least " + age;
-      return true;
-    }
-  });
-
-  // Group validation rules
-  $.verify.addGroupRules({
-
-    dateRange: function(r) {
-      var start = r.field("start"),
-          end = r.field("end");
-
-      if(start.length === 0 || end.length === 0) {
-        r.warn("Missing dateRange fields, skipping...");
-        return true;
-      }
-
-      var startDate = $.verify.utils.parseDate(start.val());
-      if(!startDate)
-        return "Invalid Start Date";
-
-      var endDate = $.verify.utils.parseDate(end.val());
-      if(!endDate)
-        return "Invalid End Date";
-
-      if(startDate >= endDate)
-        return "Start Date must come before End Date";
-
-      return true;
+      },
+      message: "Must be at least {{ min }} characters"
     },
-
-    requiredAll: {
-      extend: 'required',
+    /**
+     * Ensures the number of characters is at most a given length  
+     * @name max
+     * @param {Integer} max An integer representing the maximum number of characters
+     * @type field
+     *
+     * @valid   #params(5) aaaaa
+     * @valid   #params(3) aaa
+     * @invalid #params(3) aaaaa
+     */
+    max: {
       fn: function(r) {
+        var v = r.val();
+        r.max = parseInt(r.args[0], 10);
+        if(v.length > r.max)
+          return r.message;
+        return true;
+      },
+      message: "Must be at most {{ max }} characters"
+    },
+    /**
+     * Ensures the number of characters is a inside a given length range
+     * @name size
+     * @param {String} min An integer representing the minimum number of characters
+     * @param {String} max An integer representing the maximum number of characters (default: min)
+     * @type field
+     *
+     * @valid   #params(5) aaaaa
+     * @valid   #params(3) aaa
+     * @valid   #params(3,5) aaaa
+     * @invalid #params(3,5) aaaaaaaa
+     * @invalid #params(3,5) 
+     */
+    size: {
+      fn: function(r){
+        var len = r.val().length;
+        r.min = parseInt(r.args[0], 10);
+        r.max = parseInt(r.args[1], 10) || r.min;
 
-        var size = r.fields().length,
-            message,
-            passes = [], fails = [];
-
-        r.fields().each(function(i, field) {
-          message = r.requiredField(r, field);
-          if(message === true)
-            passes.push(field);
-          else
-            fails.push({ field: field, message:message });
-        });
-
-        if(passes.length > 0 && fails.length > 0) {
-          $.each(fails, function(i, f) {
-            r.prompt(f.field, f.message);
-          });
-          return false;
+        if(!r.min){
+          r.warn("Invalid argument: "+r.args[0]);
+          return true;
         }
 
+        if(len < r.min || len > r.max)
+          return r.messages[r.min === r.max ? 'exact' : 'range'];
+
         return true;
+      },
+      messages: {
+        range: "Must be between {{ min }} and {{ max }} characters",
+        exact: "Must be {{ min }} characters"
       }
     }
+    /**
+     */
 
   });
 
 })(jQuery);
-}(window,document));
+(function($) {
+  $.verify.addFieldRules({
+
+    /**
+     * Ensures valid currency
+     * @name currency
+     * @type field
+     * @param symbol The currency symbol to expect
+     * 
+     * @valid $100.00
+     * @valid -$100.00
+     * @valid #params(X) -X100.00
+     * @invalid 100.00
+     * @invalid -X100.00
+     */
+    currency: {
+      fn: function(r) {
+        if(r.args[0]) r.symbol = r.args[0];
+        if(!/^\-?(.)\d+(,?\d{3})*(\.\d+)?$/.test(r.val()))
+          return r.message.invalidValue;
+        if(!RegExp.$1 || RegExp.$1 !== r.symbol)
+          return r.message.invalidCurrency;
+
+        return true;
+      },
+      symbol: '$',
+      message: {
+        invalidValue: "Invalid monetary value",
+        invalidCurrency: "Missing '{{ symbol }}' symbol"
+      }
+    },
+    /**
+     * Ensures valid decimal number and rounds it
+     * @name decimal
+     * @type field
+     * @param places The numbers of places to round
+     *
+     * @valid 1.00
+     * @valid 100.00
+     * @valid 333
+     * @invalid 33.33.00
+     * @invalid -$100
+     */
+    decimal: {
+      fn: function(r) {
+        var vStr = r.val(),
+            places = r.args[0] ? parseInt(r.args[0], 10) : 2;
+
+        if(!vStr.match(/^\-?\d+(,\d{3})*(\.\d+)?$/))
+          return r.message;
+
+        var v = parseFloat(vStr.replace(/,/g,'')),
+            factor = Math.pow(10,places);
+
+        v = (Math.round(v*factor)/factor);
+        r.field.val(v);
+
+        return true;
+      },
+      message: "Invalid decimal value"
+    },
+    /**
+     * Ensures the input is greater than the given value
+     * @name minVal
+     * @type field
+     * @param min The minimum value
+     *
+     * @valid xxxx
+     * @valid #params(2.5) 3 
+     * @invalid #params(2.5) 2
+     */
+    minVal: {
+      fn:function(r) {
+        var v = parseFloat(r.val().replace(/[^\d\.]/g,''));
+        r.min = parseFloat(r.args[0]);
+        if(!r.min) {
+          r.warn('minVal: No minimum set');
+          return true;
+        }
+        r.preffix = r.args[1] || '';
+        r.suffix =  r.args[2] || '';
+        if(v < r.min)
+          return r.message;
+        r.val(v);
+        return true;
+      },
+      prefix: '',
+      suffix: '',
+      message: "Must be greater than { prefix }{ min }{ suffix }"
+    },
+    /**
+     * Ensures the input is less than the given value
+     * @name maxVal
+     * @type field
+     * @param max The maximum value
+     *
+     * @valid xxxx
+     * @valid #params(2.5) 2 
+     * @invalid #params(2.5) 3
+     */
+    maxVal: {
+      fn:function(r) {
+        var v = parseFloat(r.val().replace(/[^\d\.]/g,''));
+        r.max = parseFloat(r.args[0]);
+        if(!r.max) {
+          r.warn('maxVal: No maximum set');
+          return true;
+        }
+        r.preffix = r.args[1] || '';
+        r.suffix =  r.args[2] || '';
+        if(v > r.max)
+          return r.message;
+        r.val(v);
+        return true;
+      },
+      prefix: '',
+      suffix: '',
+      message: "Must be less than { prefix }{ max }{ suffix }"
+    },
+    /**
+     * Ensures the input is within the given range
+     * @name rangeVal
+     * @type field
+     * @param min The minimum value
+     * @param max The maximum value
+     *
+     * @valid missingparams
+     * @valid #params(2.5) missingparam
+     * @valid #params(2.5,6.5) 3
+     * @valid #params(2.5,6.5) 6.45
+     * @invalid #params(2.5,6.5) 1.45
+     * @invalid #params(2.5,6.5) 7.45
+     */
+    rangeVal: {
+      fn: function(r) {
+        var v = parseFloat(r.val().replace(/[^\d\.]/g,''));
+
+        r.min = parseFloat(r.args[0]);
+        if(!r.min) {
+          r.warn('rangeVal: No minimum set');
+          return true;
+        }
+        r.max = parseFloat(r.args[1]);
+        if(!r.max) {
+          r.warn('rangeVal: No maximum set');
+          return true;
+        }
+        r.preffix = r.args[2] || '';
+        r.suffix =  r.args[3] || '';
+        if(v > r.max || v < r.min)
+          return r.message;
+        return true;
+      },
+      prefix: '',
+      suffix: '',
+      message: "Must be between { prefix }{ min }{ suffix }\nand { prefix }{ max }{ suffix }"
+    }
+    /** */
+  });
+})(jQuery);}(window,document,jQuery));
