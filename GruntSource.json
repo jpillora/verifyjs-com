@@ -1,6 +1,6 @@
 {
-  "source": "~/.grunt-sources/ghpages",
-  "repo": "https://github.com/jpillora/grunt-source-ghpages.git",
+  "source": "~/.grunt-sources/web",
+  "repo": "https://github.com/jpillora/grunt-source-web.git",
   "dependency": "0.7.x",
   "config": {
     "copy": {
