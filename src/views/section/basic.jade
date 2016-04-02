@@ -1,4 +1,3 @@
-
 .row-fluid(data-nav-heading='Basic')
   .demo(data-nav-anchor='Usage') 
     | Add some validation rules
@@ -15,13 +14,10 @@
       | Verify.js will auto-initialise all forms that contain an element with a 
       code data-validate
       |  attribute. Since we're just using defaults settings, no extra code is required.
-
   .demo(data-nav-anchor='Included Rules')
-
     p
       | This is a list of all of the validation rules that come pre-packaged
       | and will work out of the box.
-
     table.rules-table.table.table-striped.table-bordered
       thead
         tr
@@ -64,7 +60,6 @@
           td regex or pattern
           td regular expression,error message (default: "Invalid format")
           td Ensures the specified regular expression matches
-
         tr
           td phone
           td None
@@ -73,22 +68,18 @@
           td min
           td min
           td Ensures that at least 'min' number of characters exist
-
         tr
           td max
           td max
           td Ensures that at most 'max' number of characters exist
-
         tr
           td size
           td length
           td Ensures that exactly 'length' number of characters exist
-
         tr
           td size
           td min,max
           td Ensures that between 'min' and 'max' number of characters exist
-
         tr
           td minVal
           td minVal
@@ -101,21 +92,17 @@
           td rangeVal
           td minVal,maxVal
           td Ensures that the value of the field is between 'minVal' and 'maxVal'
-
         tr
           td agreement
           td None
           td Ensures that the checkbox has been checked
-
         tr
           td minAge
           td age
           td Ensures that the date of birth equates to a minimum age of 'age' 
-
         tr
           td(colspan='3')
             i and many more yet to be documented...
-
   .demo(data-nav-anchor='Multiple Rules')
     | You can also add multiple validation rules
     pre(data-html='data-html').
@@ -131,8 +118,6 @@
       | validation rules in sequence, even asynchronous rules ! See 
       a(data-link) Execution Sequence
       |  for more information.
-
-
   .demo(data-nav-anchor='Configuring Rules')
     | Some rules may also accept arguments
     pre(data-html='data-html').

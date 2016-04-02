@@ -75,11 +75,9 @@
           td function(element, text, opts) { $.notify(element, text, opts); }
      
   .demo(data-nav-anchor='Validation Tracking')
-
     p
       | The Validation Tracking Handler is a function which looks like 
       code function(type, fieldId, result)
-
     ul
       li
         code type
@@ -100,11 +98,9 @@
             code "Skip"
             i  (Meaning the field was hidden or has no validators)
           li The error message that was displayed on the field
-
     p
       | This was intended for use with Google Analytics Event Tracking.
       | Following it's 3 column implementation: Category, Action and Label.
-
     p
       | An example function to track validations using Google Analytics might be something like:
     
@@ -114,20 +110,16 @@
           if(_gaq) _gaq.push(['_trackEvent', type, fieldId, result]);
         }
       });
-
     p
       | Also note, only validations triggered from the 
       a(data-link) validationEventTrigger
       |  ("blur" by default) will be tracked. This prevents
       | false positives from early form validations.
-
   .demo(data-nav-anchor='Prompt Handler')
-
     p
       | The Prompt Handler is a function which looks like 
       code function(element, text[, opts])
       | . So a really simple function might be:
-
     pre.prettyprint.
       $.verify({
         prompt: function(element, text) {
@@ -137,18 +129,15 @@
     
     p
       | Or you might want to get abit more fancy with some assistance of HTML:
-
     pre.prettyprint.
-      <input type='text' data-validate='required'/>
-      <span class='tip'></span>
-
+      &lt;input type='text' data-validate='required'/>
+      &lt;span class='tip'>&lt;/span>
     pre.prettyprint.
       $.verify({
         prompt: function(element, text) {
           element.siblings(".tip").html(text || '');
         }
       });
-
     .alert.alert-info
       strong Pro Tip 
       | The 
@@ -156,7 +145,6 @@
       |  parameter will be 
       code null
       |  when there is no error, thereby clearing the error.
-
     p
       | Or you could get 
       b even 
@@ -164,19 +152,15 @@
       a(data-link) download
       | ing the packaged version and then you don't have to worry 
       | about making your own Prompt Handler.
-
     pre.prettyprint.
       $.verify({
         // no options required !
       });
-
     p 
       | Also note,
       | Notify.js allows you make custom prompt styles and themes as
       | opposed to the standard bootstrap alert style.
-
     h4
       | Check out Notify.js at  
       a(href='http://notifyjs.com') http://notifyjs.com 
-
 //Options 

@@ -11,16 +11,16 @@
     | Now, we can use it
     pre(data-html='data-html').
       
-    script(data-script='data-script', type='text/javascript')
-      $.verify.addRules({
-        divisibleByThree: function(r) {
-          var n = parseInt(r.val());
-          if(n%3 !== 0)
-            return "Not divisible by 3!"
-          return true;
-        }
-      });
-    | And Voila:
+    script(data-script='data-script', type='text/javascript').
+        $.verify.addRules({
+          divisibleByThree: function(r) {
+            var n = parseInt(r.val());
+            if(n%3 !== 0)
+              return "Not divisible by 3!"
+            return true;
+          }
+        });
+    span And Voila:
     div(data-html='data-html')
       form
         input(name='num', value='5', data-validate='divisibleByThree')
@@ -30,10 +30,6 @@
       | See the 
       a(data-link) Rule Object
       |  Spec for more information.
-
-
-
-
   .demo(data-nav-anchor='Asynchronous Rules')
     p
       | They key to asynchronous rules is just to use the 
@@ -55,11 +51,10 @@
       | ), you're telling the library to wait for a callback. 
       | If no callback is fired, a timeout warning will be 
       | displayed in the console.
-
     p The above is exemplied here:
     pre(data-script='data-script')
     
-    script(data-script='data-script', type='text/javascript')
+    script(data-script='data-script', type='text/javascript').
       $.verify.addRules({
         myAjax: function(r) {
           //Give the user some feedback (uses the Prompt Handler)
@@ -75,7 +70,6 @@
           }, 2000);
         }
       });
-
     p Now, we can use it
     pre(data-html='data-html').
       

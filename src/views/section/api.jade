@@ -24,15 +24,12 @@
             | An 
             a(data-link) Options
             |  Object
-
     .alert.alert-info
       strong Note 
       code $("form").verify()
       |  gets automatically called on DOM ready (using default options). Though the above method will be required when dynamically adding new forms to the page.
   
-
   .demo(data-nav-anchor='Adding Rules')
-
     table.table.table-striped.table-bordered.api-table
       thead
         tr
@@ -77,16 +74,13 @@
             | A map (Object) of rule names to 
             a(data-link) Definition Object
             | s. Only existing rules will be updated.
-
     p
       | The difference between field and group rules is largely outlined in the 
       a(data-link) Groups
       |  section above. There are also differences in the 
       a(data-link) Rule Object
       |  of each.
-
   .demo(data-nav-anchor='Definition Object')
-
     table.table.table-striped.table-bordered
       thead
         tr
@@ -117,7 +111,6 @@
           td 
             | A variable that will be passed to the  
             a(data-link) Rule Object
-
     p If your rule only has the one 'fn' property:
     pre.prettyprint.
       $.verify.addRules({
@@ -127,7 +120,6 @@
           }
         }
       });
-
     p Then it can be shortened to:
     pre.prettyprint.
       $.verify.addRules({
@@ -135,7 +127,6 @@
           return r.val() === "42" ? true : "Wasn't 42";
         }
       });
-
     p Regular expression shortcut:
     pre.prettyprint.
       $.verify.addRules({
@@ -150,8 +141,6 @@
       |  and an optional  
       code message
       |  property, its fn property will automatically built.
-
-
     p Use of variables:
     pre.prettyprint.
       $.verify.addRules({
@@ -163,8 +152,6 @@
           }
         }
       });
-
-
     p The above example isn't very exciting, though when it comes time to use multiple languages, you can just update the message:
     pre.prettyprint.
       $.verify.updateRules({
@@ -172,50 +159,39 @@
           message: "no tuvo éxito"
         }
       });
-
     p Now, getting abit fancier, we can extend existing rules with the extend property 
     pre.prettyprint.
       $.verify.addRules({
         myRule: {
           message: "An error",
-
           common: function(n) {
             //a useful task...
           },
-
           fn: function(r) {
             r.common(21);
             return r.message;
           }
         },
-
         //Alternative uses of 'common'
         myOtherRule: {
           extend: "myRule",
-
           fn: function(r) {
             r.common(42);
             return r.message; //"An Error"
           }
         },
-
         //Only modify the 'message'
         myThirdRule: {
           extend: "myRule",
           message: "A super bad error"
         }
       });
-
-
-
   .demo(data-nav-anchor='Rule Object')
-
     p
       | The Rule Object is the single parameter in all validation rules. It is known as 
       code r
       |  in the examples. 
     
-
     table.table.table-striped.table-bordered
       thead
         tr
@@ -238,7 +214,6 @@
             | An  alias to
             code r.field.val()
           td None (Getter) / Value (Setter)      
-
         tr
           td(rowspan=2) Group Only
           td field(id)
@@ -254,11 +229,8 @@
             | An  alias to
             code r.field(id).val()
           td id (Getter) / id,Value (Setter)
-
         tr
           td(colspan='5'): i Documentation in progress...
-
-
   .demo(data-nav-anchor='Selector API')
     table.table.table-striped.table-bordered.api-table
       thead

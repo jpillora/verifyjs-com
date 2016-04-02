@@ -1,6 +1,11 @@
 {
   "name": "verifyjs-com",
   "version": "0.0.1",
+  "scripts": {
+    "coffee": "cat scripts/*.coffee | coffee --compile --stdio > ../js/app.js",
+    "jade": "jade -P -w views/index.jade -o ../",
+    "stylus": "stylus styles/ -w -u nib -o ../css/"
+  },
   "dependencies": {
     "jade": "latest",
     "coffee-script": "latest",

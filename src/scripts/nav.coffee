@@ -1,30 +1,20 @@
-
 sections = []
 anchors = []
-
 setupNav = ->
-
   setupNavHeading = ->
-
     section = $(@)
     heading = section.data("nav-heading")
     slug = slugify(heading)
     first = section.children(":first")
     section.prepend create("h3").html(heading)  unless first.is("h3")
     section.attr "nav-id", slug
-
     li = headerTemplate(heading: heading)
-
     container = create("div").addClass("nav-section")
     container.append li
-
     $(this).find("[data-nav-anchor]").each ->
       setupNavAnchor container, $(this)
-
     navList.append container
-
     sections.push { type:'section', content: section, nav: container }
-
   setupNavAnchor = (container, anchor) ->
     title = anchor.data("nav-anchor")
     slug = slugify(title)
@@ -38,32 +28,17 @@ setupNav = ->
     ))
     container.append li
     anchors.push { type:'anchor', content: anchor, nav: li, title }
-
   headerTemplate = _.template("<li class='nav-header'><%= heading %></li>")
   anchorTemplate = _.template("<li class='nav-item'><a href='#<%= slug %>''><%= title %></a></li>")
-
   navList = $("#nav-list")
-
   $("[data-nav-heading]").each setupNavHeading
-
   check = ->
     _.each sections, activeInView
     _.each anchors, activeInView
-
   activeInView = (obj) ->
     isActive = obj.content.is ':in-viewport'
     obj.nav.toggleClass 'active', isActive
-
     if obj.type is 'anchor'
       trackTiming obj.title, isActive
-
-    # if obj.nav.hasClass 'active' and not isActive
-    #   obj.nav.removeClass 'active'
-    #   trackTiming obj, false
-    # else if not obj.nav.hasClass 'active' and isActive
-    #   obj.nav.addClass 'active'
-    #   trackTiming obj, true
-
-
   $document.scroll _.throttle check
   $document.trigger 'scroll'

@@ -1,5 +1,3 @@
-
-
 #mini extensions
 $.fn.togglers = ->
   container = $(this)
@@ -17,19 +15,15 @@ $.fn.togglers = ->
         elem.slideUp()
       else
         elem.slideDown()
-
 #intercept all form submissions
 handleDemoFormSubmit = ->
   $(this).append successElem.hide().stop().slideDown().delay(2000).slideUp()
   false
-
 successElem = $("<div class=\"alert alert-success\"><strong>" +
     "Validation successful ! </strong> If this was a real form, " +
     "it would be submitting right now...</div>")
-
 $window = $(window)
 $document = $(document)
-
 $document.ready ->
   setupTracking()
   setupCode()

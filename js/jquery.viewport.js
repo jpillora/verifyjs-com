@@ -9,8 +9,9 @@
  * Project home:
  *  http://www.appelsiini.net/projects/viewport
  *
- */ (function($) {
+ */
 
+window.loadViewport = function($) {
   $.belowthefold = function(element, settings) {
     var fold = $(window).height() + $(window).scrollTop();
     return fold <= $(element).offset().top - settings.threshold;
@@ -62,6 +63,5 @@
       });
     }
   });
-
-
-})(jQuery);
+};
+window.loadViewport(window.jQuery);

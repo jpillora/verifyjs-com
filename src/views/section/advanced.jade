@@ -1,6 +1,4 @@
 .row-fluid(data-nav-heading='Advanced Validation')
-  
-
   .demo(data-nav-anchor='Groups')
     p
       | Group validations are required when validation depends on two or more fields. Useful for checking the combined result of a set of fields, such as a date range.
@@ -15,7 +13,6 @@
       | Read about the  
       a(data-link) Require IDs
       |  Option.
-
       br
       b Group Scope 
       | is for reasonably rare cases when you are using the same
@@ -40,7 +37,7 @@
       input#parseStringInput(style='height: 14px;')
       code "
     pre#parseStringOutput         
-    script(type='text/javascript')
+    script(type='text/javascript').
       $("#parseStringInput").keyup(function() {
       var result = $.verify._hidden.ruleManager.parseString( $(this).val() );
       if(result) $("#parseStringOutput").text(JSON.stringify(result,null, 2));
@@ -55,46 +52,40 @@
         input(value='3/1/2x13', data-validate='date,dateRange#start')
         input(value='2/1/2013', data-validate='date,dateRange#end')
         input.submit(type='submit')
-
-  .demo(data-nav-anchor='Group Errors')
-    p
-      | By default the error prompt will NOT be displayed on each member of the group, instead, only the field that triggered validation will display the message.
-    p
-      | This can be overriden by instead returning a map of 
-      code id
-      | s to 
-      code string
-      | s, as shown here:
-      pre(data-script='data-script').
-        
-      script(data-script='data-script', type='text/javascript')
-        $.verify.addGroupRules({
-          myGroup: function(r) {
-            return { a: "An error for 'a'", c: "An error for 'c'"};
-          }
-        });
-      pre(data-html='data-html').
-        
-      | Which will produce:
-      div(data-html='data-html')
-        form
-          input(data-validate='myGroup#a')
-          input(data-validate='myGroup#b')
-          input(data-validate='myGroup#c')
-          input.submit(type='submit')
-      .alert.alert-info
-        strong Note 
-        | If the group validation is asynchronous, use
-        code r.callback({ ... })
-        | .
-
-
+  //- .demo(data-nav-anchor='Group Errors')
+  //-   p
+  //-     | By default the error prompt will NOT be displayed on each member of the group, instead, only the field that triggered validation will display the message.
+  //-   p
+  //-     | This can be overriden by instead returning a map of 
+  //-     code id
+  //-     | s to 
+  //-     code string
+  //-     | s, as shown here:
+  //-     pre(data-script='data-script').
+  //-       
+  //-     script(data-script='data-script', type='text/javascript').
+  //-       $.verify.addGroupRules({
+  //-         myGroup: function(r) {
+  //-           return { a: "An error for 'a'", c: "An error for 'c'"};
+  //-         }
+  //-       });
+  //-     pre(data-html='data-html').
+  //-       
+  //-     | Which will produce:
+  //-     div(data-html='data-html')
+  //-       form
+  //-         input(data-validate='myGroup#a')
+  //-         input(data-validate='myGroup#b')
+  //-         input(data-validate='myGroup#c')
+  //-         input.submit(type='submit')
+  //-     .alert.alert-info
+  //-       strong Note 
+  //-       | If the group validation is asynchronous, use
+  //-       code r.callback({ ... })
+  //-       | .
   .demo(data-nav-anchor='Execution Sequence')
-
     p 
       | In order to better understand what's actually happening when you submit 
       | the form, I've included this nice diagram:
-
     p: i Diagram in progress !
-
 //Advanced 
